@@ -1,0 +1,297 @@
+<?php
+/**
+ * Product list template
+ *
+ * @see Mage_Catalog_Block_Product_List
+ */
+?>
+
+<?php
+	$_productCollection=$this->getLoadedProductCollection();
+	$_collectionSize = $_productCollection->count();
+?>
+
+<?php if ($_collectionSize && $tmpHtml = $this->getChildHtml('block_category_above_collection')): ?>
+	<div class="block_category_above_collection std"><?php echo $tmpHtml; ?></div>
+<?php endif; ?>
+
+<?php if(!$_collectionSize): ?><?php
+	 if ($tmpHtml = $this->getChildHtml('block_category_above_empty_collection')) {
+		?><div class="block_category_above_empty_collection std"><?php echo $tmpHtml; ?></div><?php
+	 } else {
+		?><p class="note-msg empty-catalog"><?php echo $this->__('There are no products matching the selection.') ?></p><?php
+	 }
+?><?php else: ?>
+
+<?php
+	$_helper = $this->helper('catalog/output');
+	$theme = $this->helper('wsu_themecontrol');
+	$helpLabels = $this->helper('wsu_themecontrol/labels');
+	$helpTemplate = $this->helper('wsu_themecontrol/template');
+	$helpImg = $this->helper('wsu_wsu/image');
+	
+	//Default image size
+	$imgWidth = 295;
+	$imgHeight = 295;
+	
+	//Aspect ratio settings
+	if ($theme->getCfg('category/aspect_ratio')) {
+		$imgHeight = 0; //Height will be computed automatically (based on width) to keep the aspect ratio
+	}
+	//Hide toolbar
+	$hideToolbar = false;
+	if ($this->getHideToolbar()) {
+		$hideToolbar = true;
+	}
+?>
+
+<div class="category-products">
+	<?php if (!$hideToolbar): ?>
+		<?php echo $this->getToolbarHtml() ?>
+	<?php endif; ?>
+	<?php if($this->getMode()!='grid'): //List mode ?>
+<!-- Lists -->
+	<?php
+		//Get list configuration array
+		$lc = $theme->getCfgGroup('category_list');
+		
+		//List classes
+		$listClasses = '';
+		if ($lc['hover_effect']) {
+			$listClasses = ' hover-effect';
+		}
+
+	?>
+
+	<?php $_iterator = 0; ?>
+	<ul class="products-list<?php if($listClasses) echo $listClasses; ?>" id="products-list">
+	<?php foreach ($_productCollection as $_product): ?>
+			<?php 
+				$productType=$_product->getTypeID();
+				$product=Mage::getModel('catalog/product')->load($_product->getId());
+				$eventStart = $product->getEventstartdate();
+			?>
+	
+		<li class="item<?php if( ++$_iterator == sizeof($_productCollection) ): ?> last<?php endif; ?>">
+			<?php if ($tmpHtml = $this->getChildHtml('block_category_above_product')): ?>
+				<div class="block_category_above_product std"><?php echo $tmpHtml; ?></div>
+			<?php endif; ?>
+			<?php //Product Image ?>
+			<div class="product-image-wrapper grid12-4 mobile-grid-half">
+				<?php 
+					$imgLable = $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true); 
+				?>
+				<a href="<?=$_product->getProductUrl()?>" title="<?=$imgLable?>" class="product-image" style="max-width:<?php echo $imgWidth; ?>px;">
+					<img src="<?php echo $helpImg->getImg($_product, $imgWidth, $imgHeight, 'small_image'); ?>" alt="<?=$imgLable?>" />
+					<?php
+						if ($theme->getCfg('category/alt_image')) { 
+							echo $theme->getAltImgHtml($_product, $imgWidth, $imgHeight);
+						}
+						echo $helpLabels->getLabels($_product); //Product labels
+					?>
+				</a>
+			</div> <!-- end: product-image-wrapper -->
+
+			<?php //Product description ?>
+			<div class="product-shop grid12-5 mobile-grid-half">
+				<div class="product-shop-inner">
+					<?php $_productNameStripped = $this->stripTags($_product->getName(), null, true); ?>
+					<h2 class="product-name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $_productNameStripped; ?>"><?php echo $_helper->productAttribute($_product, $_product->getName() , 'name'); ?></a></h2>
+					<?php if($_product->getRatingSummary()): ?>
+						<?php echo $this->getReviewsSummaryHtml($_product, 'short') ?>
+					<?php endif; ?>
+					
+					<div class="desc std">
+						<?php echo $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
+						<a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $_productNameStripped ?>" class="link-learn"><?php echo $this->__('Learn More') ?></a>
+					</div>
+				</div>
+			</div>
+				
+			<div class="right-column grid12-3 mobile-grid-half">
+				<?php echo $this->getPriceHtml($_product, true) ?>
+				<?php if($_product->isSaleable()): ?>
+					<p><button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button></p>
+				<?php else: ?>
+					<p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+				<?php endif; ?>
+				
+				<?php
+				if ($lc['addtolinks_simple']) {
+					echo $helpTemplate->getCategoryAddtoLinks($_product, $this->getAddToCompareUrl($_product), 'addto-gaps-right');
+				} else {
+					if($productType != 'event' && $_compareUrl=$this->getAddToCompareUrl($_product)){ 
+						?> <!-- <li><span class="separator">|</span> <a href="<?php echo $_compareUrl ?>" class="link-compare"><?php echo $this->__('Add to Compare') ?></a></li> --> <?php
+					} 
+					echo $helpTemplate->getCategoryAddtoLinksComplex($_product, $this->getAddToCompareUrl($_product), 'addto-gaps-right');
+				}
+				?>
+			</div>
+			<?php if ($tmpHtml = $this->getChildHtml('block_category_below_product')): ?>
+				<div class="block_category_below_product std"><?php echo $tmpHtml; ?></div>
+			<?php endif; ?>
+		</li>
+	<?php endforeach; ?>
+	</ul>
+	<script type="text/javascript">decorateList('products-list', 'none-recursive')</script>
+
+	<?php else: //Grid mode ?>
+<!-- Grinds -->
+	<?php
+		//Get grid configuration array
+		$gc = $theme->getCfgGroup('category_grid');
+		
+		//Get number of columns (from parameter or from theme config)
+		$columnCount = 3;
+		if ($this->getGridColumnCount()) {
+			$columnCount = $this->getGridColumnCount();
+		} else {
+			$columnCount = $gc['column_count'];
+		}
+
+		//Grid classes
+		$gridClasses = '';
+		if ($gc['display_name'] == 2 && $gc['display_name_single_line'] == true) {
+			$gridClasses .= ' single-line-name';
+		}
+		if ($gc['centered']) {
+			$gridClasses .= ' centered';
+		}
+		if ($gc['hover_effect']) {
+			$gridClasses .= ' hover-effect';
+		}
+		if ($gc['equal_height']) {
+			$gridClasses .= ' equal-height';
+		}
+
+		//Size of grid elements
+		if ($gc['elements_size']) {
+			$gridClasses .= ' size-' . $gc['elements_size'];
+		} else {
+			//Calculate size based on number of columns
+			if ($columnCount >= 6) {
+				$gridClasses .= ' size-xs';
+			} elseif ($columnCount >= 4) {
+				$gridClasses .= ' size-s';
+			}
+		}
+
+		//Container "actions" at the bottom of the grid item stores button and add-to links
+		//If at least one of those elements was set as "Display on hover" but no element was set as "Display":
+		//apply appropriate classes to the container.
+		$actionsClasses = '';
+		if ($gc['display_addtocart'] == 1 || ($gc['display_addtolinks'] == 1 && !$gc['addtolinks_simple'])) {
+			$actionsClasses = ' display-onhover';
+		}
+		if ($gc['display_addtocart'] == 2 || ($gc['display_addtolinks'] == 2 && !$gc['addtolinks_simple'])) {
+			$actionsClasses = '';
+		}
+	?>
+	
+	<ul class="products-grid category-products-grid itemgrid itemgrid-adaptive itemgrid-<?php echo $columnCount; ?>col<?php if($gridClasses) echo $gridClasses; ?>">
+		<?php foreach ($_productCollection as $_product): ?>
+			<?php 
+				$productType=$_product->getTypeID();
+				$product=Mage::getModel('catalog/product')->load($_product->getId());
+				$eventStart = $product->getEventstartdate();
+			?>
+		
+			<li class="item">
+				<?php if ($tmpHtml = $this->getChildHtml('block_category_above_product')): ?>
+					<div class="block_category_above_product std"><?php echo $tmpHtml; ?></div>
+				<?php endif; ?>
+
+				    
+				<div class="product-image-wrapper" style="max-width:<?php echo $imgWidth; ?>px;">
+					<?php 
+						$imgLable = $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true); 
+					?>
+					<a href="<?=$_product->getProductUrl()?>" title="<?=$imgLable?>" class="product-image">
+						<img src="<?php echo $helpImg->getImg($_product, $imgWidth, $imgHeight, 'small_image'); ?>" alt="<?=$imgLable?>" />
+						<?php
+							if ($theme->getCfg('category/alt_image')) {
+								echo $theme->getAltImgHtml($_product, $imgWidth, $imgHeight);
+							}
+							echo $helpLabels->getLabels($_product); //Product labels 
+						?>
+					</a>
+				
+					<?php //Add-to links
+						if ($gc['display_addtolinks'] != 0 && $gc['addtolinks_simple']) {
+							
+							if($productType != 'event' && $_compareUrl=$this->getAddToCompareUrl($_product)) { 
+								?><!--<li><span class="separator">|</span> <a href="<?php echo $_compareUrl ?>" class="link-compare"><?php echo $this->__('Add to Compare') ?></a></li> --><?php 
+							} 
+							
+							if ($gc['display_addtolinks'] == 1) { //Display on hover
+								echo $helpTemplate->getCategoryAddtoLinksComplex_2($_product, $this->getAddToCompareUrl($_product), 'addto-links-icons addto-onimage display-onhover');
+							} else { //Always display
+								echo $helpTemplate->getCategoryAddtoLinksComplex_2($_product, $this->getAddToCompareUrl($_product), 'addto-links-icons addto-onimage');
+							}
+						}
+					?>
+				</div> <!-- end: product-image-wrapper -->
+				
+				<h2 class="product-name">
+					<a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($_product->getName(), null, true) ?>">
+						<?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?>
+					</a>
+				</h2>
+				<?php
+				 	if($_product->getRatingSummary()) {
+						if ($gc['display_rating'] == 1){ //Display on hover 
+							?><div class="display-onhover"><?php echo $this->getReviewsSummaryHtml($_product, 'short') ?></div><?php
+						}elseif ($gc['display_rating'] == 2){ //Always display 
+							echo $this->getReviewsSummaryHtml($_product, 'short');
+						}
+					}
+					if ($gc['display_price'] == 1) { echo '<div class="display-onhover">'; }
+					echo $this->getPriceHtml($_product, true);
+					if ($gc['display_price'] == 1){ echo '</div>'; }
+
+					//If at least one element was set as "Display on hover" but no element was set as "Display":
+					//aggregate classes from those elements and apply them to the "actions" container.
+					$actionsClasses = '';
+					if ($gc['display_addtocart'] == 1 || ($gc['display_addtolinks'] == 1 && !$gc['addtolinks_simple'])) {
+						$actionsClasses = ' display-onhover';
+					}
+					if ($gc['display_addtocart'] == 2 || ($gc['display_addtolinks'] == 2 && !$gc['addtolinks_simple']))  {
+						$actionsClasses = '';
+					}
+				?>
+				
+				<div class="actions clearer<?php echo $actionsClasses; ?>">
+					<?php //Cart button ?>
+					<?php if ($gc['display_addtocart'] != 0): ?>
+						<?php if ($_product->isSaleable()): ?>
+							<button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button>
+						<?php else: ?>
+							<p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+						<?php endif; ?>
+					<?php endif; ?>
+					
+					<?php //Add-to links
+						if ($gc['display_addtolinks'] != 0 && !$gc['addtolinks_simple'])  {
+							echo $helpTemplate->getCategoryAddtoLinks($_product, $this->getAddToCompareUrl($_product), 'addto-gaps-right addto-texticons');
+						}
+					?>
+				</div> <!-- end: actions -->
+				<?php if ($tmpHtml = $this->getChildHtml('block_category_below_product')): ?>
+					<div class="block_category_below_product std"><?php echo $tmpHtml; ?></div>
+				<?php endif; ?>
+			</li>
+		<?php endforeach; ?>    
+	</ul>
+	<?php endif; //end: if grid mode ?>
+
+	<?php if (!$hideToolbar): ?>
+		<div class="toolbar-bottom">
+			<?php echo $this->getToolbarHtml() ?>
+		</div>
+	<?php endif; ?>
+</div>
+<?php endif; ?>
+
+<?php if ($_collectionSize && $tmpHtml = $this->getChildHtml('block_category_below_collection')): ?>
+	<div class="block_category_below_collection std"><?php echo $tmpHtml; ?></div>
+<?php endif; ?>
