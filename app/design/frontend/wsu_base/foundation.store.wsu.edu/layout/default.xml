@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<layout>
-	<reference name="head">
-		<action method="addCss"	ifconfig="wsu_themecontrol/customization/custom_css"><stylesheet>css/custom.css</stylesheet></action>
-	</reference>
-</layout>

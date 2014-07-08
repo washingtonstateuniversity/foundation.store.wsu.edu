@@ -7,7 +7,7 @@
                 <file>wsu_base_defaults.xml</file>
             </wsu_base>
             <foundation_default>
-                <file>default.xml</file>
+                <file>defaults.xml</file>
             </foundation_default>
         </updates>
     </layout>
