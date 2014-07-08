@@ -1,10 +1,12 @@
 /* CSS Document */
 
-
-/* product lists */
 .products-list li.item {
   border: 1px solid rgba(91,91,91,0.63);
   border-radius: 9px;
   background:rgba(241,241,241,0.90);
   padding:15px 11px;
+  margin-bottom:15px;
+}
+.products-list li.item.last {
+  border: 1px solid rgba(91,91,91,0.63);
 }
