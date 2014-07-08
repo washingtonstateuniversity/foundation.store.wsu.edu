@@ -1,4 +1,15 @@
 <?xml version="1.0"?>
 <theme>
     <parent>wsu_base/default</parent>
+    <layout>
+        <updates>
+            <wsu_base>
+                <file>wsu_base_defaults.xml</file>
+            </wsu_base>
+            <foundation_default>
+                <file>default.xml</file>
+            </foundation_default>
+        </updates>
+    </layout>
 </theme>
+
