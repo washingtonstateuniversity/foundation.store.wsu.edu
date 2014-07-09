@@ -67,7 +67,7 @@ FOUNDATION THEME
 				$eventStart = $product->getEventstartdate();
 			?>
 	
-		<li class="item<?php if( ++$_iterator == sizeof($_productCollection) ): ?> last<?php endif; ?>">
+		<li class="mass_item item<?php if( ++$_iterator == sizeof($_productCollection) ): ?> last<?php endif; ?>">
 		<input type="checkbox" value=""/>
 			<?php if ($tmpHtml = $this->getChildHtml('block_category_above_product')): ?>
 				<div class="block_category_above_product std"><?php echo $tmpHtml; ?></div>
@@ -178,7 +178,7 @@ FOUNDATION THEME
 <?php if ($_collectionSize && $tmpHtml = $this->getChildHtml('block_category_below_collection')): ?>
 	<div class="block_category_below_collection std"><?php echo $tmpHtml; ?></div>
 <?php endif; ?>
-
+<a href="#" id="check_out_products">mass check out</a>
 
 <script type="text/javascript">
 (function($){
@@ -188,6 +188,15 @@ FOUNDATION THEME
 			$(this).closest('.guest_block').next('.guest_block').show();	
 			$(this).hide();
 		});
+		
+		
+		$('#check_out_products').on('click',function(){
+			$.each($('.mass_item'),function(){});
+			$.post(<?=$this?>,{},function(data){
+					
+			});
+		});
+		
 	});
 })(jQuery);
 </script>
