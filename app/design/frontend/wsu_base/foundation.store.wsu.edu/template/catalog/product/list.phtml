@@ -68,6 +68,7 @@ FOUNDATION THEME
 			?>
 	
 		<li class="item<?php if( ++$_iterator == sizeof($_productCollection) ): ?> last<?php endif; ?>">
+		<input type="checkbox" value=""/>
 			<?php if ($tmpHtml = $this->getChildHtml('block_category_above_product')): ?>
 				<div class="block_category_above_product std"><?php echo $tmpHtml; ?></div>
 			<?php endif; ?>
