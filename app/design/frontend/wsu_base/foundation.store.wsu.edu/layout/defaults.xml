@@ -2,7 +2,6 @@
 <layout>
 	<default>
 		<reference name="head">
-			<action method="removeItem"><type>skin_css</type><name>css/custom.css</name></action>
 			<action method="addItem"><type>skin_css</type><name>css/custom.css</name></action>
 		</reference>
 	</default>
