@@ -5,7 +5,7 @@
  * @see Mage_Catalog_Block_Product_List
  */
 ?>
-
+FOUNDATION THEME
 <?php
 	$_productCollection=$this->getLoadedProductCollection();
 	$_collectionSize = $_productCollection->count();
@@ -45,7 +45,7 @@
 	}
 ?>
 
-<div class="category-products">
+<div class="category-products padded">
 	<?php
 		//Get list configuration array
 		$lc = $theme->getCfgGroup('category_list');
@@ -68,6 +68,7 @@
 			?>
 	
 		<li class="item<?php if( ++$_iterator == sizeof($_productCollection) ): ?> last<?php endif; ?>">
+		<input type="checkbox" value=""/>
 			<?php if ($tmpHtml = $this->getChildHtml('block_category_above_product')): ?>
 				<div class="block_category_above_product std"><?php echo $tmpHtml; ?></div>
 			<?php endif; ?>
@@ -105,6 +106,48 @@
 				
 			<div class="right-column grid12-3 mobile-grid-half">
 				<?php echo $this->getPriceHtml($_product, true) ?>
+				
+				<?php		
+					$productSku = $_product->getSku();
+					$product = Mage::getModel('catalog/product');
+					$productId = $product->getIdBySku( $productSku );
+					 
+					$product = Mage::getModel("catalog/product")->load($productId);
+					 
+					$attVal = $product->getOptions();
+					 
+					$optStr = "";
+					//var_dump($attVal);
+					// loop through the options
+					$i=0;
+					foreach($attVal as $optionKey => $option) {
+						$field=$option->getData();
+						if($field['type']=="field"){
+							$optStr .= "<div class='guest_block' ".($i>0?"style='display:none;'":"").">";
+							$optStr .= $option->getTitle().": ";
+							$optStr .= "<input type='text' name='options[".$option->getId()."]' />";
+							$optStr .= "</br><a href='#' class='button add_guest' ><i class='fa fa-plus'></i>Add another Guest for an additional ".money_format ( $option->getPrice() , 2 )." </a>";
+							$optStr .= "</div>";
+							$i++;
+						}else{
+							//$optStr .= "<br/>";
+							 
+							//$optStr .= $optionVal->getTitle().": ";
+							 
+							$optStr .= "<select style='display:block; clear:both;' name='options[".$option->getId()."]'>";
+							 
+							foreach($option->getValues() as $valuesKey => $valuesVal) {
+								$optStr .= "<option value='".$valuesVal->getId()."'>".$valuesVal->getTitle()."</option>";
+							}
+							$optStr .= "</select>";
+						}
+					}
+					 
+					echo($optStr );
+				?>
+				
+				
+				
 				<?php if($_product->isSaleable()): ?>
 					<p><button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button></p>
 				<?php else: ?>
@@ -135,3 +178,32 @@
 <?php if ($_collectionSize && $tmpHtml = $this->getChildHtml('block_category_below_collection')): ?>
 	<div class="block_category_below_collection std"><?php echo $tmpHtml; ?></div>
 <?php endif; ?>
+
+
+<script type="text/javascript">
+(function($){
+	"use strict";
+	$(document).ready(function(){
+		$('.add_guest').on('click',function(){
+			$(this).closest('.guest_block').next('.guest_block').show();	
+			$(this).hide();
+		});
+	});
+})(jQuery);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
