@@ -67,10 +67,10 @@ FOUNDATION THEME
 				$eventStart = $product->getEventstartdate();
 			?>
 	
-		<li class="mass_item item<?php if( ++$_iterator == sizeof($_productCollection) ): ?> last<?php endif; ?>">
+		<li class="mass_item item<?php if( ++$_iterator == sizeof($_productCollection) ): ?> last<?php endif; ?>" data-product_id="<?=$_product->getId()?>">
 		<input type="checkbox" value=""/>
 			<?php if ($tmpHtml = $this->getChildHtml('block_category_above_product')): ?>
-				<div class="block_category_above_product std"><?php echo $tmpHtml; ?></div>
+				<div class="block_category_above_product std"><?=$tmpHtml?></div>
 			<?php endif; ?>
 			<?php //Product Image ?>
 			<div class="product-image-wrapper grid12-4 mobile-grid-half">
@@ -184,15 +184,29 @@ FOUNDATION THEME
 (function($){
 	"use strict";
 	$(document).ready(function(){
-		$('.add_guest').on('click',function(){
+		$('.add_guest').on('click',function(e){
+			e.preventDefault();
+			e.stopPropagation();
 			$(this).closest('.guest_block').next('.guest_block').show();	
 			$(this).hide();
 		});
-		
-		
-		$('#check_out_products').on('click',function(){
-			$.each($('.mass_item'),function(){});
-			$.post(<?=$this?>,{},function(data){
+
+		$('#check_out_products').on('click',function(e){
+			e.preventDefault();
+			e.stopPropagation();
+			var data = {"cartAjaxUsed":1};
+			var porducts = [];
+			$.each($('.mass_item'),function(){
+				var self = $(this);
+				var pid = self.data('product_id');
+				var pdata = [];
+				$.each(self.find('input,select,textarea'),function(){
+					pdata[$(this).attr('name')]=$(this).val();
+				});
+				porducts[pid]=pdata;
+			});
+			$.extend(data,{"items":porducts});
+			$.post('/cartajax/add',data,function(data){
 					
 			});
 		});
