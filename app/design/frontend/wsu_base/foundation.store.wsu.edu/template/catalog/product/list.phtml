@@ -95,7 +95,7 @@
 					<?php echo $this->getPriceHtml($_product, true) ?>
 					
 					<?php if($_product->isSaleable()): ?>
-						<p><button type="button" title="<?php echo $this->__('Attend') ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')"><span><span><?php echo $this->__('Attend') ?></span></span></button></p>
+						<p><button type="button" title="<?php echo $this->__('Attend') ?>" class="button btn-cart"><span><span><?php echo $this->__('Attend') ?></span></span></button></p>
 					<?php else: ?>
 						<p class="availability out-of-stock"><span><?php echo $this->__('Sorry, event is filled.') ?></span></p>
 					<?php endif; ?>
