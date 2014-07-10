@@ -67,13 +67,10 @@ FOUNDATION THEME
 				$eventStart = $product->getEventstartdate();
 			?>
 	
-		<li class="mass_item item<?php if( ++$_iterator == sizeof($_productCollection) ): ?> last<?php endif; ?>" data-product_id="<?=$_product->getId()?>">
-		<input type="checkbox" value=""/>
-			<?php if ($tmpHtml = $this->getChildHtml('block_category_above_product')): ?>
-				<div class="block_category_above_product std"><?=$tmpHtml?></div>
-			<?php endif; ?>
+		<li class="mass_item item row margin-left <?php if( ++$_iterator == sizeof($_productCollection) ): ?> last<?php endif; ?>" data-product_id="<?=$_product->getId()?>">
+			<input type="checkbox" value="" name="goingToEvent"/>
 			<?php //Product Image ?>
-			<div class="product-image-wrapper grid12-4 mobile-grid-half">
+			<div class="product-image-wrapper column one">
 				<?php 
 					$imgLable = $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true); 
 				?>
@@ -87,87 +84,86 @@ FOUNDATION THEME
 					?>
 				</a>
 			</div> <!-- end: product-image-wrapper -->
-
-			<?php //Product description ?>
-			<div class="product-shop grid12-5 mobile-grid-half">
-				<div class="product-shop-inner">
-					<?php $_productNameStripped = $this->stripTags($_product->getName(), null, true); ?>
-					<h2 class="product-name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $_productNameStripped; ?>"><?php echo $_helper->productAttribute($_product, $_product->getName() , 'name'); ?></a></h2>
-					<?php if($_product->getRatingSummary()): ?>
-						<?php echo $this->getReviewsSummaryHtml($_product, 'short') ?>
-					<?php endif; ?>
-					
-					<div class="desc std">
-						<?php echo $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
-						<a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $_productNameStripped ?>" class="link-learn"><?php echo $this->__('Learn More') ?></a>
+			
+			<div class="product-data column two">
+				<?php //Product description ?>
+				<div class="product-shop grid12-5 mobile-grid-half">
+					<div class="product-shop-inner">
+						<?php $_productNameStripped = $this->stripTags($_product->getName(), null, true); ?>
+						<h2 class="product-name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $_productNameStripped; ?>"><?php echo $_helper->productAttribute($_product, $_product->getName() , 'name'); ?></a></h2>
+						<?php if($_product->getRatingSummary()): ?>
+							<?php echo $this->getReviewsSummaryHtml($_product, 'short') ?>
+						<?php endif; ?>
+						
+						<div class="desc std">
+							<?php echo $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
+							<a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $_productNameStripped ?>" class="link-learn"><?php echo $this->__('Learn More') ?></a>
+						</div>
 					</div>
 				</div>
-			</div>
-				
-			<div class="right-column grid12-3 mobile-grid-half">
-				<?php echo $this->getPriceHtml($_product, true) ?>
-				
-				<?php		
-					$productSku = $_product->getSku();
-					$product = Mage::getModel('catalog/product');
-					$productId = $product->getIdBySku( $productSku );
-					 
-					$product = Mage::getModel("catalog/product")->load($productId);
-					 
-					$attVal = $product->getOptions();
-					 
-					$optStr = "";
-					//var_dump($attVal);
-					// loop through the options
-					$i=0;
-					foreach($attVal as $optionKey => $option) {
-						$field=$option->getData();
-						if($field['type']=="field"){
-							$optStr .= "<div class='guest_block' ".($i>0?"style='display:none;'":"").">";
-							$optStr .= $option->getTitle().": ";
-							$optStr .= "<input type='text' name='options[".$option->getId()."]' />";
-							$optStr .= "</br><a href='#' class='button add_guest' ><i class='fa fa-plus'></i>Add another Guest for an additional ".money_format ( $option->getPrice() , 2 )." </a>";
-							$optStr .= "</div>";
-							$i++;
-						}else{
-							//$optStr .= "<br/>";
-							 
-							//$optStr .= $optionVal->getTitle().": ";
-							 
-							$optStr .= "<select style='display:block; clear:both;' name='options[".$option->getId()."]'>";
-							 
-							foreach($option->getValues() as $valuesKey => $valuesVal) {
-								$optStr .= "<option value='".$valuesVal->getId()."'>".$valuesVal->getTitle()."</option>";
+					
+				<div class="right-column grid12-3 mobile-grid-half">
+					<?php echo $this->getPriceHtml($_product, true) ?>
+					
+					<?php		
+						$productSku = $_product->getSku();
+						$product = Mage::getModel('catalog/product');
+						$productId = $product->getIdBySku( $productSku );
+						 
+						$product = Mage::getModel("catalog/product")->load($productId);
+						 
+						$attVal = $product->getOptions();
+						 
+						$optStr = "";
+						//var_dump($attVal);
+						// loop through the options
+						$i=0;
+						foreach($attVal as $optionKey => $option) {
+							$field=$option->getData();
+							if($field['type']=="field"){
+								$optStr .= "<div class='guest_block' ".($i>0?"style='display:none;'":"").">";
+								$optStr .= $option->getTitle().": ";
+								$optStr .= "<input type='text' name='options[".$option->getId()."]' />";
+								$optStr .= "</br><a href='#' class='button add_guest' ><i class='fa fa-plus'></i>Add another Guest for an additional ".money_format ( $option->getPrice() , 2 )." </a>";
+								$optStr .= "</div>";
+								$i++;
+							}else{
+								//$optStr .= "<br/>";
+								 
+								//$optStr .= $optionVal->getTitle().": ";
+								 
+								$optStr .= "<select style='display:block; clear:both;' name='options[".$option->getId()."]'>";
+								 
+								foreach($option->getValues() as $valuesKey => $valuesVal) {
+									$optStr .= "<option value='".$valuesVal->getId()."'>".$valuesVal->getTitle()."</option>";
+								}
+								$optStr .= "</select>";
 							}
-							$optStr .= "</select>";
 						}
+						 
+						echo($optStr );
+					?>
+					
+					
+					
+					<?php if($_product->isSaleable()): ?>
+						<p><button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button></p>
+					<?php else: ?>
+						<p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+					<?php endif; ?>
+					
+					<?php
+					if ($lc['addtolinks_simple']) {
+						echo $helpTemplate->getCategoryAddtoLinks($_product, $this->getAddToCompareUrl($_product), 'addto-gaps-right');
+					} else {
+						if($productType != 'event' && $_compareUrl=$this->getAddToCompareUrl($_product)){ 
+							?> <!-- <li><span class="separator">|</span> <a href="<?php echo $_compareUrl ?>" class="link-compare"><?php echo $this->__('Add to Compare') ?></a></li> --> <?php
+						} 
+						echo $helpTemplate->getCategoryAddtoLinksComplex($_product, $this->getAddToCompareUrl($_product), 'addto-gaps-right');
 					}
-					 
-					echo($optStr );
-				?>
-				
-				
-				
-				<?php if($_product->isSaleable()): ?>
-					<p><button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button></p>
-				<?php else: ?>
-					<p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
-				<?php endif; ?>
-				
-				<?php
-				if ($lc['addtolinks_simple']) {
-					echo $helpTemplate->getCategoryAddtoLinks($_product, $this->getAddToCompareUrl($_product), 'addto-gaps-right');
-				} else {
-					if($productType != 'event' && $_compareUrl=$this->getAddToCompareUrl($_product)){ 
-						?> <!-- <li><span class="separator">|</span> <a href="<?php echo $_compareUrl ?>" class="link-compare"><?php echo $this->__('Add to Compare') ?></a></li> --> <?php
-					} 
-					echo $helpTemplate->getCategoryAddtoLinksComplex($_product, $this->getAddToCompareUrl($_product), 'addto-gaps-right');
-				}
-				?>
+					?>
+				</div>
 			</div>
-			<?php if ($tmpHtml = $this->getChildHtml('block_category_below_product')): ?>
-				<div class="block_category_below_product std"><?php echo $tmpHtml; ?></div>
-			<?php endif; ?>
 		</li>
 	<?php endforeach; ?>
 	</ul>
@@ -195,11 +191,11 @@ FOUNDATION THEME
 			e.preventDefault();
 			e.stopPropagation();
 			var data = {"cartAjaxUsed":1};
-			var porducts = [];
+			var porducts = {};
 			$.each($('.mass_item'),function(){
 				var self = $(this);
 				var pid = self.data('product_id');
-				var pdata = [];
+				var pdata = {};
 				$.each(self.find('input,select,textarea'),function(){
 					pdata[$(this).attr('name')]=$(this).val();
 				});
