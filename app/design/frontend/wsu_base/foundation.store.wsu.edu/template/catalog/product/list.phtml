@@ -93,6 +93,14 @@
 					
 				<div class="right-column">
 					<?php echo $this->getPriceHtml($_product, true) ?>
+					
+					<?php if($_product->isSaleable()): ?>
+						<p><button type="button" title="<?php echo $this->__('Attend') ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')"><span><span><?php echo $this->__('Attend') ?></span></span></button></p>
+					<?php else: ?>
+						<p class="availability out-of-stock"><span><?php echo $this->__('Sorry, event is filled.') ?></span></p>
+					<?php endif; ?>
+					
+					
 					<?php		
 						$productSku = $_product->getSku();
 						$product = Mage::getModel('catalog/product');
@@ -140,11 +148,7 @@
 					
 					
 					
-					<?php if($_product->isSaleable()): ?>
-						<p><button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button></p>
-					<?php else: ?>
-						<p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
-					<?php endif; ?>
+
 					
 					
 				</div>
