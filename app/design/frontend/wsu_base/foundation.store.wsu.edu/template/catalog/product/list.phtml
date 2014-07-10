@@ -103,16 +103,22 @@
 						$attVal = $product->getOptions();
 						 
 						$optStr = "";
+						
 						//var_dump($attVal);
 						// loop through the options
 						$i=0;
 						foreach($attVal as $optionKey => $option) {
 							$field=$option->getData();
 							if($field['type']=="field"){
-								$optStr .= "<div class='guest_block' ".($i>0?"style='display:none;'":"").">";
+								if($i<1){
+								$optStr .= "<a href='#' class='button add_guest' ><i class='fa fa-plus'></i>Additional Guest ($".money_format ( $option->getPrice() , 2 ).") </a>";
+								}
+								$optStr .= "<div class='guest_block' style='display:none;>";
 								$optStr .= $option->getTitle().": ";
 								$optStr .= "<input type='text' name='options[".$option->getId()."]' />";
-								$optStr .= "</br><a href='#' class='button add_guest' ><i class='fa fa-plus'></i>Add another Guest for an additional ".money_format ( $option->getPrice() , 2 )." </a>";
+								if($i>0 && $i < (count($attVal)-1)){
+									$optStr .= "</br><a href='#' class='button add_guest' ><i class='fa fa-plus'></i>Add another Guest for an additional ".money_format ( $option->getPrice() , 2 )." </a>";
+								}
 								$optStr .= "</div>";
 								$i++;
 							}else{
