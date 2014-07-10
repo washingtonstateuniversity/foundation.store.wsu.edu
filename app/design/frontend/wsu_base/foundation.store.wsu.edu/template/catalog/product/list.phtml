@@ -75,7 +75,7 @@ FOUNDATION THEME
 					$imgLable = $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true); 
 				?>
 				<a href="<?=$_product->getProductUrl()?>" title="<?=$imgLable?>" class="product-image" style="max-width:<?php echo $imgWidth; ?>px;">
-					<img src="<?php echo $helpImg->getImg($_product, $imgWidth, $imgHeight, 'small_image'); ?>" alt="<?=$imgLable?>" />
+					<img src="<?php echo $helpImg->getImg($_product, $imgWidth, $imgHeight, 'small_image'); ?>" alt="<?=$imgLable?>" width="100%"/>
 					<?php
 						if ($theme->getCfg('category/alt_image')) { 
 							echo $theme->getAltImgHtml($_product, $imgWidth, $imgHeight);
