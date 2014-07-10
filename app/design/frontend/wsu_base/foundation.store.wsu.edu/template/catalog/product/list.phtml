@@ -65,6 +65,7 @@ FOUNDATION THEME
 				$productType=$_product->getTypeID();
 				$product=Mage::getModel('catalog/product')->load($_product->getId());
 				$eventStart = $product->getEventstartdate();
+				$eventEnd = $product->getEventenddate();
 			?>
 	
 		<li class="mass_item item row margin-left <?php if( ++$_iterator == sizeof($_productCollection) ): ?> last<?php endif; ?>" data-product_id="<?=$_product->getId()?>">
@@ -90,6 +91,8 @@ FOUNDATION THEME
 						<?php endif; ?>
 						
 						<div class="desc std">
+							Starting : <?=$eventStart?><br/>
+							Ending : <?=$eventEnd?><br/> 
 							<?php echo $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
 							<a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $_productNameStripped ?>" class="link-learn"><?php echo $this->__('Learn More') ?></a>
 						</div>
