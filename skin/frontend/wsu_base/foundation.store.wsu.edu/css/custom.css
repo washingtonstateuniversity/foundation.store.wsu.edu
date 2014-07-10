@@ -11,4 +11,5 @@
 .products-list li.item.last {
   border: 1px solid rgba(91,91,91,0.63);
 }
+.products-list .product-image{ width:100%; height:auto; max-height:100%;}
 [name="goingToEvent"]{ position:absolute; left:15px; top: 15px; z-index:99;}
