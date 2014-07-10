@@ -76,12 +76,6 @@ FOUNDATION THEME
 				?>
 				<a href="<?=$_product->getProductUrl()?>" title="<?=$imgLable?>" class="product-image" style="max-width:<?php echo $imgWidth; ?>px;">
 					<img src="<?php echo $helpImg->getImg($_product, $imgWidth, $imgHeight, 'small_image'); ?>" alt="<?=$imgLable?>" width="100%"/>
-					<?php
-						if ($theme->getCfg('category/alt_image')) { 
-							echo $theme->getAltImgHtml($_product, $imgWidth, $imgHeight);
-						}
-						echo $helpLabels->getLabels($_product); //Product labels
-					?>
 				</a>
 			</div> <!-- end: product-image-wrapper -->
 			
