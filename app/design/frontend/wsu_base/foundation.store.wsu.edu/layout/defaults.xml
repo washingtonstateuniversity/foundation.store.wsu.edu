@@ -4,11 +4,8 @@
 		<reference name="head">
 			<action method="addItem"><type>skin_css</type><name>css/custom.css</name></action>
 		</reference>
-		
 		<reference name="top.links">
 			<remove name="wishlist_link"/>
 		</reference>
-		
-		
 	</default>
 </layout>
