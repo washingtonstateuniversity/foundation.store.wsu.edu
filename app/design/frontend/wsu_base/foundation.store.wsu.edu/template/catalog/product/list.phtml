@@ -173,6 +173,15 @@
 			$(this).hide();
 		});
 
+		$('.button.btn-cart').off().on('click',function(e){
+			e.preventDefault();
+			e.stopPropagation();
+			$(this).closest('.mass_item').find('[name="goingToEvent"]').attr('checked',true);
+			
+		});
+
+
+
 		$('#check_out_products').on('click',function(e){
 			e.preventDefault();
 			e.stopPropagation();
