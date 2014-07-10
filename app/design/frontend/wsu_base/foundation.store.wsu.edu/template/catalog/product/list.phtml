@@ -10,10 +10,6 @@
 	$_collectionSize = $_productCollection->count();
 ?>
 
-<?php if ($_collectionSize && $tmpHtml = $this->getChildHtml('block_category_above_collection')): ?>
-	<div class="block_category_above_collection std"><?php echo $tmpHtml; ?></div>
-<?php endif; ?>
-
 <?php if(!$_collectionSize): ?><?php
 	 if ($tmpHtml = $this->getChildHtml('block_category_above_empty_collection')) {
 		?><div class="block_category_above_empty_collection std"><?php echo $tmpHtml; ?></div><?php
