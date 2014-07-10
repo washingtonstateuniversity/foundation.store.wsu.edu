@@ -146,16 +146,7 @@ FOUNDATION THEME
 						<p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
 					<?php endif; ?>
 					
-					<?php
-					if ($lc['addtolinks_simple']) {
-						echo $helpTemplate->getCategoryAddtoLinks($_product, $this->getAddToCompareUrl($_product), 'addto-gaps-right');
-					} else {
-						if($productType != 'event' && $_compareUrl=$this->getAddToCompareUrl($_product)){ 
-							?> <!-- <li><span class="separator">|</span> <a href="<?php echo $_compareUrl ?>" class="link-compare"><?php echo $this->__('Add to Compare') ?></a></li> --> <?php
-						} 
-						echo $helpTemplate->getCategoryAddtoLinksComplex($_product, $this->getAddToCompareUrl($_product), 'addto-gaps-right');
-					}
-					?>
+					
 				</div>
 			</div>
 		</li>
