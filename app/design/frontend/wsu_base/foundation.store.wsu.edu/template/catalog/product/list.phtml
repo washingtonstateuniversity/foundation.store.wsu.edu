@@ -176,8 +176,12 @@
 		$('.button.btn-cart').off().on('click',function(e){
 			e.preventDefault();
 			e.stopPropagation();
-			$(this).closest('.mass_item').find('[name="goingToEvent"]').attr('checked',true);
-			
+			var tar = $(this).closest('.mass_item').find('[name="goingToEvent"]');
+			if( tar.is($(":checked")) ){
+				tar.attr('checked',false);
+			}else{
+				tar.attr('checked',true);
+			}
 		});
 
 
