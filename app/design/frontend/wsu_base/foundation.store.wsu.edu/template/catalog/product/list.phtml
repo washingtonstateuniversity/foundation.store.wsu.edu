@@ -176,11 +176,14 @@
 		$('.button.btn-cart').off().on('click',function(e){
 			e.preventDefault();
 			e.stopPropagation();
-			var tar = $(this).closest('.mass_item').find('[name="goingToEvent"]');
+			var but = $(this);
+			var tar = but.closest('.mass_item').find('[name="goingToEvent"]');
 			if( tar.is($(":checked")) ){
 				tar.attr('checked',false);
+				but.html('<span><span>Attend</span></span>');
 			}else{
 				tar.attr('checked',true);
+				but.html('<span><span>Don\'t Attend</span></span>');
 			}
 		});
 
