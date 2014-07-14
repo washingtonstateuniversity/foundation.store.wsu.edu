@@ -205,7 +205,9 @@
 			});
 			$.extend(data,{"items":porducts});
 			$.post('/cartajax/cartajax/add/',data,function(data){
-					
+					if(data.checkout!=""){
+						window.location = data.checkout;
+					}
 			});
 		});
 		
