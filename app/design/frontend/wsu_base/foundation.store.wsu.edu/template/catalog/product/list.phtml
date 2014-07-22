@@ -121,8 +121,9 @@
 							//$GuestLimit = $product->getGuestLimit();
 							$GuestLimit = $product->getAttributeText("guest_limit");
 							?>
-							<a href="#" class="add_guest button"><i class="fa fa-plus"></i> Add Guest</a>
+							
 							<ul class="guest_blocks" data-limit="<?=$GuestLimit?>">
+								<li><a href="#" class="add_guest button"><i class="fa fa-plus"></i> Add Guest</a></li>
 								<li id="template" class="guest_block">
 								<a href="#" class="remove_guest button"><span class="fa-stack fa-sm">
 								  <i class="fa fa-circle fa-stack-2x"></i>
@@ -220,8 +221,9 @@
 				
 				_block.find("#template").clone().appendTo(_block).removeAttr("id");
 				var guest_count = _block.find('.guest_block:not(#template)').length;
-
-				_block.find('.guest_block').last().html( _block.find('.guest_block').last().html().toString().replace(/{%d%}/gim, guest_count) );
+				var block_content = _block.find('.guest_block').last().html().toString();
+				//alert(block_content);
+				_block.find('.guest_block').last().html( block_content.replace(/{%d%}/gim, guest_count) );
 				$(this).hide();
 				_block.find(".price").text("$"+_block.find(".regular-price").data("price")*( guest_count+1 ));
 				_block.find('[name$="[qty]"]').val(guest_count+1);
@@ -242,7 +244,7 @@
 				
 				var _block = $(this).closest(".guest_blocks");
 				
-				_block.remove();
+				$(this).closest(".guest_block").remove();
 				
 				$.each(_block.find('.guest_block:not(#template)'), function(i,v){
 					var adj_i =i+1;
