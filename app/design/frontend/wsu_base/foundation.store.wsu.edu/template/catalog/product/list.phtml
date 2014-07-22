@@ -128,12 +128,12 @@
 								  <i class="fa fa-circle fa-stack-2x"></i>
 								  <i class="fa fa-times fa-stack-1x fa-inverse"></i>
 								</span></a>
-									<span class="blockHeader">Guest %d</span><br/>
+									<span class="blockHeader">Guest <i class="count">{%d%}</i></span><br/>
 									<label>Name</label>
-									<span>First:</span><input type="text" name="guest[%d][firstName]"/> <span>Last:</span><input type="text"  name="guest[%d][lastName]"/>
+									<span>First:</span><input type="text" name="guest[{%d%}][firstName]"/> <span>Last:</span><input type="text"  name="guest[{%d%}][lastName]"/>
 									<br/>
 									<label>Meal Choice:</label>
-									<select name="guest[%d][meal]">
+									<select name="guest[{%d%}][meal]">
 										<option>Beef</option>
 										<option>Fish</option>
 										<option>Vegetarian</option>
@@ -214,9 +214,10 @@
 			$('.add_guest').off().on('click',function(e){
 				e.preventDefault();
 				e.stopPropagation();
-				var block = $("#template").clone().appendTo(".guest_blocks").removeAttr("id");
+				$("#template").clone().appendTo(".guest_blocks").removeAttr("id");
 				var guest_count = $('.guest_block:not(#template)').length;
-				$(block).html( $(block).html().replace("%d", $('.guest_block:not(#template)').length) );
+
+				$('.guest_block').last().html( $('.guest_block').last().html().toString().replace(/{%d%}/gim, guest_count) );
 				$(this).hide();
 				$(".price").text("$"+$(".regular-price").data("price")*( guest_count+1 ));
 				$('[name$="[qty]"]').val(guest_count+1);
@@ -237,17 +238,21 @@
 				
 				$(this).closest('.guest_block').remove();
 				
-				
+				$.each($('.guest_block:not(#template)'), function(i,v){
+					var adj_i =i+1;
+					$(this).find(".count").text( adj_i );
+					$(this).html( $(this).html().toString().replace(/guest\[\d+?\]/gmi, "guest["+adj_i+"]") );
+				});
 				var guest_count = $('.guest_block:not(#template)').length;
 				$(".price").text("$"+$(".regular-price").data("price")*( guest_count+1));
 				$('[name$="[qty]"]').val(guest_count+1);
 				if(guest_count<=0){
 					$('.add_guest').show();
 				}
+				int_addGuest();
+				int_removeGuest();
 			});
-			
-			
-			}
+		}
 
 
 
