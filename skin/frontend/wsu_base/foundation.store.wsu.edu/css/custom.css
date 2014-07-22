@@ -1,5 +1,5 @@
 /* CSS Document */
-
+.products-list{ list-style:none;}
 .products-list li.item {
   border: 1px solid rgba(91,91,91,0.63);
   border-radius: 9px;
