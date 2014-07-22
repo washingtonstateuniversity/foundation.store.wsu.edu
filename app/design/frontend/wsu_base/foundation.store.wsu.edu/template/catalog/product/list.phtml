@@ -212,20 +212,24 @@
 		
 		function int_addGuest(){
 			$('.add_guest').off().on('click',function(e){
+				
 				e.preventDefault();
 				e.stopPropagation();
-				$("#template").clone().appendTo(".guest_blocks").removeAttr("id");
-				var guest_count = $('.guest_block:not(#template)').length;
+				
+				var _block = $(this).closest(".guest_blocks");
+				
+				_block.find("#template").clone().appendTo(_block).removeAttr("id");
+				var guest_count = _block.find('.guest_block:not(#template)').length;
 
-				$('.guest_block').last().html( $('.guest_block').last().html().toString().replace(/{%d%}/gim, guest_count) );
+				_block.find('.guest_block').last().html( _block.find('.guest_block').last().html().toString().replace(/{%d%}/gim, guest_count) );
 				$(this).hide();
-				$(".price").text("$"+$(".regular-price").data("price")*( guest_count+1 ));
-				$('[name$="[qty]"]').val(guest_count+1);
-				var limit = $(".guest_blocks").data('limit');
+				_block.find(".price").text("$"+_block.find(".regular-price").data("price")*( guest_count+1 ));
+				_block.find('[name$="[qty]"]').val(guest_count+1);
+				var limit = _block.data('limit');
 				if(limit=="unlimited" || limit<guest_count){
 					int_addGuest();
 				}else{
-					$('.add_guest').hide();
+					_block.find('.add_guest').hide();
 				}
 				int_removeGuest();
 			});
@@ -236,18 +240,20 @@
 				e.preventDefault();
 				e.stopPropagation();
 				
-				$(this).closest('.guest_block').remove();
+				var _block = $(this).closest(".guest_blocks");
 				
-				$.each($('.guest_block:not(#template)'), function(i,v){
+				_block.remove();
+				
+				$.each(_block.find('.guest_block:not(#template)'), function(i,v){
 					var adj_i =i+1;
 					$(this).find(".count").text( adj_i );
 					$(this).html( $(this).html().toString().replace(/guest\[\d+?\]/gmi, "guest["+adj_i+"]") );
 				});
-				var guest_count = $('.guest_block:not(#template)').length;
-				$(".price").text("$"+$(".regular-price").data("price")*( guest_count+1));
-				$('[name$="[qty]"]').val(guest_count+1);
+				var guest_count = _block.find('.guest_block:not(#template)').length;
+				_block.find(".price").text("$"+_block.find(".regular-price").data("price")*( guest_count+1));
+				_block.find('[name$="[qty]"]').val(guest_count+1);
 				if(guest_count<=0){
-					$('.add_guest').show();
+					_block.find('.add_guest').show();
 				}
 				int_addGuest();
 				int_removeGuest();
