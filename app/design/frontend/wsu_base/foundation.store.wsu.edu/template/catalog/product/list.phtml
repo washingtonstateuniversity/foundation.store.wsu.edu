@@ -108,6 +108,17 @@
 						 
 						$product = Mage::getModel("catalog/product")->load($productId);
 						 
+						$AllowGuest = $product->getAllowGuest();
+						if($AllowGuest>0){
+							$GuestQty = $product->getGuestCost();
+							$GuestLimit = $product->getGuestLimit();
+							if(!is_int($GuestLimit)){
+								
+								
+							}
+						}
+						 
+						 
 						$attVal = $product->getOptions();
 						 
 						$optStr = "";
