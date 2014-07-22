@@ -114,8 +114,40 @@
 							$GuestLimit = $product->getGuestLimit();
 							if(!is_int($GuestLimit)){
 								
-								
 							}
+							?>
+							
+							<ul class="guest_block">
+								<li>
+									<span class="blockHeader">Guest %d</span>
+									<label>Name</label>
+									<span>First:</span><input type="text" name="guest[%d][firstName]"/> <span>Last:</span><input type="text"  name="guest[%d][lastName]"/>
+									<br/>
+									<label>Meal Choice:</label>
+									<select name="guest[%d][meal]">
+										<option>Beef</option>
+										<option>Fish</option>
+										<option>Vegetarian</option>
+									</select>
+									
+									
+									
+									
+								
+								</li>
+							
+							
+							</ul>
+							
+							
+							<?php
+							
+							
+							
+							
+							
+							
+							
 						}
 						 
 						 
