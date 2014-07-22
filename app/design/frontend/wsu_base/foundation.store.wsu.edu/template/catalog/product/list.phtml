@@ -108,18 +108,20 @@
 						 
 						$product = Mage::getModel("catalog/product")->load($productId);
 						 
-						$AllowGuest = $product->getAllowGuest();
+						$AllowGuest = $product->getAllowGuests();
+
 						if($AllowGuest>0){
 							$GuestQty = $product->getGuestCost();
 							$GuestLimit = $product->getGuestLimit();
-							if(!is_int($GuestLimit)){
-								
-							}
 							?>
-							
-							<ul class="guest_block">
-								<li>
-									<span class="blockHeader">Guest %d</span>
+							<a href="#" class="add_guest button"><i class="fa fa-plus"></i> Add Guest</a>
+							<ul class="guest_blocks" data-limit="<?=$GuestLimit?>">
+								<li id="template" class="guest_block">
+								<a href="#" class="remove_guest button"><span class="fa-stack fa-sm">
+								  <i class="fa fa-circle fa-stack-2x"></i>
+								  <i class="fa fa-minus fa-stack-1x fa-inverse"></i>
+								</span></a>
+									<span class="blockHeader">Guest %d</span><br/>
 									<label>Name</label>
 									<span>First:</span><input type="text" name="guest[%d][firstName]"/> <span>Last:</span><input type="text"  name="guest[%d][lastName]"/>
 									<br/>
@@ -129,11 +131,7 @@
 										<option>Fish</option>
 										<option>Vegetarian</option>
 									</select>
-									
-									
-									
-									
-								
+									<a href="#" class="add_guest button"><i class="fa fa-plus"></i> Add Guest </a>
 								</li>
 							
 							
@@ -141,13 +139,6 @@
 							
 							
 							<?php
-							
-							
-							
-							
-							
-							
-							
 						}
 						 
 						 
@@ -209,12 +200,21 @@
 (function($){
 	"use strict";
 	$(document).ready(function(){
-		$('.add_guest').on('click',function(e){
-			e.preventDefault();
-			e.stopPropagation();
-			$(this).closest('.guest_block').next('.guest_block').show();	
-			$(this).hide();
-		});
+		
+		$(".regular-price").data("price",$(".regular-price").text().replace('$',''));
+		
+		function int_addGuest(){
+			$('.add_guest').off().on('click',function(e){
+				e.preventDefault();
+				e.stopPropagation();
+				var block = $("#template").clone().appendTo(".guest_blocks").removeAttr("id");
+				var guest_count = $('.guest_block:not(#template)').length;
+				$(block).html( $(block).html().replace("%d", $('.guest_block:not(#template)').length) );
+				$(this).hide();
+				$(".price").text("$"+$(".regular-price").data("price")*( guest_count+1));
+				int_addGuest();
+			});
+		} int_addGuest();
 
 		$('.button.btn-cart').off().on('click',function(e){
 			e.preventDefault();
