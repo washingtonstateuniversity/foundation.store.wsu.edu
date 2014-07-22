@@ -209,7 +209,9 @@
 	"use strict";
 	$(document).ready(function(){
 		
-		$(".regular-price").data("price",$(".regular-price").text().replace('$',''));
+		$.each($(".regular-price"), function(){
+			$(this).data("price",$(this).text().replace('$',''));
+		});
 		
 		function int_addGuest(){
 			$('.add_guest').off().on('click',function(e){
@@ -217,9 +219,9 @@
 				e.preventDefault();
 				e.stopPropagation();
 				
-				var _block = $(this).closest(".guest_blocks");
+				var _block = $(this).closest(".item");
 				
-				_block.find("#template").clone().appendTo(_block).removeAttr("id");
+				_block.find("#template").clone().appendTo(_block.find('.guest_blocks')).removeAttr("id");
 				var guest_count = _block.find('.guest_block:not(#template)').length;
 				var block_content = _block.find('.guest_block').last().html().toString();
 				//alert(block_content);
@@ -227,7 +229,7 @@
 				$(this).hide();
 				_block.find(".price").text("$"+_block.find(".regular-price").data("price")*( guest_count+1 ));
 				_block.find('[name$="[qty]"]').val(guest_count+1);
-				var limit = _block.data('limit');
+				var limit = _block.find('.guest_blocks').data('limit');
 				if(limit=="unlimited" || limit<guest_count){
 					int_addGuest();
 				}else{
@@ -242,7 +244,7 @@
 				e.preventDefault();
 				e.stopPropagation();
 				
-				var _block = $(this).closest(".guest_blocks");
+				var _block = $(this).closest(".item");
 				
 				$(this).closest(".guest_block").remove();
 				
