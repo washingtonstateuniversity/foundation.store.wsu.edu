@@ -58,12 +58,13 @@
 	<?php foreach ($_productCollection as $_product): ?>
 			<?php 
 				$productType=$_product->getTypeID();
-				$product=Mage::getModel('catalog/product')->load($_product->getId());
+				$pID=$_product->getId();
+				$product=Mage::getModel('catalog/product')->load($pID);
 				$eventStart = $product->getEventstartdate();
 				$eventEnd = $product->getEventenddate();
 			?>
 	
-		<li class="mass_item item row margin-left <?php if( ++$_iterator == sizeof($_productCollection) ): ?> last<?php endif; ?>" data-product_id="<?=$_product->getId()?>">
+		<li class="mass_item item row margin-left <?php if( ++$_iterator == sizeof($_productCollection) ): ?> last<?php endif; ?>" data-product_id="<?=$pID?>">
 			<input type="checkbox" value="" name="goingToEvent"/>
 			<?php //Product Image ?>
 			<div class="product-image-wrapper column one">
@@ -91,6 +92,11 @@
 					</div>
 				</div>
 					
+					
+				<input type="hidden" value="1" name="product[<?=$pID?>][qty]">
+					
+					
+					
 				<div class="right-column">
 					<?php echo $this->getPriceHtml($_product, true) ?>
 					
@@ -112,14 +118,15 @@
 
 						if($AllowGuest>0){
 							$GuestQty = $product->getGuestCost();
-							$GuestLimit = $product->getGuestLimit();
+							//$GuestLimit = $product->getGuestLimit();
+							$GuestLimit = $product->getAttributeText("guest_limit");
 							?>
 							<a href="#" class="add_guest button"><i class="fa fa-plus"></i> Add Guest</a>
 							<ul class="guest_blocks" data-limit="<?=$GuestLimit?>">
 								<li id="template" class="guest_block">
 								<a href="#" class="remove_guest button"><span class="fa-stack fa-sm">
 								  <i class="fa fa-circle fa-stack-2x"></i>
-								  <i class="fa fa-minus fa-stack-1x fa-inverse"></i>
+								  <i class="fa fa-times fa-stack-1x fa-inverse"></i>
 								</span></a>
 									<span class="blockHeader">Guest %d</span><br/>
 									<label>Name</label>
@@ -211,10 +218,38 @@
 				var guest_count = $('.guest_block:not(#template)').length;
 				$(block).html( $(block).html().replace("%d", $('.guest_block:not(#template)').length) );
 				$(this).hide();
-				$(".price").text("$"+$(".regular-price").data("price")*( guest_count+1));
-				int_addGuest();
+				$(".price").text("$"+$(".regular-price").data("price")*( guest_count+1 ));
+				$('[name$="[qty]"]').val(guest_count+1);
+				var limit = $(".guest_blocks").data('limit');
+				if(limit=="unlimited" || limit<guest_count){
+					int_addGuest();
+				}else{
+					$('.add_guest').hide();
+				}
+				int_removeGuest();
 			});
 		} int_addGuest();
+
+		function int_removeGuest(){
+			$('.remove_guest').off().on('click',function(e){
+				e.preventDefault();
+				e.stopPropagation();
+				
+				$(this).closest('.guest_block').remove();
+				
+				
+				var guest_count = $('.guest_block:not(#template)').length;
+				$(".price").text("$"+$(".regular-price").data("price")*( guest_count+1));
+				$('[name$="[qty]"]').val(guest_count+1);
+				if(guest_count<=0){
+					$('.add_guest').show();
+				}
+			});
+			
+			
+			}
+
+
 
 		$('.button.btn-cart').off().on('click',function(e){
 			e.preventDefault();
