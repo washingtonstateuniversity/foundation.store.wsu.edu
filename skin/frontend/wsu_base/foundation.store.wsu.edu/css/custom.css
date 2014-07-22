@@ -1,5 +1,6 @@
 /* CSS Document */
-.products-list{ list-style:none;}
+.products-list,
+.products-list li{ list-style:none;}
 .products-list li.item {
   border: 1px solid rgba(91,91,91,0.63);
   border-radius: 9px;
@@ -7,6 +8,7 @@
   padding:15px 11px;
   margin-bottom:15px;
   position:relative;
+  margin-left:0px;
 }
 .products-list li.item.last {
   border: 1px solid rgba(91,91,91,0.63);
