@@ -108,4 +108,25 @@ x.guest_block:first-child{border-top:none;}
   z-index: 11;
 }
 
+/* for the moment REMEBER to remove */
+.opc-wrapper-opc .button span {
+	background:transparent none;
+  border-radius: 3px;
+  height: 45px;
+  line-height: 15px !important;
+  padding: 0 !important;
+  width: 100%;
+}
+.opc-wrapper-opc .button span span {
+	background:transparent none;
+  color: #494949;
+  font-size: 18px;
+  font-weight: bold;
+  text-shadow: 0 1px 1px #02484f;
+  text-transform: uppercase;
+}
+
+
+
+
 
