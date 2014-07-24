@@ -98,8 +98,14 @@
 				</h2>
 				<div class="row halves">
 					<div class="column">
-						Starting : <?=$eventStart?><br/>
-						Ending : <?=$eventEnd?><br/> 
+						<?php if($eventStart!==$eventEnd):?>
+							Starting at <?=date('l jS \of F Y h:i:s A',strtotime($eventStart));?>
+							<br/>
+							Till <?=date('l jS \of F Y h:i:s A',strtotime($eventEnd));?>
+							<br/> 
+						<?php else: ?>
+							on <?=date('l jS \of F Y',strtotime($eventStart));?> at <?=date('h:i:s A',strtotime($eventStart));?>
+						<?php endif; ?>
 					</div>
 					<div class="column padded-left narrow cart_action_area">
 					
