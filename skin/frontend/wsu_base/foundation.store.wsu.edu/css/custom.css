@@ -30,7 +30,7 @@
   font-size: 1.5em;
   font-weight: bold;
 }
-
+[name="goingToEvent"]{ visibility:hidden;}
 
 /* buttons and links */
 .remove_guest {float:right;}
