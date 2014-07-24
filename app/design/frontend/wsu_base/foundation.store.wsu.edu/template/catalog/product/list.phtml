@@ -59,7 +59,8 @@
 			<?php 
 				$productType=$_product->getTypeID();
 				$pID=$_product->getId();
-				$product=Mage::getModel('catalog/product')->load($pID);
+				$product = Mage::getModel('catalog/product');
+				$product = Mage::getModel("catalog/product")->load($pID);
 				$eventStart = $product->getEventstartdate();
 				$eventEnd = $product->getEventenddate();
 			?>
@@ -114,12 +115,7 @@
 					
 					
 					<?php		
-						$productSku = $_product->getSku();
-						$product = Mage::getModel('catalog/product');
-						$productId = $product->getIdBySku( $productSku );
-						 
-						$product = Mage::getModel("catalog/product")->load($productId);
-						 
+						
 						$AllowGuest = $product->getAllowGuests();
 
 						if($AllowGuest>0){
