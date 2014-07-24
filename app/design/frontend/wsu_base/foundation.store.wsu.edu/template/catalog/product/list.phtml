@@ -77,12 +77,9 @@
 					<div class="access_form">Enter Access Code<br/>
 						<input type="text" class="full" data-valid="<?=$AccessCode?>"/>
 					</div>
-				
 				</div>
 			<?php endif; ?>
-		
-		
-		
+
 		
 		
 			<input type="checkbox" value="" name="goingToEvent"/>
@@ -337,6 +334,31 @@
 			});
 		};
 
+
+		$.fn.int_access_validation = function() {
+			var _block =$(this);
+			if( _block.is($('.passed')) ){
+				return true;	
+			}else{
+				_block.addClass('active');
+				$('.access_form input').on('keyup',function(){
+					if($(this).val() === $(this).data('valid')){
+						_block.removeClass('active');
+						_block.addClass('passed');
+						_block.closest('.mass_item').find('.button.btn-cart').trigger('click');
+					}
+				});
+				return false;
+			}
+		};
+
+		
+		
+		
+
+		
+
+
 		$('.button.btn-cart').off().on('click',function(e){
 			e.preventDefault();
 			e.stopPropagation();
@@ -348,11 +370,13 @@
 				but.html('<span><span>Attend</span></span>');
 				but.closest('.mass_item').removeClass('active_item');
 			}else{
-				tar.attr('checked',true);
-				but.html('<span><span>Don\'t Attend</span></span>');
-				but.closest('.mass_item').addClass('active_item');
-				but.closest('.mass_item').int_guest_display();
-				int_addGuest();
+				if( but.closest('.mass_item').find('.validation_overlay').length<=0 || but.closest('.mass_item').find('.validation_overlay').int_access_validation()){
+					tar.attr('checked',true);
+					but.html('<span><span>Don\'t Attend</span></span>');
+					but.closest('.mass_item').addClass('active_item');
+					but.closest('.mass_item').int_guest_display();
+					int_addGuest();
+				}
 			}
 		});
 
