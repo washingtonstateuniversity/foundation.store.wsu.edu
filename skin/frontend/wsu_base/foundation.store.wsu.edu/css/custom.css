@@ -26,7 +26,10 @@
 .guest_block label {
   display: block;
 }
-
+.blockHeader {
+  font-size: 1.5em;
+  font-weight: bold;
+}
 
 
 /* buttons and links */
