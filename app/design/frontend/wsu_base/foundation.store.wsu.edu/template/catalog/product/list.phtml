@@ -439,14 +439,14 @@
 				porducts[pid]=pdata;
 			});
 			$.extend(data,{"items":porducts});
-			popup_message("Processing");
-			$.post('/cartajax/cartajax/add/',data,function(data){
-					if(data.checkout!=""){
-						window.location = data.checkout;
+			popup_message("<h4><i class='fa fa-spinner fa-spin'></i> Processing</h4>",true);
+			$.post('/cartajax/cartajax/add/',data,function(response){
+					if(response.checkout!=""){
+						window.location = '/checkout/cart/';
 					}else{
 						$( "#mess" ).dialog( "destroy" );
 						$( "#mess" ).remove();
-						popup_message("Issue with order"+data.message);
+						popup_message("Issue with order"+response.message,false);
 					}
 			});
 		});
