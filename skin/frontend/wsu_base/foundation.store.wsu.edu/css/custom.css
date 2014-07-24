@@ -50,6 +50,12 @@
   font-size: 1.5em;
   font-weight: bold;
 }
+.mass_item.active_item{
+	background-color:#e3dfcd !important;
+	border-color:#ada400 !important
+}
+
+.product-image-wrapper img{ margin-top: 20px;}
 
 
 

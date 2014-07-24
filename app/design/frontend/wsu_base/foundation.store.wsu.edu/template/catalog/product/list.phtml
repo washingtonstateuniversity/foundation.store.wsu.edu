@@ -26,8 +26,8 @@
 	$helpImg = $this->helper('wsu_wsu/image');
 	
 	//Default image size
-	$imgWidth = 295;
-	$imgHeight = 295;
+	$imgWidth = 340;
+	$imgHeight = 0;
 	
 	//Aspect ratio settings
 	if ($theme->getCfg('category/aspect_ratio')) {
@@ -72,9 +72,7 @@
 				<?php 
 					$imgLable = $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true); 
 				?>
-				<a href="<?=$_product->getProductUrl()?>" title="<?=$imgLable?>" class="product-image" style="max-width:<?=$imgWidth;?>px;">
-					<img src="<?=$helpImg->getImg($_product, $imgWidth, $imgHeight, 'small_image');?>" alt="<?=$imgLable?>" width="100%"/>
-				</a>
+				<img src="<?=$helpImg->getImg($_product, $imgWidth, $imgHeight, 'small_image');?>" alt="<?=$imgLable?>" width="100%"/>
 			</div> <!-- end: product-image-wrapper -->
 			
 			<div class="product-data column two padded-left narrow">
@@ -320,10 +318,12 @@
 			if( tar.is($(":checked")) ){
 				tar.attr('checked',false);
 				but.html('<span><span>Attend</span></span>');
+				but.closest('.mass_item').removeClass('active_item');
 				but.closest('.mass_item').destroy_guest_display();
 			}else{
 				tar.attr('checked',true);
 				but.html('<span><span>Don\'t Attend</span></span>');
+				but.closest('.mass_item').addClass('active_item');
 				but.closest('.mass_item').int_guest_display();
 			}
 		});
