@@ -63,6 +63,7 @@
 				$product = Mage::getModel("catalog/product")->load($pID);
 				$eventStart = $product->getEventstartdate();
 				$eventEnd = $product->getEventenddate();
+				$FoodOptions = $product->getFoodOptions();
 			?>
 	
 		<li class="mass_item item row margin-left <?php if( ++$_iterator == sizeof($_productCollection) ): ?> last<?php endif; ?>" data-product_id="<?=$pID?>">
@@ -110,9 +111,17 @@
 				<div class="row halves attendence_block">
 					<div class="column">
 						<h4>Event Options:</h4>
-						<span>Dietary Requests:</span><br>
-						<input type="text"  name="guest[{%d%}][dietary]" class="full"/>
-						<br/>
+						<?php if($FoodOptions>0): ?>
+							<span>Meal Choice:</span><br/>
+							<select name="guest[{%d%}][meal]">
+								<option>Beef</option>
+								<option>Fish</option>
+								<option>Vegetarian</option>
+							</select>
+							<span>Dietary Requests:</span><br>
+							<input type="text"  name="guest[{%d%}][dietary]" class="full"/>
+							<br/>
+						<?php endif; ?>
 						<span>Mobility Requests:</span><br>
 						<input type="text"  name="guest[{%d%}][mobility]" class="full"/>
 						<br/>
@@ -121,6 +130,7 @@
 					<?php		
 						
 						$AllowGuest = $product->getAllowGuests();
+						
 
 						if($AllowGuest>0){
 							$GuestQty = $product->getGuestCost();
@@ -144,6 +154,7 @@
 											<span>Last Name:</span><input type="text"  name="guest[{%d%}][lastName]" class="full"/>
 										</div>
 									</div>
+									<?php if($FoodOptions>0): ?>
 									<div class="row side-left padded-bottom short">
 										<div class="column">
 											<span>Meal Choice:</span><br/>
@@ -157,6 +168,7 @@
 											<span>Dietary Requests:</span><input type="text"  name="guest[{%d%}][dietary]" class="full"/>
 										</div>
 									</div>
+									<?php endif; ?>
 									
 									<a href="#" class="add_guest  spine-button"><i class="fa fa-plus"></i> Add Guest </a>
 								</li>
@@ -250,7 +262,7 @@
 				}
 				int_removeGuest();
 			});
-		} int_addGuest();
+		}
 
 		function int_removeGuest(){
 			$('.remove_guest').off().on('click',function(e){
@@ -269,21 +281,20 @@
 				var guest_count = _block.find('.guest_block:not(#template)').length;
 				_block.find(".price").text("$"+_block.find(".regular-price").data("price")*( guest_count+1));
 				_block.find('[name$="[qty]"]').val(guest_count+1);
-				if(guest_count<=0){
+				/*if(guest_count<=0){
 					_block.find('.add_guest').show();
 				}else{
 					_block.find('.add_guest').last().show();
-				}
+				}*/_block.find('.add_guest').last().show();
 				int_addGuest();
 				int_removeGuest();
 			});
 		}
 
-
-
 		$.fn.int_guest_display = function() {
 			$.each($(this),function(){
 				$(this).find('.guest_blocks').show();
+				
 				if($('.guest_block').is($(':visible')) && !($(this).has( $('.guest_block').is($(':visible'))) )  ){
 					$(this).find('.copy_guest').addClass('can_copy');
 					$('.can_copy').on('click',function(){
@@ -294,8 +305,17 @@
 		};
 		$.fn.destroy_guest_display = function() {
 			$.each($(this),function(){
-				$(this).find('.guest_blocks').hide();
-				$(this).find('.copy_guest').removeClass('can_copy');
+				var _block =$(this);
+				
+				var guest_count = 0;
+				
+				_block.find(".guest_block:not(#template)").remove();
+				_block.find(".price").text("$"+_block.find(".regular-price").data("price")*( guest_count+1));
+				_block.find('[name$="[qty]"]').val(guest_count+1);
+				
+				_block.find('.guest_blocks').hide();
+				_block.find('.add_guest').show();
+				_block.find('.copy_guest').removeClass('can_copy');
 			});
 		};
 
@@ -305,15 +325,16 @@
 			var but = $(this);
 			var tar = but.closest('.mass_item').find('[name="goingToEvent"]');
 			if( tar.is($(":checked")) ){
+				but.closest('.mass_item').destroy_guest_display();
 				tar.attr('checked',false);
 				but.html('<span><span>Attend</span></span>');
 				but.closest('.mass_item').removeClass('active_item');
-				but.closest('.mass_item').destroy_guest_display();
 			}else{
 				tar.attr('checked',true);
 				but.html('<span><span>Don\'t Attend</span></span>');
 				but.closest('.mass_item').addClass('active_item');
 				but.closest('.mass_item').int_guest_display();
+				int_addGuest();
 			}
 		});
 
