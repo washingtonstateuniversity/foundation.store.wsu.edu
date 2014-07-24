@@ -5,6 +5,10 @@
  * @see Mage_Catalog_Block_Product_List
  */
 ?>
+
+
+
+<form action="#" id="mass_products">
 <?php
 	$_productCollection=$this->getLoadedProductCollection();
 	$_collectionSize = $_productCollection->count();
@@ -72,6 +76,7 @@
 			?>
 	
 		<li class="mass_item item row margin-left <?php if( ++$_iterator == sizeof($_productCollection) ): ?> last<?php endif; ?>" data-product_id="<?=$pID?>">
+			<input type="hidden" value="<?=$pID?>" name="products[]"/>
 			<?php if($HasAccessValidation): ?>
 				<div class="validation_overlay">
 					<div class="access_form">Enter Access Code<br/>
@@ -131,20 +136,20 @@
 			</div>
 				<div class="row halves attendence_block">
 					<div class="column">
-						<h4>Event Options:</h4>
+						<h4>Your Event Options:</h4>
 						<?php if($FoodOptions>0): ?>
 							<span>Meal Choice:</span><br/>
-							<select name="guest[{%d%}][meal]">
+							<select name="product[<?=$pID?>][options][meal]">
 								<option>Beef</option>
 								<option>Fish</option>
 								<option>Vegetarian</option>
-							</select>
-							<span>Dietary Requests:</span><br>
-							<input type="text"  name="guest[{%d%}][dietary]" class="full"/>
+							</select><br/>
+							<span>Dietary Requests:</span><br/>
+							<input type="text"  name="product[<?=$pID?>][options][dietary]" class="full"/>
 							<br/>
 						<?php endif; ?>
 						<span>Mobility Requests:</span><br>
-						<input type="text"  name="guest[{%d%}][mobility]" class="full"/>
+						<input type="text"  name="product[<?=$pID?>][options][mobility]" class="full"/>
 						<br/>
 					</div>
 					<div class="column padded-left narrow">
@@ -169,24 +174,24 @@
 									<span class="blockHeader">Guest <i class="count">{%d%}</i></span><br/>
 									<div class="row halves padded-bottom short">
 										<div class="column">
-											<span>First Name:</span><input type="text" name="guest[{%d%}][firstName]" class="full"/>
+											<span>First Name:</span><input type="text" name="product[<?=$pID?>][options][guest][{%d%}][firstName]" class="full"/>
 										</div>
 										<div class="column padded-left narrow">
-											<span>Last Name:</span><input type="text"  name="guest[{%d%}][lastName]" class="full"/>
+											<span>Last Name:</span><input type="text"  name="product[<?=$pID?>][options][guest][{%d%}][lastName]" class="full"/>
 										</div>
 									</div>
 									<?php if($FoodOptions>0): ?>
 									<div class="row side-left padded-bottom short">
 										<div class="column">
 											<span>Meal Choice:</span><br/>
-											<select name="guest[{%d%}][meal]">
+											<select name="product[<?=$pID?>][options][guest][{%d%}][meal]">
 												<option>Beef</option>
 												<option>Fish</option>
 												<option>Vegetarian</option>
 											</select>
 										</div>
 										<div class="column padded-left narrow">
-											<span>Dietary Requests:</span><input type="text"  name="guest[{%d%}][dietary]" class="full"/>
+											<span>Dietary Requests:</span><input type="text"  name="product[<?=$pID?>][options][guest][{%d%}][dietary]" class="full"/>
 										</div>
 									</div>
 									<?php endif; ?>
@@ -247,7 +252,7 @@
 	<a href="#" id="check_out_products" class="spine-button">Check out</a>
 </div>
 <?php endif; ?>
-
+</form>
 
 
 <script type="text/javascript">
@@ -338,7 +343,7 @@
 				$.each(_block.find('.guest_block:not(#template)'), function(i,v){
 					var adj_i =i+1;
 					$(this).find(".count").text( adj_i );
-					$(this).html( $(this).html().toString().replace(/guest\[\d+?\]/gmi, "guest["+adj_i+"]") );
+					$(this).html( $(this).html().toString().replace(/\[guest\]\[\d+?\]/gmi, "guest["+adj_i+"]") );
 				});
 				var guest_count = _block.find('.guest_block:not(#template)').length;
 				_block.find(".price").text( formatter.format( _block.find(".regular-price").data("price")*( guest_count+1) ) );
@@ -423,20 +428,10 @@
 		$('#check_out_products').on('click',function(e){
 			e.preventDefault();
 			e.stopPropagation();
-			var data = {"cartAjaxUsed":1};
-			var porducts = {};
-			$.each($('.mass_item'),function(){
-				var self = $(this);
-				var pid = self.data('product_id');
-				var pdata = {};
-				$.each(self.find('input,select,textarea'),function(){
-					pdata[$(this).attr('name')]=$(this).val();
-				});
-				porducts[pid]=pdata;
-			});
-			$.extend(data,{"items":porducts});
+			var formData = $("#mass_products").serialize();
 			popup_message("<h4><i class='fa fa-spinner fa-spin'></i> Processing</h4>",true);
-			$.post('/cartajax/cartajax/add/',data,function(response){
+			$.post('/cartajax/cartajax/add/?cartAjaxUsed=1',formData,function(response){
+					console.log( response );
 					if(response.checkout!=""){
 						window.location = '/onepage/';
 					}else{
