@@ -23,7 +23,9 @@
 /* Guest blocks */
 .guest_blocks{display:none;}
 .guest_block{border-top:0.1em solid #e2e2e2;padding: 1em 0;}
-
+.guest_block label {
+  display: block;
+}
 
 
 
