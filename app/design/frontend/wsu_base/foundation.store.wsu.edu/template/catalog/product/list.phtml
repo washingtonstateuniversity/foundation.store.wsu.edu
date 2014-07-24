@@ -238,7 +238,7 @@
 		</li>
 	<?php endforeach; ?>
 	</ul>
-	<a href="#" id="check_out_products">Check out</a>
+	<a href="#" id="check_out_products" class="spine-button">Check out</a>
 </div>
 <?php endif; ?>
 
@@ -247,6 +247,13 @@
 <script type="text/javascript">
 (function($){
 	"use strict";
+	
+	var formatter = new Intl.NumberFormat('en-US', {
+	  style: 'currency',
+	  currency: 'USD',
+	  minimumFractionDigits: 2,
+	});
+	
 	$(document).ready(function(){
 		
 		$.each($(".regular-price"), function(){
@@ -267,7 +274,7 @@
 				//alert(block_content);
 				_block.find('.guest_block').last().html( block_content.replace(/{%d%}/gim, guest_count) );
 				$(this).hide();
-				_block.find(".price").text("$"+_block.find(".regular-price").data("price")*( guest_count+1 ));
+				_block.find(".price").text(  formatter.format( _block.find(".regular-price").data("price")*( guest_count+1) ) );
 				_block.find('[name$="[qty]"]').val(guest_count+1);
 				var limit = _block.find('.guest_blocks').data('limit');
 				if(limit=="unlimited" || limit<guest_count){
@@ -294,7 +301,7 @@
 					$(this).html( $(this).html().toString().replace(/guest\[\d+?\]/gmi, "guest["+adj_i+"]") );
 				});
 				var guest_count = _block.find('.guest_block:not(#template)').length;
-				_block.find(".price").text("$"+_block.find(".regular-price").data("price")*( guest_count+1));
+				_block.find(".price").text( formatter.format( _block.find(".regular-price").data("price")*( guest_count+1) ) );
 				_block.find('[name$="[qty]"]').val(guest_count+1);
 				/*if(guest_count<=0){
 					_block.find('.add_guest').show();
@@ -325,7 +332,7 @@
 				var guest_count = 0;
 				
 				_block.find(".guest_block:not(#template)").remove();
-				_block.find(".price").text("$"+_block.find(".regular-price").data("price")*( guest_count+1));
+				_block.find(".price").text(  formatter.format( _block.find(".regular-price").data("price")*( guest_count+1) ) );
 				_block.find('[name$="[qty]"]').val(guest_count+1);
 				
 				_block.find('.guest_blocks').hide();
@@ -341,7 +348,8 @@
 				return true;	
 			}else{
 				_block.addClass('active');
-				$('.access_form input').on('keyup',function(){
+				_block.find('.access_form input').focus();
+				_block.find('.access_form input').on('keyup',function(){
 					if($(this).val() === $(this).data('valid')){
 						_block.removeClass('active');
 						_block.addClass('passed');
