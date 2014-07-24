@@ -432,7 +432,7 @@
 			popup_message("<h4><i class='fa fa-spinner fa-spin'></i> Processing</h4>",true);
 			$.post('/cartajax/cartajax/add/',data,function(response){
 					if(response.checkout!=""){
-						window.location = '/checkout/cart/';
+						window.location = '/onepage/';
 					}else{
 						$( "#mess" ).dialog( "destroy" );
 						$( "#mess" ).remove();
