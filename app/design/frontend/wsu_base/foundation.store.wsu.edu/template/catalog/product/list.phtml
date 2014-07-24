@@ -64,6 +64,8 @@
 				$eventStart = $product->getEventstartdate();
 				$eventEnd = $product->getEventenddate();
 				$FoodOptions = $product->getFoodOptions();
+				$HasAccessValidation = $product->getHasAccessValidation();
+				
 			?>
 	
 		<li class="mass_item item row margin-left <?php if( ++$_iterator == sizeof($_productCollection) ): ?> last<?php endif; ?>" data-product_id="<?=$pID?>">
