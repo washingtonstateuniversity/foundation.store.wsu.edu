@@ -255,7 +255,41 @@
 	});
 	
 	$(document).ready(function(){
-		
+		function popup_message(html_message,clean){
+			if(typeof(clean)==="undefined"){
+				clean=false;
+			}
+			if($("#mess").length<=0){
+				$('body').append('<div id="mess">');
+			}
+			$("#mess").html( (typeof html_message === 'string' || html_message instanceof String) ? html_message : html_message.html() );
+			$( "#mess" ).dialog({
+				autoOpen: true,
+				resizable: false,
+				width: 350,
+				minHeight: 25,
+				modal: true,
+				draggable : false,
+				create:function(){
+					if(clean){
+						$('.ui-dialog-titlebar').remove();
+						$(".ui-dialog-buttonpane").remove();
+					}
+					$('body').css({overflow:"hidden"});
+				},
+				buttons:{
+					Ok:function(){
+						$( this ).dialog( "close" );
+					}
+				},
+				close: function() {
+					$('body').css({overflow:"auto"});
+					$( "#mess" ).dialog( "destroy" );
+					$( "#mess" ).remove();
+				}
+			});
+		}
+				
 		$.each($(".regular-price"), function(){
 			$(this).data("price",$(this).text().replace('$',''));
 		});
@@ -405,9 +439,14 @@
 				porducts[pid]=pdata;
 			});
 			$.extend(data,{"items":porducts});
+			popup_message("Processing");
 			$.post('/cartajax/cartajax/add/',data,function(data){
 					if(data.checkout!=""){
 						window.location = data.checkout;
+					}else{
+						$( "#mess" ).dialog( "destroy" );
+						$( "#mess" ).remove();
+						popup_message("Issue with order"+data.message);
 					}
 			});
 		});
