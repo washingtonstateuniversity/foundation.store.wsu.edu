@@ -86,7 +86,7 @@
 						<div class="desc std">
 							Starting : <?=$eventStart?><br/>
 							Ending : <?=$eventEnd?><br/> 
-							<?=$_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
+							<?=$product->getDescription()?>
 							<a href="<?php echo $_product->getProductUrl() ?>" title="<?=$_productNameStripped ?>" class="link-learn"><?=$this->__('Learn More') ?></a>
 						</div>
 					</div>
