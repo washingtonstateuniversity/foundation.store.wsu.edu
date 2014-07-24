@@ -123,9 +123,9 @@
 							?>
 							
 							<ul class="guest_blocks" data-limit="<?=$GuestLimit?>">
-								<li><a href="#" class="add_guest button"><i class="fa fa-plus"></i> Add Guest</a></li>
+								<li><a href="#" class="add_guest  spine-button"><i class="fa fa-plus"></i> Add Guest</a></li>
 								<li id="template" class="guest_block">
-								<a href="#" class="remove_guest button"><span class="fa-stack fa-sm">
+								<a href="#" class="remove_guest spine-button"><span class="fa-stack fa-sm">
 								  <i class="fa fa-circle fa-stack-2x"></i>
 								  <i class="fa fa-times fa-stack-1x fa-inverse"></i>
 								</span></a>
@@ -138,8 +138,8 @@
 										<option>Beef</option>
 										<option>Fish</option>
 										<option>Vegetarian</option>
-									</select>
-									<a href="#" class="add_guest button"><i class="fa fa-plus"></i> Add Guest </a>
+									</select><br/>
+									<a href="#" class="add_guest  spine-button"><i class="fa fa-plus"></i> Add Guest </a>
 								</li>
 							
 							
@@ -258,6 +258,8 @@
 				_block.find('[name$="[qty]"]').val(guest_count+1);
 				if(guest_count<=0){
 					_block.find('.add_guest').show();
+				}else{
+					_block.find('.add_guest').last().show();
 				}
 				int_addGuest();
 				int_removeGuest();
