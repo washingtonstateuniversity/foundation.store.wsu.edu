@@ -37,12 +37,14 @@
   font-size: 1.5em;
   font-weight: bold;
 }
+
+.column.cart_action_area {
+  text-align: right !important;
+}
 [name="goingToEvent"] {
   display: none !important;
   visibility: hidden;
 }
-
-
 .regular-price .price {
   color: #396f00;
   font-size: 1.5em;
@@ -52,7 +54,10 @@
 
 
 /* buttons and links */
-.remove_guest {float:right;}
+.remove_guest {
+  float: right;
+  font-size: 0.55em;
+}
 .copy_guest {display:none !important;}
 .copy_guest.can_copy {
 	display:inline-block !important;

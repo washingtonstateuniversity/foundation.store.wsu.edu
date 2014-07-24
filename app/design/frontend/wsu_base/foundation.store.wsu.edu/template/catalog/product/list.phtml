@@ -86,7 +86,7 @@
 						Starting : <?=$eventStart?><br/>
 						Ending : <?=$eventEnd?><br/> 
 					</div>
-					<div class="column padded-left narrow">
+					<div class="column padded-left narrow cart_action_area">
 					
 						<?php echo $this->getPriceHtml($_product, true) ?>
 						
@@ -100,18 +100,10 @@
 				</div>
 			
 				<?php //Product description ?>
-				<div class="product-shop">
-					<div class="product-shop-inner">
-						
-						
-						<div class="desc std">
-
-							<?=$product->getDescription()?>
-							<a href="<?php echo $_product->getProductUrl() ?>" title="<?=$_productNameStripped ?>" class="link-learn"><?=$this->__('Learn More') ?></a>
-						</div>
-					</div>
-				</div>
-					
+				<div class="desc std">
+					<?=$product->getDescription()?>
+					<!--<a href="<?php echo $_product->getProductUrl() ?>" title="<?=$_productNameStripped ?>" class="link-learn"><?=$this->__('Learn More') ?></a>-->
+				</div>					
 					
 				<input type="hidden" value="1" name="product[<?=$pID?>][qty]">
 					
