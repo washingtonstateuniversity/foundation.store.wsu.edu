@@ -109,7 +109,8 @@ x.guest_block:first-child{border-top:none;}
 }
 
 /* for the moment REMEBER to remove */
-.opc-wrapper-opc .button span {
+.opc-wrapper-opc .buttons-set .button span,
+.opc-wrapper-opc .discount-block .buttons-set .button span {
 	background:transparent none;
   border-radius: 3px;
   height: 45px;
@@ -117,16 +118,18 @@ x.guest_block:first-child{border-top:none;}
   padding: 0 !important;
   width: 100%;
 }
-.opc-wrapper-opc .button span span {
+.opc-wrapper-opc .buttons-set .button span span,
+.opc-wrapper-opc .discount-block .buttons-set .button span span {
 	background:transparent none;
-  color: #494949;
+  color: #494949 !important;
   font-size: 18px;
   font-weight: bold;
   text-shadow: 0 1px 1px #02484f;
   text-transform: uppercase;
 }
 
-
+.shipping-method-block{ display:none !important;}
+* .opc-wrapper-opc .payment-block { margin-top:0px !important;}
 
 
 
