@@ -28,9 +28,11 @@
 
 /* buttons and links */
 .remove_guest {float:right;}
+.copy_guest {display:none;}
 .copy_guest.can_copy {
-  font-size: 0.75em;
-  padding: 0.1em 0.5em !important;
+	display:inline-block;
+	font-size: 0.75em;
+	padding: 0.1em 0.5em !important;
 }
 
 
