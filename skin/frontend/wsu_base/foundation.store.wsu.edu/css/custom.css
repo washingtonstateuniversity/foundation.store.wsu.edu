@@ -19,3 +19,17 @@
 .products-list .product-shop{ margin:0px;}
 
 #template{display:none;}
+
+/* Guest blocks */
+.guest_block{border-top:0.1em solid #e2e2e2;padding: 1em 0;}
+
+
+
+
+/* buttons and links */
+.remove_guest {float:right;}
+
+
+
+
+
