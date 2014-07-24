@@ -144,15 +144,39 @@
 								  <i class="fa fa-times fa-stack-1x fa-inverse"></i>
 								</span></a>
 									<span class="blockHeader">Guest <i class="count">{%d%}</i></span><br/>
+									
+									
+									
+									
+									
+									
 									<label>Name</label>
-									<span>First:</span><input type="text" name="guest[{%d%}][firstName]"/> <span>Last:</span><input type="text"  name="guest[{%d%}][lastName]"/>
-									<br/>
-									<label>Meal Choice:</label>
+									
+									<div class="row halves">
+										<div class="column">
+											<span>First:</span><input type="text" name="guest[{%d%}][firstName]"/>
+										</div>
+										<div class="column padded-left narrow">
+											<span>Last:</span><input type="text"  name="guest[{%d%}][lastName]"/>
+										</div>
+									</div>
+
+									
+									<div class="row thirds padded-top">
+										<div class="column">
+											<label>Meal Choice:
 									<select name="guest[{%d%}][meal]">
 										<option>Beef</option>
 										<option>Fish</option>
 										<option>Vegetarian</option>
-									</select><br/>
+									</select></label>
+										</div>
+										<div class="column padded-left narrow">
+											
+										</div>
+										<div class="column padded-left narrow"></div>
+									</div>
+									
 									<a href="#" class="add_guest  spine-button"><i class="fa fa-plus"></i> Add Guest </a>
 								</li>
 							
