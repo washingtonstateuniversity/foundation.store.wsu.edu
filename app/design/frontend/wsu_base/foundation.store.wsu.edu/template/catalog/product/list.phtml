@@ -77,15 +77,35 @@
 			</div> <!-- end: product-image-wrapper -->
 			
 			<div class="product-data column two padded-left narrow">
+				<?php $_productNameStripped = $this->stripTags($_product->getName(), null, true); ?>
+				<h2 class="product-name">
+					<a href="<?=$_product->getProductUrl()?>" title="<?=$_productNameStripped?>"><?=$_helper->productAttribute($_product, $_product->getName() , 'name')?></a>
+				</h2>
+				<div class="row halves">
+					<div class="column">
+						Starting : <?=$eventStart?><br/>
+						Ending : <?=$eventEnd?><br/> 
+					</div>
+					<div class="column padded-left narrow">
+					
+						<?php echo $this->getPriceHtml($_product, true) ?>
+						
+						<?php if($_product->isSaleable()): ?>
+							<p><button type="button" title="<?=$this->__('Attend') ?>" class="button btn-cart"><span><span><?=$this->__('Attend') ?></span></span></button></p>
+						<?php else: ?>
+							<p class="availability out-of-stock"><span><?=$this->__('Sorry, event is filled.') ?></span></p>
+						<?php endif; ?>
+					
+					</div>
+				</div>
+			
 				<?php //Product description ?>
 				<div class="product-shop">
 					<div class="product-shop-inner">
-						<?php $_productNameStripped = $this->stripTags($_product->getName(), null, true); ?>
-						<h2 class="product-name"><a href="<?=$_product->getProductUrl()?>" title="<?=$_productNameStripped?>"><?=$_helper->productAttribute($_product, $_product->getName() , 'name')?></a></h2>
+						
 						
 						<div class="desc std">
-							Starting : <?=$eventStart?><br/>
-							Ending : <?=$eventEnd?><br/> 
+
 							<?=$product->getDescription()?>
 							<a href="<?php echo $_product->getProductUrl() ?>" title="<?=$_productNameStripped ?>" class="link-learn"><?=$this->__('Learn More') ?></a>
 						</div>
@@ -98,13 +118,7 @@
 					
 					
 				<div class="right-column">
-					<?php echo $this->getPriceHtml($_product, true) ?>
-					
-					<?php if($_product->isSaleable()): ?>
-						<p><button type="button" title="<?=$this->__('Attend') ?>" class="button btn-cart"><span><span><?=$this->__('Attend') ?></span></span></button></p>
-					<?php else: ?>
-						<p class="availability out-of-stock"><span><?=$this->__('Sorry, event is filled.') ?></span></p>
-					<?php endif; ?>
+
 					
 					
 					<?php		

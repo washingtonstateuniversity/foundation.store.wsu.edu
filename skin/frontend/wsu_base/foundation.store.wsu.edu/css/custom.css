@@ -26,6 +26,13 @@
 .guest_block label {
   display: block;
 }
+
+.products-list h2.product-name {
+  font-size: 1.75em;
+  font-weight: bold;
+}
+.products-list h2.product-name a{ text-decoration:none; cursor:default;}
+
 .blockHeader {
   font-size: 1.5em;
   font-weight: bold;
@@ -34,6 +41,15 @@
   display: none !important;
   visibility: hidden;
 }
+
+
+.regular-price .price {
+  color: #396f00;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+
 
 /* buttons and links */
 .remove_guest {float:right;}
