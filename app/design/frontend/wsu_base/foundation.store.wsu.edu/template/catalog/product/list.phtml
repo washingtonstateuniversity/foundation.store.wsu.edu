@@ -78,7 +78,7 @@
 			<div class="product-data column two padded-left narrow">
 				<?php $_productNameStripped = $this->stripTags($_product->getName(), null, true); ?>
 				<h2 class="product-name">
-					<a href="<?=$_product->getProductUrl()?>" title="<?=$_productNameStripped?>"><?=$_helper->productAttribute($_product, $_product->getName() , 'name')?></a>
+					<?=$_helper->productAttribute($_product, $_product->getName() , 'name')?>
 				</h2>
 				<div class="row halves">
 					<div class="column">
@@ -105,13 +105,19 @@
 				</div>					
 					
 				<input type="hidden" value="1" name="product[<?=$pID?>][qty]">
-					
-					
-					
-				<div class="right-column">
-
-					
-					
+				
+			</div>
+				<div class="row halves attendence_block">
+					<div class="column">
+						<h4>Event Options:</h4>
+						<span>Dietary Requests:</span><br>
+						<input type="text"  name="guest[{%d%}][dietary]" class="full"/>
+						<br/>
+						<span>Mobility Requests:</span><br>
+						<input type="text"  name="guest[{%d%}][mobility]" class="full"/>
+						<br/>
+					</div>
+					<div class="column padded-left narrow">
 					<?php		
 						
 						$AllowGuest = $product->getAllowGuests();
@@ -130,37 +136,26 @@
 								  <i class="fa fa-times fa-stack-1x fa-inverse"></i>
 								</span></a>
 									<span class="blockHeader">Guest <i class="count">{%d%}</i></span><br/>
-									
-									
-									
-									
-									
-									
-									<label>Name</label>
-									
-									<div class="row halves padded-bottom">
+									<div class="row halves padded-bottom short">
 										<div class="column">
-											<span>First:</span><input type="text" name="guest[{%d%}][firstName]"/>
+											<span>First Name:</span><input type="text" name="guest[{%d%}][firstName]" class="full"/>
 										</div>
 										<div class="column padded-left narrow">
-											<span>Last:</span><input type="text"  name="guest[{%d%}][lastName]"/>
+											<span>Last Name:</span><input type="text"  name="guest[{%d%}][lastName]" class="full"/>
 										</div>
 									</div>
-
-									
-									<div class="row thirds padded-bottom">
+									<div class="row side-left padded-bottom short">
 										<div class="column">
-											<label>Meal Choice:
-									<select name="guest[{%d%}][meal]">
-										<option>Beef</option>
-										<option>Fish</option>
-										<option>Vegetarian</option>
-									</select></label>
+											<span>Meal Choice:</span><br/>
+											<select name="guest[{%d%}][meal]">
+												<option>Beef</option>
+												<option>Fish</option>
+												<option>Vegetarian</option>
+											</select>
 										</div>
 										<div class="column padded-left narrow">
-											
+											<span>Dietary Requests:</span><input type="text"  name="guest[{%d%}][dietary]" class="full"/>
 										</div>
-										<div class="column padded-left narrow"></div>
 									</div>
 									
 									<a href="#" class="add_guest  spine-button"><i class="fa fa-plus"></i> Add Guest </a>
@@ -211,14 +206,8 @@
 						 
 						echo($optStr );
 					?>
-					
-					
-					
-
-					
-					
+					</div>
 				</div>
-			</div>
 		</li>
 	<?php endforeach; ?>
 	</ul>
