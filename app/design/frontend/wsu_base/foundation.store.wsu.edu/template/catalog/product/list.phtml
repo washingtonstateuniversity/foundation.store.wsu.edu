@@ -65,10 +65,26 @@
 				$eventEnd = $product->getEventenddate();
 				$FoodOptions = $product->getFoodOptions();
 				$HasAccessValidation = $product->getHasAccessValidation();
+				$AccessCode = $product->getAccessCode();
+				
+				
 				
 			?>
 	
 		<li class="mass_item item row margin-left <?php if( ++$_iterator == sizeof($_productCollection) ): ?> last<?php endif; ?>" data-product_id="<?=$pID?>">
+			<?php if($HasAccessValidation): ?>
+				<div class="validation_overlay">
+					<div class="access_form">Enter Access Code<br/>
+						<input type="text" class="full" data-valid="<?=$AccessCode?>"/>
+					</div>
+				
+				</div>
+			<?php endif; ?>
+		
+		
+		
+		
+		
 			<input type="checkbox" value="" name="goingToEvent"/>
 			<?php //Product Image ?>
 			<div class="product-image-wrapper column one">
