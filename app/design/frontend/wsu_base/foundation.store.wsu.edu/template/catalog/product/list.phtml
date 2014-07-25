@@ -77,6 +77,8 @@
 	
 		<li class="mass_item item row margin-left <?php if( ++$_iterator == sizeof($_productCollection) ): ?> last<?php endif; ?>" data-product_id="<?=$pID?>">
 			<input type="hidden" value="<?=$pID?>" name="products[]"/>
+			<input type="checkbox" name="goingToEvent"/>
+			
 			<?php if($HasAccessValidation): ?>
 				<div class="validation_overlay">
 					<div class="access_form">Enter Access Code<br/>
@@ -87,7 +89,7 @@
 
 		
 		
-			<input type="checkbox" value="" name="goingToEvent"/>
+			
 			<?php //Product Image ?>
 			<div class="product-image-wrapper column one">
 				<?php 
@@ -166,11 +168,11 @@
 							
 							<ul class="guest_blocks" data-limit="<?=$GuestLimit?>">
 								<li><a href="#" class="add_guest  spine-button"><i class="fa fa-plus"></i> Add Guest</a><a href="#" class="copy_guest  spine-button"><i class="fa fa-clipboard" title="Copy guests from another event."></i></a></li>
-								<li id="template" class="guest_block">
-								<a href="#" class="remove_guest spine-button"><span class="fa-stack fa-sm">
-								  <i class="fa fa-circle fa-stack-2x"></i>
-								  <i class="fa fa-times fa-stack-1x fa-inverse"></i>
-								</span></a>
+								<li class="guest_block template">
+									<a href="#" class="remove_guest spine-button"><span class="fa-stack fa-sm">
+									  <i class="fa fa-circle fa-stack-2x"></i>
+									  <i class="fa fa-times fa-stack-1x fa-inverse"></i>
+									</span></a>
 									<span class="blockHeader">Guest <i class="count">{%d%}</i></span><br/>
 									<div class="row halves padded-bottom short">
 										<div class="column">
@@ -206,7 +208,9 @@
 							<?php
 						}
 						 
-						 
+					?>
+						 <!--
+					<?php
 						$attVal = $product->getOptions();
 						 
 						$optStr = "";
@@ -243,7 +247,8 @@
 						}
 						 
 						echo($optStr );
-					?>
+						
+					?>-->
 					</div>
 				</div>
 		</li>
@@ -313,8 +318,8 @@
 				
 				var _block = $(this).closest(".item");
 				
-				_block.find("#template").clone().appendTo(_block.find('.guest_blocks')).removeAttr("id");
-				var guest_count = _block.find('.guest_block:not(#template)').length;
+				_block.find(".template").clone().appendTo(_block.find('.guest_blocks')).removeClass("template");
+				var guest_count = _block.find('.guest_block:not(.template)').length;
 				var block_content = _block.find('.guest_block').last().html().toString();
 				//alert(block_content);
 				_block.find('.guest_block').last().html( block_content.replace(/{%d%}/gim, guest_count) );
@@ -340,12 +345,12 @@
 				
 				$(this).closest(".guest_block").remove();
 				
-				$.each(_block.find('.guest_block:not(#template)'), function(i,v){
+				$.each(_block.find('.guest_block:not(.template)'), function(i,v){
 					var adj_i =i+1;
 					$(this).find(".count").text( adj_i );
 					$(this).html( $(this).html().toString().replace(/\[guest\]\[\d+?\]/gmi, "guest["+adj_i+"]") );
 				});
-				var guest_count = _block.find('.guest_block:not(#template)').length;
+				var guest_count = _block.find('.guest_block:not(.template)').length;
 				_block.find(".price").text( formatter.format( _block.find(".regular-price").data("price")*( guest_count+1) ) );
 				_block.find('[name$="[qty]"]').val(guest_count+1);
 				/*if(guest_count<=0){
@@ -376,7 +381,7 @@
 				
 				var guest_count = 0;
 				
-				_block.find(".guest_block:not(#template)").remove();
+				_block.find(".guest_block:not(.template)").remove();
 				_block.find(".price").text(  formatter.format( _block.find(".regular-price").data("price")*( guest_count+1) ) );
 				_block.find('[name$="[qty]"]').val(guest_count+1);
 				
@@ -428,10 +433,46 @@
 		$('#check_out_products').on('click',function(e){
 			e.preventDefault();
 			e.stopPropagation();
-			var formData = $("#mass_products").serialize();
+			
+			 
+			
+			
+			var formData = $('#mass_products')
+							.find('.mass_item.item:has([name="goingToEvent"]:checked) :input:not(.template > :input)')
+							.serialize();
+							
 			popup_message("<h4><i class='fa fa-spinner fa-spin'></i> Processing</h4>",true);
-			$.post('/cartajax/cartajax/add/?cartAjaxUsed=1',formData,function(response){
-					console.log( response );
+			$.post('/cartajax/cartajax/add/?cartAjaxUsed=1',formData,function(data){
+					var data_res = jQuery.parseJSON(data);
+					console.log( data_res );
+					if(data_res.status=="ERROR" || data_res.checkout==""){
+						$( "#mess" ).dialog( "destroy" );
+						$( "#mess" ).remove();
+						popup_message("Issue with order"+data_res.message,false);
+					}else{
+						window.location = '/onepage/';
+					}
+			});
+		});
+		
+		/*
+		$('#check_out_products').on('click',function(e){
+			e.preventDefault();
+			e.stopPropagation();
+			var data = {"cartAjaxUsed":1};
+			var porducts = {};
+			$.each($('.mass_item'),function(){
+				var self = $(this);
+				var pid = self.data('product_id');
+				var pdata = {};
+				$.each(self.find('input,select,textarea'),function(){
+					pdata[$(this).attr('name')]=$(this).val();
+				});
+				porducts[pid]=pdata;
+			});
+			$.extend(data,{"items":porducts});
+			popup_message("<h4><i class='fa fa-spinner fa-spin'></i> Processing</h4>",true);
+			$.post('/cartajax/cartajax/add/',data,function(response){
 					if(response.checkout!=""){
 						window.location = '/onepage/';
 					}else{
@@ -441,6 +482,10 @@
 					}
 			});
 		});
+		*/
+		
+		
+		
 		
 	});
 })(jQuery);
