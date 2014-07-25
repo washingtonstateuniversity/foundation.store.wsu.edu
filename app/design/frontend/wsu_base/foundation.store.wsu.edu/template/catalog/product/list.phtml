@@ -70,7 +70,7 @@
 				$FoodOptions = $product->getFoodOptions();
 				$HasAccessValidation = $product->getHasAccessValidation();
 				$AccessCode = $product->getAccessCode();
-				
+				$Location = $product->getLocation();
 				
 				
 			?>
@@ -112,6 +112,10 @@
 							<br/> 
 						<?php else: ?>
 							on <?=date('l jS \of F Y',strtotime($eventStart));?> at <?=date('h:i:s A',strtotime($eventStart));?>
+							<br/>
+						<?php endif; ?>
+						<?php if($Location!=""):?>
+							Location: <?=$Location;?>
 						<?php endif; ?>
 					</div>
 					<div class="column padded-left narrow cart_action_area">
