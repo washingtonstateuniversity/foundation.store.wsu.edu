@@ -455,7 +455,7 @@
 					}else{
 						window.location = '/onepage/';
 					}
-			}).fail(function(){ 
+			}).fail(function(err){ 
 				if(e.status == 404){
 					// ...
 				} else{
@@ -463,7 +463,7 @@
 				} 
 				$( "#mess" ).dialog( "destroy" );
 				$( "#mess" ).remove();
-				popup_message("ERR:"+e.status+" | Please try again, and report any issues.",false);
+				popup_message("ERR:"+err.status+" | Please try again, and report any issues.",false);
 			});
 		});
 		
