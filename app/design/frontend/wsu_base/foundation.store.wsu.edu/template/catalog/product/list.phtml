@@ -404,6 +404,7 @@
 				_block.find('.access_form input').focus();
 				_block.find('.access_form input').on('keyup',function(){
 					if($(this).val() === $(this).data('valid')){
+						_block.find('.access_form input').blur();
 						_block.removeClass('active');
 						_block.addClass('passed');
 						_block.closest('.mass_item').find('.button.btn-cart').trigger('click');
