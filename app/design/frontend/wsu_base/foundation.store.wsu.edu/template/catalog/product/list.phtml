@@ -435,13 +435,11 @@
 			}
 		});
 
+
+//note this will be moved out to the eventticket ext as a dependent of cart ajax handler
 		$('#check_out_products').on('click',function(e){
 			e.preventDefault();
 			e.stopPropagation();
-			
-			 
-			
-			
 			var formData = $('#mass_products')
 							.find('.mass_item.item:has([name="goingToEvent"]:checked) :input:not(.template > :input)')
 							.serialize();
@@ -457,6 +455,15 @@
 					}else{
 						window.location = '/onepage/';
 					}
+			}).fail(function(){ 
+				if(e.status == 404){
+					// ...
+				} else{
+					// ...
+				} 
+				$( "#mess" ).dialog( "destroy" );
+				$( "#mess" ).remove();
+				popup_message("ERR:"+e.status+" | Please try again, and report any issues.",false);
 			});
 		});
 		
