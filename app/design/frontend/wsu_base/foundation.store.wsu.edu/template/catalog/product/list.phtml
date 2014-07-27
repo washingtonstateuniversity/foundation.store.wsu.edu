@@ -79,8 +79,8 @@
 				$eventStart_date = date('l jS \of F Y',strtotime($eventStart));
 				$eventEnd_date = date('l jS \of F Y',strtotime($eventEnd));
 
-				$eventStart_time = date('h:i:s A',strtotime($eventStart));
-				$eventEnd_time = date('h:i:s A',strtotime($eventEnd));			
+				$eventStart_time = date('h:i A',strtotime($eventStart));
+				$eventEnd_time = date('h:i A',strtotime($eventEnd));			
 				
 				$dateTimeStr="";
 
@@ -93,7 +93,7 @@
 					if($eventStart_time!=$eventEnd_time || $eventStart_time!="12:00 AM"){
 						$dateTimeStr .= " at ".$eventStart_time;
 					}
-					$dateTimeStr .= "on ".$eventStart_date;
+					$dateTimeStr .= " on ".$eventStart_date;
 					if($eventStart_time!=$eventEnd_time){
 						$dateTimeStr .= "<br/> Till ".$eventEnd_time;
 					}
