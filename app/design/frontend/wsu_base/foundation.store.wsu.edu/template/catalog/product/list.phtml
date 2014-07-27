@@ -73,14 +73,14 @@
 				
 				
 				//this would be a block with in the event ext
-				$eventStart = $product->getEventStartDateTime();
-				$eventEnd = $product->getEventEndDateTime();
+				$eventStart = strtotime($product->getEventStartDateTime());
+				$eventEnd = strtotime($product->getEventEndDateTime());
 
-				$eventStart_date = date('l jS \of F Y',strtotime($eventStart));
-				$eventEnd_date = date('l jS \of F Y',strtotime($eventEnd));
+				$eventStart_date = date('l jS \of F Y',$eventStart);
+				$eventEnd_date = date('l jS \of F Y',$eventEnd);
 
-				$eventStart_time = date('h:i A',strtotime($eventStart));
-				$eventEnd_time = date('h:i A',strtotime($eventEnd));			
+				$eventStart_time = date('h:i A',$eventStart);
+				$eventEnd_time = date('h:i A',$eventEnd);		
 				
 				$dateTimeStr="";
 
