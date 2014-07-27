@@ -83,7 +83,7 @@
 				$eventEnd_time = date('h:i A',$eventEnd);		
 				
 				$dateTimeStr="";
-
+				$current_time = date("Y-m-d H:i:s");
 				
 				if($eventStart_date==$eventEnd_date){
 				// Starting at 7:00 PM on Thursday 1st of January 1970 
@@ -146,7 +146,7 @@
 					<?=$_helper->productAttribute($_product, $_product->getName() , 'name')?>
 				</h2>
 				<div class="row halves">
-					<div class="column">
+					<div class="column" date-current_time="<?=$current_time?>">
 						<b>Time:</b> <i><?=$dateTimeStr;?></i><br/>
 						<?php if($Location!=""):?>
 							<b>Location:</b> <i><?=$Location;?></i>
