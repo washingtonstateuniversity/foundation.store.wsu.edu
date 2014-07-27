@@ -65,12 +65,54 @@
 				$pID=$_product->getId();
 				$product = Mage::getModel('catalog/product');
 				$product = Mage::getModel("catalog/product")->load($pID);
-				$eventStart = $product->getEventstartdate();
-				$eventEnd = $product->getEventenddate();
+
 				$FoodOptions = $product->getFoodOptions();
 				$HasAccessValidation = $product->getHasAccessValidation();
 				$AccessCode = $product->getAccessCode();
 				$Location = $product->getLocation();
+				
+				
+				//this would be a block with in the event ext
+				$eventStart = $product->getEventstartdatetime();
+				$eventEnd = $product->getEventenddatetime();
+
+				$eventStart_date = date('l jS \of F Y',strtotime($eventStart));
+				$eventEnd_date = date('l jS \of F Y',strtotime($eventEnd));
+
+				$eventStart_time = date('h:i:s A',strtotime($eventStart));
+				$eventEnd_time = date('h:i:s A',strtotime($eventEnd));			
+				
+				$dateTimeStr="";
+
+				
+				if($eventStart_date==$eventEnd_date){
+				// Starting at 7:00 PM on Thursday 1st of January 1970 
+				// Starting on Thursday 1st of January 1970 
+				// Starting at 7:00 PM on Thursday 1st of January 1970 <br/> Till  7:00 PM
+					$dateTimeStr .= "Starting";
+					if($eventStart_time!=$eventEnd_time || $eventStart_time!="12:00 AM"){
+						$dateTimeStr .= " at ".$eventStart_time;
+					}
+					$dateTimeStr .= "on ".$eventStart_date;
+					if($eventStart_time!=$eventEnd_time){
+						$dateTimeStr .= "<br/> Till ".$eventEnd_time;
+					}
+				}else{
+				// Starting at 7:00 PM on Thursday 1st of January 1970 
+				// Starting on Thursday 1st of January 1970 
+				// Starting at 7:00 PM on Thursday 1st of January 1970 <br/> Till  7:00 PM
+					$dateTimeStr .= "Starting on ".$eventStart_date;
+					if($eventStart_time!=$eventEnd_time){
+						$dateTimeStr .= " at ".$eventStart_time;
+					}
+					$dateTimeStr .= "<br/> Through ";
+					if($eventStart_time!=$eventEnd_time){
+						$dateTimeStr .= $eventEnd_time." on ";
+					}
+					$dateTimeStr .= $eventEnd_date;
+				}
+				
+				
 				
 				
 			?>
@@ -105,17 +147,9 @@
 				</h2>
 				<div class="row halves">
 					<div class="column">
-						<?php if($eventStart!==$eventEnd):?>
-							Starting at <?=date('l jS \of F Y h:i:s A',strtotime($eventStart));?>
-							<br/>
-							Till <?=date('l jS \of F Y h:i:s A',strtotime($eventEnd));?>
-							<br/> 
-						<?php else: ?>
-							on <?=date('l jS \of F Y',strtotime($eventStart));?> at <?=date('h:i:s A',strtotime($eventStart));?>
-							<br/>
-						<?php endif; ?>
+						<b>Time:</b> <i><?=$dateTimeStr;?></i><br/>
 						<?php if($Location!=""):?>
-							Location: <?=$Location;?>
+							<b>Location:</b> <i><?=$Location;?></i>
 						<?php endif; ?>
 					</div>
 					<div class="column padded-left narrow cart_action_area">
