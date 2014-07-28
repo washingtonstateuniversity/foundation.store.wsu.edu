@@ -341,5 +341,10 @@ $_options = $this->getOptionList();
         <?php endif; ?>
     </td>
     <?php endif; ?>
-    <td class="col-delete a-center"><a href="<?php echo $this->getDeleteUrl()?>" title="<?php echo $this->__('Remove item')?>" class="remove-cart-item"><i class='fa fa-trash-o'></i></a></td>
+    <td class="col-delete a-center">
+        <?php if ($isVisibleProduct): ?>
+        <a href="<?php echo $this->getConfigureUrl() ?>" title="<?php echo $this->__('Edit item parameters') ?>" class="edit-cart-item"><i class='fa fa-edit'></i></a>
+        <?php endif ?>
+    	<a href="<?php echo $this->getDeleteUrl()?>" title="<?php echo $this->__('Remove item')?>" class="remove-cart-item"><i class='fa fa-trash-o'></i></a>
+	</td>
 </tr>
