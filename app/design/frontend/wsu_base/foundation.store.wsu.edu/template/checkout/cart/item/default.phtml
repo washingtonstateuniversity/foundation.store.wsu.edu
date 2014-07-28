@@ -5,37 +5,71 @@
 ?>
 <?php
 $_item = $this->getItem();
-$isVisibleProduct = $_item->getProduct()->isVisibleInSiteVisibility();
-$canApplyMsrp = Mage::helper('catalog')->canApplyMsrp($_item->getProduct(), Mage_Catalog_Model_Product_Attribute_Source_Msrp_Type::TYPE_BEFORE_ORDER_CONFIRM);
+$product = $_item->getProduct();
+
+
+$isVisibleProduct = $product ->isVisibleInSiteVisibility();
+$canApplyMsrp = Mage::helper('catalog')->canApplyMsrp($product , Mage_Catalog_Model_Product_Attribute_Source_Msrp_Type::TYPE_BEFORE_ORDER_CONFIRM);
 ?>
 <tr>
-    <td class="col-img"><?php if ($this->hasProductUrl()):?><a href="<?php echo $this->getProductUrl() ?>" title="<?php echo $this->escapeHtml($this->getProductName()) ?>" class="product-image"><?php endif;?><img src="<?php echo $this->getProductThumbnail()->constrainOnly(true)->keepAspectRatio(true)->keepFrame(false)->resize(168); ?>" alt="<?php echo $this->escapeHtml($this->getProductName()) ?>" /><?php if ($this->hasProductUrl()):?></a><?php endif;?></td>
+    <td class="col-img"><?php if ($this->hasProductUrl()):?><a href="<?=$this->getProductUrl()?>" title="<?=$this->escapeHtml($this->getProductName())?>" class="product-image"><?php endif;?><img src="<?=$this->getProductThumbnail()->constrainOnly(true)->keepAspectRatio(true)->keepFrame(false)->resize(168); ?>" alt="<?=$this->escapeHtml($this->getProductName()) ?>" /><?php if ($this->hasProductUrl()):?></a><?php endif;?></td>
     <td>
         <h2 class="product-name">
         <?php if ($this->hasProductUrl()):?>
-            <a href="<?php echo $this->getProductUrl() ?>"><?php echo $this->escapeHtml($this->getProductName()) ?></a>
+            <a href="<?=$this->getProductUrl()?>"><?=$this->escapeHtml($this->getProductName())?></a>
         <?php else: ?>
-            <?php echo $this->escapeHtml($this->getProductName()) ?>
+            <?=$this->escapeHtml($this->getProductName())?>
         <?php endif; ?>
         </h2>
-        <?php if ($_options = $this->getOptionList()):?>
-        <dl class="item-options">
-            <?php foreach ($_options as $_option) : ?>
-            <?php $_formatedOptionValue = $this->getFormatedOptionValue($_option) ?>
-            <dt><?php echo $this->escapeHtml($_option['label']) ?></dt>
-            <dd<?php if (isset($_formatedOptionValue['full_view'])): ?> class="truncated"<?php endif; ?>><?php echo $_formatedOptionValue['value'] ?>
-                <?php if (isset($_formatedOptionValue['full_view'])): ?>
-                <div class="truncated_full_value">
+		<div class="row halves">
+            <div class="column">
+                <?php if ($_options = $this->getOptionList()):?>
+                	<h4>Your options</h4>
                     <dl class="item-options">
-                        <dt><?php echo $this->escapeHtml($_option['label']) ?></dt>
-                        <dd><?php echo $_formatedOptionValue['full_view'] ?></dd>
+                        <?php foreach ($_options as $_option) : ?>
+                        <?php $_formatedOptionValue = $this->getFormatedOptionValue($_option) ?>
+                        <?php if ( strpos($this->escapeHtml($_option['label']),'guest_')===false ): ?>
+                            <dt><?=$this->escapeHtml($_option['label']) ?></dt>
+                            <dd<?php if (isset($_formatedOptionValue['full_view'])): ?> class="truncated"<?php endif; ?>><?=$_formatedOptionValue['value'] ?>
+                                <?php if (isset($_formatedOptionValue['full_view'])): ?>
+                                <div class="truncated_full_value">
+                                    <dl class="item-options">
+                                        <dt><?=$this->escapeHtml($_option['label']) ?></dt>
+                                        <dd><?=$_formatedOptionValue['full_view'] ?></dd>
+                                    </dl>
+                                </div>
+                                <?php endif; ?>
+                            </dd>
+                        <?php endif; ?>
+                        <?php endforeach; ?>
                     </dl>
-                </div>
-                <?php endif; ?>
-            </dd>
-            <?php endforeach; ?>
-        </dl>
-        <?php endif;?>
+                <?php endif;?>
+            </div>
+            <div class="column padded-left narrow cart_action_area">
+                <?php if ($_options = $this->getOptionList()):?>
+                	<h4>Guest list</h4>
+                    <dl class="item-options">
+                        <?php foreach ($_options as $_option) : ?>
+                        <?php $_formatedOptionValue = $this->getFormatedOptionValue($_option) ?>
+                        <?php if ( strpos($this->escapeHtml($_option['label']),'guest_')!==false ): ?>
+                            <dt><?=$this->escapeHtml($_option['label']) ?></dt>
+                            <dd<?php if (isset($_formatedOptionValue['full_view'])): ?> class="truncated"<?php endif; ?>><?=$_formatedOptionValue['value'] ?>
+                                <?php if (isset($_formatedOptionValue['full_view'])): ?>
+                                <div class="truncated_full_value">
+                                    <dl class="item-options">
+                                        <dt><?=$this->escapeHtml($_option['label']) ?></dt>
+                                        <dd><?=$_formatedOptionValue['full_view'] ?></dd>
+                                    </dl>
+                                </div>
+                                <?php endif; ?>
+                            </dd>
+                        <?php endif; ?>
+                        <?php endforeach; ?>
+                    </dl>
+                <?php endif;?>
+            </div>
+        </div>
+        
         <?php if ($messages = $this->getMessages()): ?>
         <?php foreach ($messages as $message): ?>
             <p class="item-msg <?php echo $message['type'] ?>">* <?php echo $this->escapeHtml($message['text']) ?></p>
