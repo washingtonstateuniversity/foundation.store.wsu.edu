@@ -476,9 +476,15 @@
 				_block.find('.access_form input').on('keyup',function(){
 					if($(this).val() === $(this).data('valid')){
 						_block.find('.access_form input').blur();
-						_block.removeClass('active');
-						_block.addClass('passed');
+						$('.access_form').html('<h4>Adding to your cart.</h4>');
 						_block.closest('.mass_item').find('.button.btn-cart').trigger('click');
+						window.setTimeout(function(){
+							_block.fadeOut(250,function(){
+								_block.removeClass('active');
+								_block.addClass('passed');
+							});
+						}, 50);
+
 					}
 				});
 				return false;
