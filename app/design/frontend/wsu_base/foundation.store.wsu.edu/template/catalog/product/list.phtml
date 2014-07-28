@@ -331,7 +331,7 @@
 			var formatter = new window.Intl.NumberFormat(navigator.language,opts);
 			return formatter.format(n);
 		} else {
-			return parseFloat(n).toFixed(2);   
+			return "$"+parseFloat(n).toFixed(2);   
 		}
 	}
 
