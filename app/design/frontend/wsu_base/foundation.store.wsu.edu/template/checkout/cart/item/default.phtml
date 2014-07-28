@@ -36,11 +36,11 @@ $_options = $this->getOptionList();
                 <?=$this->escapeHtml($product_name)?>
             <?php endif; ?>
         </h2>
-		<div class="row halves">
+		<div class="row halves item-options">
             <div class="column">
                 <?php if (!empty($_options)):?>
                 	<h4><?=$this->__('Your options')?></h4>
-                    <dl class="item-options">
+                    <dl>
                         <?php foreach ($_options as $_option) : ?>
                         <?php $_formatedOptionValue = $this->getFormatedOptionValue($_option) ?>
                         <?php if ( strpos($this->escapeHtml($_option['label']),'guest_')===false ): ?>
@@ -63,7 +63,7 @@ $_options = $this->getOptionList();
             <div class="column padded-left narrow cart_action_area">
                 <?php if ($_options = $this->getOptionList()):?>
                 	<h4><?=$this->__('Guest list')?></h4>
-                    <dl class="item-options">
+                    <dl>
                         <?php foreach ($_options as $_option) : ?>
                         <?php $_formatedOptionValue = $this->getFormatedOptionValue($_option) ?>
                         <?php if ( strpos($this->escapeHtml($_option['label']),'guest_')!==false ): ?>
