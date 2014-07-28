@@ -97,7 +97,7 @@ $editUrl = $this->getConfigureUrl();
         <?php endif;?>
         
         <?php if ($isVisibleProduct): ?>
-        <a href="<?=$editUrl?>" title="<?=$this->__('Edit item parameters') ?>" class="edit_item"><?=$this->__('Edit') ?></a>
+        <a href="#" data-edit_item_url="<?=$editUrl?>" title="<?=$this->__('Edit item parameters') ?>" class="edit_item"><?=$this->__('Edit') ?></a>
         <?php endif ?>
         
     </td>
@@ -346,6 +346,6 @@ $editUrl = $this->getConfigureUrl();
         <?php if ($isVisibleProduct): ?>
         <a href="#" data-edit_item_url="<?=$editUrl?>" title="<?=$this->__('Edit item parameters') ?>" class="edit-cart-item"><i class='fa fa-edit'></i></a>
         <?php endif ?>
-    	<a href="<?=$this->getDeleteUrl()?>" title="<?=$this->__('Remove item')?>" class="remove-cart-item"><i class='fa fa-trash-o'></i></a>
+    	<a href="#" data-remove_item_url"<?=$this->getDeleteUrl()?>" title="<?=$this->__('Remove item')?>" class="remove-cart-item"><i class='fa fa-trash-o'></i></a>
 	</td>
 </tr>
