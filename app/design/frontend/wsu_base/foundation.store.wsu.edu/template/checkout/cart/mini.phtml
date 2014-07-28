@@ -1,0 +1,106 @@
+<?php
+/**
+ * Shoping cart sidebar
+ *
+ * @see Mage_Checkout_Block_Cart_Sidebar
+ */
+
+?>
+<?php if ($this->getIsNeedToDisplaySideBar()): ?>
+<?php
+	$theme = $this->helper('wsu_themecontrol');
+	$_cartQty = $this->getSummaryCount();
+   	if ($_cartQty > 0) {
+		$mainTitle = $this->__('View Cart');
+	} else {
+		$mainTitle = $this->__('You have no items in your shopping cart.');
+	}
+
+    //Icon color suffix
+    $iconSuffix = ($theme->getCfgDesign('header/icon_color') == 'b') ? '' : '-'.$theme->getCfgDesign('header/icon_color');
+
+	$cartClasses = '';
+	if (!$_cartQty) {
+		$cartClasses .= ' is-empty';
+		if ($theme->getCfg('header/hide_on_mobile')) {
+			$cartClasses .= ' hide-empty-cart';
+		}
+	} else {
+		$cartClasses .= ' is-not-empty';
+	}
+?>
+
+<div id="mini-cart" class="dropdown<?php echo $cartClasses; ?>">
+
+    <div class="dropdown-toggle cover" title="<?php echo $mainTitle; ?>">
+    <div class="feature-icon-hover">
+    
+    	<span class="first close-to-text icon i-cart<?php echo $iconSuffix; ?> force-no-bg-color">&nbsp;</span>
+        <div class="hide-below-960"><?php echo $this->__('Cart'); ?></div>
+		<?php if ($_cartQty > 0): ?>
+        	<div class="label amount">(<?php echo $_cartQty; ?>)</div>
+        	<a class="summary" href="<?php echo $this->getUrl('checkout/cart') ?>" title="<?php echo $this->__('View all items in your shopping cart') ?>">
+                <span class="subtotal">
+					<?php if ($this->canApplyMsrp()): ?>
+                    	<span class="map-cart-sidebar-total"><?php echo $this->__('ORDER TOTAL WILL BE DISPLAYED BEFORE YOU SUBMIT THE ORDER'); ?></span>
+                    <?php else: ?>
+						<?php echo Mage::helper('checkout')->formatPrice($this->getSubtotal()); ?>
+                    <?php endif; ?>
+				</span>
+			</a>
+        <?php else: //no products ?>
+        	<div class="empty"><?php echo Mage::helper('checkout')->formatPrice(0); ?></div>
+        <?php endif; ?>
+        <span class="caret">&nbsp;</span>
+
+	</div> <!-- end: dropdown-toggle > div -->
+    </div> <!-- end: dropdown-toggle -->
+    
+    <?php $_items = $this->getRecentItems(); ?>
+    <?php if (count($_items)): ?>
+    	<div class="dropdown-menu left-hand">
+        	<div class="">
+
+				<?php if ($_subtotalInclTax = $this->getSubtotalInclTax()): ?>
+                	<span class="incl-tax">(<?php echo Mage::helper('checkout')->formatPrice($_subtotalInclTax) ?> <?php echo Mage::helper('tax')->getIncExcText(true) ?>)</span>
+                <?php endif; ?>
+                
+				<?php if ($tmpHtml = $this->getChildHtml('block_mini_cart_above_products')): ?> <?php //Predefined CMS block ?>
+                    <div class="block_mini_cart_above_products"><?php echo $tmpHtml; ?></div>
+                <?php endif; ?>
+            
+                <h4 class="block-subtitle"><?php echo $this->__('Recently added item(s)') ?></h4>
+                <ol id="cart-sidebar" class="mini-products-list clearer">
+                <?php foreach($_items as $_item): ?>
+                    <?php echo $this->getItemHtml($_item) ?>
+                <?php endforeach; ?>
+                </ol>
+                <script type="text/javascript">decorateList('cart-sidebar', 'none-recursive')</script>
+                
+                <div class="actions clearer">
+                    <button type="button" title="<?php echo $this->__('View all items in your shopping cart') ?>" class="button btn-inline" onclick="setLocation('<?php echo $this->getUrl('checkout/cart') ?>')"><span><span><?php echo $this->__('View All') ?></span></span></button>
+                    
+                    <?php if($_cartQty && $this->isPossibleOnepageCheckout()): ?>
+                    	<button type="button" title="<?php echo $this->__('Proceed to Checkout') ?>" class="button btn-checkout btn-inline " onclick="setLocation('<?php echo $this->getCheckoutUrl(); ?>')"><span><span><?php echo $this->__('Proceed to Checkout') ?></span></span></button>
+						<?php echo $this->getChildHtml('extra_actions') ?>
+                    <?php endif; ?>
+                </div>
+
+			</div> <!-- end: block-content-inner -->
+        </div> <!-- end: dropdown-menu -->
+    <?php else: ?>
+    	<div class="dropdown-menu left-hand block">
+        	<div class="block-content-inner">
+
+				<?php if ($tmpHtml = $this->getChildHtml('block_mini_cart_above_products')): ?>
+                    <div class="block_mini_cart_above_products"><?php echo $tmpHtml; ?></div>
+                <?php endif; ?>
+                <div class="empty"><?php echo $this->__('You have no items in your shopping cart.') ?></div>
+
+            </div> <!-- end: block-content-inner -->
+		</div> <!-- end: dropdown-menu -->
+    <?php endif ?>
+
+</div> <!-- end: mini-cart -->
+
+<?php endif;?>

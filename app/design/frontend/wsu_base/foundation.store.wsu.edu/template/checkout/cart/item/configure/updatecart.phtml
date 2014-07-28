@@ -1,0 +1,14 @@
+<?php $_product = $this->getProduct(); ?>
+<?php $buttonTitle = $this->__('Update Cart'); ?>
+<?php if ($_product->isSaleable()): ?>
+	<div class="add-to-cart v-centered-content">
+    	<button type="button" title="<?php echo $buttonTitle ?>" class="button btn-cart v-center" onclick="productAddToCartForm.submit(this)"><span><span><?php echo $buttonTitle ?></span></span></button>
+		<?php if(!$_product->isGrouped()): ?>
+			<div class="qty-wrapper v-center">
+				<label for="qty"><?php echo $this->__('Qty:') ?></label>
+				<input type="text" name="qty" id="qty" maxlength="12" value="<?php echo $this->getProductDefaultQty() * 1 ?>" title="<?php echo $this->__('Qty') ?>" class="input-text qty" />
+			</div>
+		<?php endif; ?>
+	</div>
+	<div class="paypal-wrapper"><?php echo $this->getChildHtml('', true, true) ?></div>
+<?php endif; ?>
