@@ -31,7 +31,9 @@
   font-size: 1.5em;
   font-weight: bold;
 }
-
+.blockHeader i{
+	font-style:normall
+}
 .column.cart_action_area {
   text-align: right !important;
 }
