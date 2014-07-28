@@ -10,6 +10,7 @@
 
 <form action="#" id="mass_products">
 <?php
+	date_default_timezone_set('America/Los_Angeles');//quick test of a date issue
 	$_productCollection=$this->getLoadedProductCollection();
 	$_collectionSize = $_productCollection->count();
 ?>
