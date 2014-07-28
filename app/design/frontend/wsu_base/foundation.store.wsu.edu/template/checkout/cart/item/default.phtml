@@ -10,21 +10,36 @@ $product = $_item->getProduct();
 
 $isVisibleProduct = $product ->isVisibleInSiteVisibility();
 $canApplyMsrp = Mage::helper('catalog')->canApplyMsrp($product , Mage_Catalog_Model_Product_Attribute_Source_Msrp_Type::TYPE_BEFORE_ORDER_CONFIRM);
+
+//note this should be done in the default base theme
+$product_img=$this->getProductThumbnail()->constrainOnly(true)->keepAspectRatio(true)->keepFrame(false)->resize(168);
+$product_name = $this->getProductName();
+$has_product_url = $this->hasProductUrl();
+$product_url = $this->getProductUrl();
+$_options = $this->getOptionList();
 ?>
 <tr>
-    <td class="col-img"><?php if ($this->hasProductUrl()):?><a href="<?=$this->getProductUrl()?>" title="<?=$this->escapeHtml($this->getProductName())?>" class="product-image"><?php endif;?><img src="<?=$this->getProductThumbnail()->constrainOnly(true)->keepAspectRatio(true)->keepFrame(false)->resize(168); ?>" alt="<?=$this->escapeHtml($this->getProductName()) ?>" /><?php if ($this->hasProductUrl()):?></a><?php endif;?></td>
+    <td class="col-img">
+		<?php if ($has_product_url):?>
+    		<a href="<?=$product_url?>" title="<?=$this->escapeHtml($product_name)?>" class="product-image">
+		<?php endif;?>
+			<img src="<?=$product_img?>" alt="<?=$this->escapeHtml($product_name) ?>" />
+		<?php if ($has_product_url):?>
+        	</a>
+		<?php endif;?>
+	</td>
     <td>
         <h2 class="product-name">
-        <?php if ($this->hasProductUrl()):?>
-            <a href="<?=$this->getProductUrl()?>"><?=$this->escapeHtml($this->getProductName())?></a>
-        <?php else: ?>
-            <?=$this->escapeHtml($this->getProductName())?>
-        <?php endif; ?>
+			<?php if ($has_product_url):?>
+                <a href="#" data-product_url="<?=$product_url?>"><?=$this->escapeHtml($product_name)?></a>
+            <?php else: ?>
+                <?=$this->escapeHtml($product_name)?>
+            <?php endif; ?>
         </h2>
 		<div class="row halves">
             <div class="column">
-                <?php if ($_options = $this->getOptionList()):?>
-                	<h4>Your options</h4>
+                <?php if (!empty($_options)):?>
+                	<h4><?=$this->__('Your options')?></h4>
                     <dl class="item-options">
                         <?php foreach ($_options as $_option) : ?>
                         <?php $_formatedOptionValue = $this->getFormatedOptionValue($_option) ?>
@@ -47,7 +62,7 @@ $canApplyMsrp = Mage::helper('catalog')->canApplyMsrp($product , Mage_Catalog_Mo
             </div>
             <div class="column padded-left narrow cart_action_area">
                 <?php if ($_options = $this->getOptionList()):?>
-                	<h4>Guest list</h4>
+                	<h4><?=$this->__('Guest list')?></h4>
                     <dl class="item-options">
                         <?php foreach ($_options as $_option) : ?>
                         <?php $_formatedOptionValue = $this->getFormatedOptionValue($_option) ?>
