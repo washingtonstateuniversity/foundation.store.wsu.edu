@@ -90,8 +90,8 @@
 				
 				
 				//this would be a block with in the event ext
-				$eventStart = strtotime($product->getEventStartDateTime());
-				$eventEnd = strtotime($product->getEventEndDateTime());
+				$eventStart = strtotime(Mage::getModel('core/date')->timestamp($product->getEventStartDateTime()));
+				$eventEnd = strtotime(Mage::getModel('core/date')->timestamp($product->getEventEndDateTime()));
 
 				$eventStart_date = date('l jS \of F Y',$eventStart);
 				$eventEnd_date = date('l jS \of F Y',$eventEnd);
