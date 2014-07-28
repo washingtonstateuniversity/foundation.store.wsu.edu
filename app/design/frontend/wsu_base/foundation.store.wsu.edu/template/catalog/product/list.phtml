@@ -16,7 +16,7 @@
 	
 	
 	if(!function_exists('tooltip_block')){ // will be moved to the SU ext
-		function tooltip_block (){
+		function tooltip_block ($message){
 			$html = '<span class="fa-stack fa-lg tooltip"  style="font-size:.75em;">
 			  <i class="fa fa-square fa-stack-2x"></i>
 			  <i class="fa fa-question fa-stack-1x fa-inverse" title="%s"></i>
