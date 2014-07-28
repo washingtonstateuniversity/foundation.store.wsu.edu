@@ -13,6 +13,22 @@
 	date_default_timezone_set('America/Los_Angeles');//quick test of a date issue
 	$_productCollection=$this->getLoadedProductCollection();
 	$_collectionSize = $_productCollection->count();
+	
+	
+	if(!function_exists('tooltip_block')){ // will be moved to the SU ext
+		function tooltip_block ($message){
+			$html = '<span class="fa-stack fa-lg">
+			  <i class="fa fa-square fa-stack-2x"></i>
+			  <i class="fa fa-question fa-stack-1x fa-inverse" title="%s">></i>
+			</span>';
+			$html=sprintf($html,$this->__($message));
+			return $html;
+		}
+		
+	}
+	
+	
+	
 ?>
 
 <?php if(!$_collectionSize): ?><?php
@@ -185,7 +201,7 @@
 								<option>Fish</option>
 								<option>Vegetarian</option>
 							</select><br/>
-							<span>Dietary Requests:</span><br/>
+							<span>Dietary Requests:</span><?=tooltip_block("Please note any food allergies or needs. (i.e. vegetarian, gluten-free, etc.)")?><br/>
 							<input type="text"  name="product[<?=$pID?>][options][dietary]" class="full"/>
 							<br/>
 						<?php endif; ?>
@@ -310,6 +326,7 @@
 	});
 	
 	$(document).ready(function(){
+		$( document ).tooltip();
 		function popup_message(html_message,clean){
 			if(typeof(clean)==="undefined"){
 				clean=false;
