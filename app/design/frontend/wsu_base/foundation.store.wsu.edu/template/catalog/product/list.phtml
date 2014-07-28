@@ -17,9 +17,9 @@
 	
 	if(!function_exists('tooltip_block')){ // will be moved to the SU ext
 		function tooltip_block (){
-			$html = '<span class="fa-stack fa-lg">
+			$html = '<span class="fa-stack fa-lg tooltip"  style="font-size:.75em;">
 			  <i class="fa fa-square fa-stack-2x"></i>
-			  <i class="fa fa-question fa-stack-1x fa-inverse" title="%s">></i>
+			  <i class="fa fa-question fa-stack-1x fa-inverse" title="%s"></i>
 			</span>';
 			$html=sprintf($html,$message);
 			return $html;
@@ -476,6 +476,7 @@
 				tar.attr('checked',false);
 				but.html('<span><span>Attend</span></span>');
 				but.closest('.mass_item').removeClass('active_item');
+				
 			}else{
 				if( but.closest('.mass_item').find('.validation_overlay').length<=0 || but.closest('.mass_item').find('.validation_overlay').int_access_validation()){
 					tar.attr('checked',true);
@@ -483,6 +484,7 @@
 					but.closest('.mass_item').addClass('active_item');
 					but.closest('.mass_item').int_guest_display();
 					int_addGuest();
+					$('.tooltip').tooltip();
 				}
 			}
 		});
