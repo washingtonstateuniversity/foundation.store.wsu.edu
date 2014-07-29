@@ -93,44 +93,36 @@
 				$eventStart = Mage::getModel('core/date')->timestamp($product->getEventStartDateTime());
 				$eventEnd = Mage::getModel('core/date')->timestamp($product->getEventEndDateTime());
 
-				$eventStart_date = date('l jS \of F Y',$eventStart);
-				$eventEnd_date = date('l jS \of F Y',$eventEnd);
 
-				$eventStart_time = date('h:i A',$eventStart);
-				$eventEnd_time = date('h:i A',$eventEnd);		
+				$relative_starttime = $product->getRelativeStarttime();
+				$relative_endtime = $product->getRelativeEndtime();
+
+
+
+				$eventStart_date = date('l, F jS, Y',$eventStart);
+				$eventEnd_date = date('l, F jS, Y',$eventEnd);
+
+				$eventStart_time = date('h:i a',$eventStart);
+				$eventEnd_time = date('h:i a',$eventEnd);		
 				
-				$dateTimeStr="";
+				$dateStr="";
+				$timeStr="";
 				$current_time = date("Y-m-d H:i:s");
 				
 				if($eventStart_date==$eventEnd_date){
-				// Starting at 7:00 PM on Thursday 1st of January 1970 
-				// Starting on Thursday 1st of January 1970 
-				// Starting at 7:00 PM on Thursday 1st of January 1970 <br/> Till  7:00 PM
-					$dateTimeStr .= "Starting";
-					if($eventStart_time!=$eventEnd_time || $eventStart_time!="12:00 AM"){
-						$dateTimeStr .= " at ".$eventStart_time;
-					}
-					$dateTimeStr .= " on ".$eventStart_date;
+					$dateStr="<b>Date:</b> <i>$eventStart_date</i><br/>";
+					
+					
+					$timeStr= ($relative_starttime!="") ? $relative_starttime : $eventStart_time;
 					if($eventStart_time!=$eventEnd_time){
-						$dateTimeStr .= "<br/> Till ".$eventEnd_time;
+						$timeStr .= " to ";
+						$timeStr .= ($relative_endtime!="") ? $relative_starttime : $eventEnd_time;
 					}
-				}else{
-				// Starting at 7:00 PM on Thursday 1st of January 1970 
-				// Starting on Thursday 1st of January 1970 
-				// Starting at 7:00 PM on Thursday 1st of January 1970 <br/> Till  7:00 PM
-					$dateTimeStr .= "Starting on ".$eventStart_date;
-					if($eventStart_time!=$eventEnd_time){
-						$dateTimeStr .= " at ".$eventStart_time;
-					}
-					$dateTimeStr .= "<br/> Through ";
-					if($eventStart_time!=$eventEnd_time){
-						$dateTimeStr .= $eventEnd_time." on ";
-					}
-					$dateTimeStr .= $eventEnd_date;
+					$timeStr= "<b>Time:</b> <i>$timeStr</i><br/>";
 				}
 				
 				
-				
+				$dateTimeHtml=$dateStr.$timeStr;
 				
 			?>
 	
@@ -164,7 +156,7 @@
 				</h2>
 				<div class="row halves">
 					<div class="column" date-current_time="<?=$current_time?>">
-						<b>Time:</b> <i><?=$dateTimeStr;?></i><br/>
+						<?=$dateTimeStr;?>
 						<?php if($Location!=""):?>
 							<b>Location:</b> <i><?=$Location;?></i>
 						<?php endif; ?>
