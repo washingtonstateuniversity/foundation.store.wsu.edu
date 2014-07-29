@@ -116,7 +116,7 @@
 					$timeStr= ($relative_starttime!="") ? $relative_starttime : $eventStart_time;
 					if($eventStart_time!=$eventEnd_time){
 						$timeStr .= " to ";
-						$timeStr .= ($relative_endtime!="") ? $relative_starttime : $eventEnd_time;
+						$timeStr .= ($relative_endtime!="") ? $relative_endtime : $eventEnd_time;
 					}
 					$timeStr= "<b>Time:</b> <i>$timeStr</i><br/>";
 				}
