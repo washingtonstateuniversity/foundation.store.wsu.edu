@@ -103,7 +103,7 @@ $editUrl = $this->getConfigureUrl();
             <div class="column padded-left narrow">
                  <?php if (!empty($finalResult)):?>
                 	<h4><?=$this->__('Guest list')?></h4>
-                    	<?php $i=0; ?>
+                    	<?php $i=1; ?>
                         <?php foreach ($finalResult as $_option) : ?>
                         <?php //$_formatedOptionValue = $this->getFormatedOptionValue($_option) ?>
                         <?php 
@@ -112,7 +112,7 @@ $editUrl = $this->getConfigureUrl();
 									&& strpos($label,'_{%d%}_')===false ): ?>
 							<?php
 								
-								if(strpos($label,'_'.$i.'_')!==false){
+								if(strpos($label,'guest_'.$i.'_')!==false){
 									if($i>0){
 										echo "</dl>";	
 									}
