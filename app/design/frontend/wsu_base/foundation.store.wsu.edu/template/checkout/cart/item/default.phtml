@@ -75,14 +75,29 @@ $editUrl = $this->getConfigureUrl();
 		<div class="row halves item-options">
             <div class="column">
                 <?php if (!empty($finalResult)):?>
+				
+				
+                	
+					<?php
+					$options=array();
+					foreach ($finalResult as $_option){
+						$label = trim($this->escapeHtml($_option['label']));
+						if (  $label!=="" && strpos($label,'guest_')===false ){
+							$options[]=$_option;			
+						}
+					}
+					
+					if(!empty($options)):
+					?>
+				
+				
+				
                 	<h4><?=$this->__('Your options')?></h4>
                     <dl>
-                        <?php foreach ($finalResult as $_option) : 
+                        <?php foreach ($options as $_option) : 
 						$label = trim($this->escapeHtml($_option['label']));
-						?>
-                        <?php //$_formatedOptionValue = $this->getFormatedOptionValue($_option) ?>
-						
-                        <?php if ( $label!=="" && strpos($label,'guest_')===false ): ?>
+						$value = trim($_option['value']);
+						if ( $value!=="" && $label!=="" && strpos($label,'guest_')===false ): ?>
                             <dt><?php
 								if(strpos($label,'firstName')!==false){
 									echo "First Name:";
@@ -100,18 +115,38 @@ $editUrl = $this->getConfigureUrl();
                         <?php endif; ?>
                         <?php endforeach; ?>
                     </dl>
+					<?php endif;?>
                 <?php endif;?>
             </div>
             <div class="column padded-left narrow">
                  <?php if (!empty($finalResult)):?>
-                	<h4><?=$this->__('Guest list')?></h4>
+                	
+					<?php
+					$options=array();
+					foreach ($finalResult as $_option){
+						$label = trim($this->escapeHtml($_option['label']));
+						if ( $label!=="" && strpos($label,'guest_')!==false 
+									&& strpos($label,'_{%d%}_')===false ){
+							$options[]=$_option;			
+						}
+					}
+					
+					if(!empty($options)):
+					?>
+					<h4><?=$this->__('Guest list')?></h4>
+					
+					
+					
+					
                     	<?php $i=1; ?>
-                        <?php foreach ($finalResult as $_option) : ?>
+                        <?php foreach ($options as $_option) : ?>
                         <?php //$_formatedOptionValue = $this->getFormatedOptionValue($_option) ?>
                         <?php 
 						$label = trim($this->escapeHtml($_option['label']));
-						if ( $label!=="" && strpos($label,'guest_')!==false 
-									&& strpos($label,'_{%d%}_')===false ): ?>
+						$value = trim($_option['value']);
+						if ( $value!=="" && $label!=="" && strpos($label,'guest_')!==false 
+									&& strpos($label,'_{%d%}_')===false ):
+									 ?>
 							<?php
 								
 								if(strpos($label,'guest_'.$i.'_')!==false){
@@ -121,30 +156,26 @@ $editUrl = $this->getConfigureUrl();
 									echo "Guest ".$i."<dl>";
 									$i++;
 								}
-							 ?>
+							 ?>	
+								<dt><?php
 									
-									
-									
-									
-									
-                            <dt><?php
-								$label = $_option['label'];
-								if(strpos($label,'firstName')!==false){
-									echo "First Name:";
-								}elseif(strpos($label,'lastName')!==false){
-									echo "Last Name:";
-								}elseif(strpos($label,'dietary')!==false){
-									echo "Dietary Choice:";
-								}elseif(strpos($label,'meal')!==false){
-									echo "Meal Choice:";
-								}elseif(strpos($label,'mobility')!==false){
-									echo "Mobility Requirements:";
-								}
-							 ?></dt>
-                            <dd><?=$_option['value']?></dd>
+									if(strpos($label,'firstName')!==false){
+										echo "First Name:";
+									}elseif(strpos($label,'lastName')!==false){
+										echo "Last Name:";
+									}elseif(strpos($label,'dietary')!==false){
+										echo "Dietary Choice:";
+									}elseif(strpos($label,'meal')!==false){
+										echo "Meal Choice:";
+									}elseif(strpos($label,'mobility')!==false){
+										echo "Mobility Requirements:";
+									}
+								 ?></dt>
+								<dd><?=$_option['value']?></dd>
                         <?php endif; ?>
                         <?php endforeach; ?>
                     </dl>
+					<?php endif;?>
                 <?php endif;?>
             </div>
         </div>
