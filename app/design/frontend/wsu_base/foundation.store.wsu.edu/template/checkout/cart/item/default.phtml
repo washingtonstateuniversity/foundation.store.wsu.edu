@@ -77,11 +77,13 @@ $editUrl = $this->getConfigureUrl();
                 <?php if (!empty($finalResult)):?>
                 	<h4><?=$this->__('Your options')?></h4>
                     <dl>
-                        <?php foreach ($finalResult as $_option) : ?>
+                        <?php foreach ($finalResult as $_option) : 
+						$label = trim($this->escapeHtml($_option['label']));
+						?>
                         <?php //$_formatedOptionValue = $this->getFormatedOptionValue($_option) ?>
-                        <?php if ( strpos($this->escapeHtml($_option['label']),'guest_')===false ): ?>
+						
+                        <?php if ( $label!=="" && strpos($label,'guest_')===false ): ?>
                             <dt><?php
-								$label = $_option['label'];
 								if(strpos($label,'firstName')!==false){
 									echo "First Name:";
 								}elseif(strpos($label,'lastName')!==false){
@@ -107,8 +109,8 @@ $editUrl = $this->getConfigureUrl();
                         <?php foreach ($finalResult as $_option) : ?>
                         <?php //$_formatedOptionValue = $this->getFormatedOptionValue($_option) ?>
                         <?php 
-						$label = $this->escapeHtml($_option['label']);
-						if ( strpos($label,'guest_')!==false 
+						$label = trim($this->escapeHtml($_option['label']));
+						if ( $label!=="" && strpos($label,'guest_')!==false 
 									&& strpos($label,'_{%d%}_')===false ): ?>
 							<?php
 								
@@ -158,7 +160,7 @@ $editUrl = $this->getConfigureUrl();
         <?php endif;?>
         
         <?php if ($isVisibleProduct): ?>
-        <a href="#" data-edit_item_url="<?=$editUrl?>" title="<?=$this->__('Edit item parameters') ?>" class="edit_item"><?=$this->__('Edit') ?></a>
+        <!--<a href="#" data-edit_item_url="<?=$editUrl?>" title="<?=$this->__('Edit item parameters') ?>" class="edit_item"><?=$this->__('Edit') ?></a>-->
         <?php endif ?>
         
     </td>
@@ -405,7 +407,7 @@ $editUrl = $this->getConfigureUrl();
     <?php endif; ?>
     <td class="col-delete a-center">
         <?php if ($isVisibleProduct): ?>
-        <a href="#" data-edit_item_url="<?=$editUrl?>" title="<?=$this->__('Edit item parameters') ?>" class="edit-cart-item"><i class='fa fa-edit'></i></a>
+        <!--<a href="#" data-edit_item_url="<?=$editUrl?>" title="<?=$this->__('Edit item parameters') ?>" class="edit-cart-item"><i class='fa fa-edit'></i></a>-->
         <?php endif ?>
     	<a href="#" data-remove_item_url"<?=$this->getDeleteUrl()?>" title="<?=$this->__('Remove item')?>" class="remove-cart-item"><i class='fa fa-trash-o'></i></a>
 	</td>
