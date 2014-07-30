@@ -76,6 +76,15 @@ body{
 	  z-index: 11;
 	}
 
+/* CART */
+.cart .totals {
+  background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+  padding: 0;
+}
+
+
+
+
 /* for the moment REMEBER to remove */
 .opc-wrapper-opc .buttons-set .button span,
 .opc-wrapper-opc .discount-block .buttons-set .button span {
