@@ -23,11 +23,11 @@ $session = Mage::getSingleton('checkout/session');
 $finalResult = array();
 
 // Loop through all items in the cart
-foreach ($session->getQuote()->getAllItems() as $item){
+//foreach ($session->getQuote()->getAllItems() as $item){
   // Array to hold the item's options
   $result = array();
   // Load the configured product options
-  $options = $item->getProduct()->getTypeInstance(true)->getOrderOptions($item->getProduct());
+  $options = $product->getTypeInstance(true)->getOrderOptions($product);
   // Check for options
   if (isset($options['info_buyRequest'])){
 	  $info = $options['info_buyRequest'];
@@ -42,7 +42,7 @@ foreach ($session->getQuote()->getAllItems() as $item){
     }*/
   }
   $finalResult = array_merge($finalResult, $result);
-}
+//}
 
 // Now you have the final array of all configured options
 //var_dump($finalResult);
