@@ -17,6 +17,41 @@ $product_name = $this->getProductName();
 $has_product_url = $this->hasProductUrl();
 $product_url = $this->getProductUrl();
 $_options = $this->getOptionList();
+
+$session = Mage::getSingleton('checkout/session');
+
+$finalResult = array();
+
+// Loop through all items in the cart
+//foreach ($session->getQuote()->getAllItems() as $item){
+  // Array to hold the item's options
+  $result = array();
+  // Load the configured product options
+  $options = $product->getTypeInstance(true)->getOrderOptions($product);
+  // Check for options
+  if (isset($options['info_buyRequest'])){
+	  $info = $options['info_buyRequest'];
+    /*if (isset($info['options'])){
+      $result = array_merge($result, $info['options']);
+    }*/
+    if (isset($info['options']['additional_options'])){
+      $result = array_merge($result, unserialize($info['options']['additional_options']) );
+    }
+    /*if (!empty($info['attributes_info'])){
+      $result = array_merge($info['attributes_info'], $result);
+    }*/
+  }
+  $finalResult = array_merge($finalResult, $result);
+//}
+
+// Now you have the final array of all configured options
+//var_dump($finalResult);
+
+
+
+
+
+
 $editUrl = $this->getConfigureUrl();
 ?>
 <tr>
@@ -39,49 +74,110 @@ $editUrl = $this->getConfigureUrl();
         </h2>
 		<div class="row halves item-options">
             <div class="column">
-                <?php if (!empty($_options)):?>
+                <?php if (!empty($finalResult)):?>
+				
+				
+                	
+					<?php
+					$options=array();
+					foreach ($finalResult as $_option){
+						$label = trim($this->escapeHtml($_option['label']));
+						$value = trim($_option['value']);
+						if ( $value!=="" && $label!=="" && strpos($label,'guest_')===false ){
+							$options[]=$_option;			
+						}
+					}
+					
+					if(!empty($options)):
+					?>
+				
+				
+				
                 	<h4><?=$this->__('Your options')?></h4>
                     <dl>
-                        <?php foreach ($_options as $_option) : ?>
-                        <?php $_formatedOptionValue = $this->getFormatedOptionValue($_option) ?>
-                        <?php if ( strpos($this->escapeHtml($_option['label']),'guest_')===false ): ?>
-                            <dt><?=$this->escapeHtml($_option['label']) ?></dt>
-                            <dd<?php if (isset($_formatedOptionValue['full_view'])): ?> class="truncated"<?php endif; ?>><?=$_formatedOptionValue['value'] ?>
-                                <?php if (isset($_formatedOptionValue['full_view'])): ?>
-                                <div class="truncated_full_value">
-                                    <dl class="item-options">
-                                        <dt><?=$this->escapeHtml($_option['label']) ?></dt>
-                                        <dd><?=$_formatedOptionValue['full_view'] ?></dd>
-                                    </dl>
-                                </div>
-                                <?php endif; ?>
-                            </dd>
+                        <?php foreach ($options as $_option) : 
+						$label = trim($this->escapeHtml($_option['label']));
+						$value = trim($_option['value']);
+						if ( $value!=="" && $label!=="" && strpos($label,'guest_')===false ): ?>
+                            <dt><?php
+								if(strpos($label,'firstName')!==false){
+									echo "First Name:";
+								}elseif(strpos($label,'lastName')!==false){
+									echo "Last Name:";
+								}elseif(strpos($label,'dietary')!==false){
+									echo "Dietary Choice:";
+								}elseif(strpos($label,'meal')!==false){
+									echo "Meal Choice:";
+								}elseif(strpos($label,'mobility')!==false){
+									echo "Mobility Requirements:";
+								}
+							 ?></dt>
+                            <dd><?=$_option['value']?></dd>
                         <?php endif; ?>
                         <?php endforeach; ?>
                     </dl>
+					<?php endif;?>
                 <?php endif;?>
             </div>
-            <div class="column padded-left narrow cart_action_area">
-                <?php if ($_options = $this->getOptionList()):?>
-                	<h4><?=$this->__('Guest list')?></h4>
-                    <dl>
-                        <?php foreach ($_options as $_option) : ?>
-                        <?php $_formatedOptionValue = $this->getFormatedOptionValue($_option) ?>
-                        <?php if ( strpos($this->escapeHtml($_option['label']),'guest_')!==false ): ?>
-                            <dt><?=$this->escapeHtml($_option['label']) ?></dt>
-                            <dd<?php if (isset($_formatedOptionValue['full_view'])): ?> class="truncated"<?php endif; ?>><?=$_formatedOptionValue['value'] ?>
-                                <?php if (isset($_formatedOptionValue['full_view'])): ?>
-                                <div class="truncated_full_value">
-                                    <dl class="item-options">
-                                        <dt><?=$this->escapeHtml($_option['label']) ?></dt>
-                                        <dd><?=$_formatedOptionValue['full_view'] ?></dd>
-                                    </dl>
-                                </div>
-                                <?php endif; ?>
-                            </dd>
+            <div class="column padded-left narrow">
+                 <?php if (!empty($finalResult)):?>
+                	
+					<?php
+					$options=array();
+					foreach ($finalResult as $_option){
+						$label = trim($this->escapeHtml($_option['label']));
+						$value = trim($_option['value']);
+						if ( $value!=="" && $label!=="" && strpos($label,'guest_')!==false 
+									&& strpos($label,'_{%d%}_')===false ){
+							$options[]=$_option;			
+						}
+					}
+					
+					if(!empty($options)):
+					?>
+					<h4><?=$this->__('Guest list')?></h4>
+					
+					
+					
+					
+                    	<?php $i=1; ?>
+                        <?php foreach ($options as $_option) : ?>
+                        <?php //$_formatedOptionValue = $this->getFormatedOptionValue($_option) ?>
+                        <?php 
+						$label = trim($this->escapeHtml($_option['label']));
+						$value = trim($_option['value']);
+						if ( $value!=="" && $label!=="" && strpos($label,'guest_')!==false 
+									&& strpos($label,'_{%d%}_')===false ):
+									 ?>
+							<?php
+								
+								if(strpos($label,'guest_'.$i.'_')!==false){
+									if($i>0){
+										echo "</dl>";	
+									}
+									echo "Guest ".$i."<dl>";
+									$i++;
+								}
+							 ?>	
+								<dt><?php
+									
+									if(strpos($label,'firstName')!==false){
+										echo "First Name:";
+									}elseif(strpos($label,'lastName')!==false){
+										echo "Last Name:";
+									}elseif(strpos($label,'dietary')!==false){
+										echo "Dietary Choice:";
+									}elseif(strpos($label,'meal')!==false){
+										echo "Meal Choice:";
+									}elseif(strpos($label,'mobility')!==false){
+										echo "Mobility Requirements:";
+									}
+								 ?></dt>
+								<dd><?=$_option['value']?></dd>
                         <?php endif; ?>
                         <?php endforeach; ?>
                     </dl>
+					<?php endif;?>
                 <?php endif;?>
             </div>
         </div>
@@ -97,7 +193,7 @@ $editUrl = $this->getConfigureUrl();
         <?php endif;?>
         
         <?php if ($isVisibleProduct): ?>
-        <a href="#" data-edit_item_url="<?=$editUrl?>" title="<?=$this->__('Edit item parameters') ?>" class="edit_item"><?=$this->__('Edit') ?></a>
+        <!--<a href="#" data-edit_item_url="<?=$editUrl?>" title="<?=$this->__('Edit item parameters') ?>" class="edit_item"><?=$this->__('Edit') ?></a>-->
         <?php endif ?>
         
     </td>
@@ -344,7 +440,7 @@ $editUrl = $this->getConfigureUrl();
     <?php endif; ?>
     <td class="col-delete a-center">
         <?php if ($isVisibleProduct): ?>
-        <a href="#" data-edit_item_url="<?=$editUrl?>" title="<?=$this->__('Edit item parameters') ?>" class="edit-cart-item"><i class='fa fa-edit'></i></a>
+        <!--<a href="#" data-edit_item_url="<?=$editUrl?>" title="<?=$this->__('Edit item parameters') ?>" class="edit-cart-item"><i class='fa fa-edit'></i></a>-->
         <?php endif ?>
     	<a href="#" data-remove_item_url"<?=$this->getDeleteUrl()?>" title="<?=$this->__('Remove item')?>" class="remove-cart-item"><i class='fa fa-trash-o'></i></a>
 	</td>
