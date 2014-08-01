@@ -2,7 +2,61 @@
 
 
 (function($){
-	"use strict";
+
+	function int_addGuest(){
+		$('.add_guest').off().on('click',function(e){
+			
+			e.preventDefault();
+			e.stopPropagation();
+			
+			var _block = $(this).closest(".item");
+			
+			_block.find(".template").clone().appendTo(_block.find('.guest_blocks')).removeClass("template");
+			var guest_count = _block.find('.guest_block:not(.template)').length;
+			var block_content = _block.find('.guest_block').last().html().toString();
+			//alert(block_content);
+			_block.find('.guest_block').last().html( block_content.replace(/{%d%}/gim, guest_count) );
+			$(this).hide();
+			_block.find(".price").text(  $.currencyFormat( _block.find(".regular-price").data("price")*( guest_count+1) ) );
+			_block.find('[name$="[qty]"]').val(guest_count+1);
+			var limit = _block.find('.guest_blocks').data('limit');
+			if( (limit=="unlimited" || limit<guest_count) ){
+				int_addGuest();
+			}else{
+				_block.find('.add_guest').hide();
+			}
+			int_removeGuest();
+		});
+	}
+
+	function int_removeGuest(){
+		$('.remove_guest').off().on('click',function(e){
+			e.preventDefault();
+			e.stopPropagation();
+			
+			var _block = $(this).closest(".item");
+			
+			$(this).closest(".guest_block").remove();
+			
+			$.each(_block.find('.guest_block:not(.template)'), function(i,v){
+				var adj_i =i+1;
+				$(this).find(".count").text( adj_i );
+				$(this).html( $(this).html().toString().replace(/\[guest\]\[\d+?\]/gmi, "guest["+adj_i+"]") );
+			});
+			var guest_count = _block.find('.guest_block:not(.template)').length;
+			_block.find(".price").text( $.currencyFormat( _block.find(".regular-price").data("price")*( guest_count+1) ) );
+			_block.find('[name$="[qty]"]').val(guest_count+1);
+			/*if(guest_count<=0){
+				_block.find('.add_guest').show();
+			}else{
+				_block.find('.add_guest').last().show();
+			}*/_block.find('.add_guest').last().show();
+			int_addGuest();
+			int_removeGuest();
+		});
+	}
+	
+	
 	$(document).ready(function(){
 		//$( document ).tooltip();
 			
@@ -10,58 +64,7 @@
 			$(this).data("price",$(this).text().replace('$',''));
 		});
 		
-		function int_addGuest(){
-			$('.add_guest').off().on('click',function(e){
-				
-				e.preventDefault();
-				e.stopPropagation();
-				
-				var _block = $(this).closest(".item");
-				
-				_block.find(".template").clone().appendTo(_block.find('.guest_blocks')).removeClass("template");
-				var guest_count = _block.find('.guest_block:not(.template)').length;
-				var block_content = _block.find('.guest_block').last().html().toString();
-				//alert(block_content);
-				_block.find('.guest_block').last().html( block_content.replace(/{%d%}/gim, guest_count) );
-				$(this).hide();
-				_block.find(".price").text(  $.currencyFormat( _block.find(".regular-price").data("price")*( guest_count+1) ) );
-				_block.find('[name$="[qty]"]').val(guest_count+1);
-				var limit = _block.find('.guest_blocks').data('limit');
-				if( (limit=="unlimited" || limit<guest_count) ){
-					int_addGuest();
-				}else{
-					_block.find('.add_guest').hide();
-				}
-				int_removeGuest();
-			});
-		}
 
-		function int_removeGuest(){
-			$('.remove_guest').off().on('click',function(e){
-				e.preventDefault();
-				e.stopPropagation();
-				
-				var _block = $(this).closest(".item");
-				
-				$(this).closest(".guest_block").remove();
-				
-				$.each(_block.find('.guest_block:not(.template)'), function(i,v){
-					var adj_i =i+1;
-					$(this).find(".count").text( adj_i );
-					$(this).html( $(this).html().toString().replace(/\[guest\]\[\d+?\]/gmi, "guest["+adj_i+"]") );
-				});
-				var guest_count = _block.find('.guest_block:not(.template)').length;
-				_block.find(".price").text( $.currencyFormat( _block.find(".regular-price").data("price")*( guest_count+1) ) );
-				_block.find('[name$="[qty]"]').val(guest_count+1);
-				/*if(guest_count<=0){
-					_block.find('.add_guest').show();
-				}else{
-					_block.find('.add_guest').last().show();
-				}*/_block.find('.add_guest').last().show();
-				int_addGuest();
-				int_removeGuest();
-			});
-		}
 
 		$.fn.int_guest_display = function() {
 			$.each($(this),function(){
