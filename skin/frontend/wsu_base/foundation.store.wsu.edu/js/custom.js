@@ -31,7 +31,7 @@
 				//alert(block_content);
 				_block.find('.guest_block').last().html( block_content.replace(/{%d%}/gim, guest_count) );
 				$(this).hide();
-				_block.find(".price").text(  currencyFormat( _block.find(".regular-price").data("price")*( guest_count+1) ) );
+				_block.find(".price").text(  $.currencyFormat( _block.find(".regular-price").data("price")*( guest_count+1) ) );
 				_block.find('[name$="[qty]"]').val(guest_count+1);
 				var limit = _block.find('.guest_blocks').data('limit');
 				if(limit=="unlimited" || limit<guest_count){
@@ -58,7 +58,7 @@
 					$(this).html( $(this).html().toString().replace(/\[guest\]\[\d+?\]/gmi, "guest["+adj_i+"]") );
 				});
 				var guest_count = _block.find('.guest_block:not(.template)').length;
-				_block.find(".price").text( currencyFormat( _block.find(".regular-price").data("price")*( guest_count+1) ) );
+				_block.find(".price").text( $.currencyFormat( _block.find(".regular-price").data("price")*( guest_count+1) ) );
 				_block.find('[name$="[qty]"]').val(guest_count+1);
 				/*if(guest_count<=0){
 					_block.find('.add_guest').show();
@@ -89,7 +89,7 @@
 				var guest_count = 0;
 				
 				_block.find(".guest_block:not(.template)").remove();
-				_block.find(".price").text(  currencyFormat( _block.find(".regular-price").data("price")*( guest_count+1) ) );
+				_block.find(".price").text(  $.currencyFormat( _block.find(".regular-price").data("price")*( guest_count+1) ) );
 				_block.find('[name$="[qty]"]').val(guest_count+1);
 				
 				_block.find('.guest_blocks').hide();
@@ -129,8 +129,13 @@
 			if(input.length){
 				var spinner = input.spinner({
 					change: function(){
-							var guest_count = input.val();
-							_block.find(".price").text(  currencyFormat( _block.find(".regular-price").data("price")*( guest_count+1) ) );
+							var guest_count = parseInt(input.val());
+							_block.find(".price").text(  $.currencyFormat( _block.find(".regular-price").data("price")*( guest_count+1 ) ) );
+							_block.find('[name$="[qty]"]').val(guest_count+1);
+						},
+					stop: function(){
+							var guest_count = parseInt(input.val());
+							_block.find(".price").text(  $.currencyFormat( _block.find(".regular-price").data("price")*( guest_count+1 ) ) );
 							_block.find('[name$="[qty]"]').val(guest_count+1);
 						}
 					});
