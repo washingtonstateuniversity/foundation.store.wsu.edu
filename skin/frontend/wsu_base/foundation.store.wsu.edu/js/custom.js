@@ -1,5 +1,5 @@
 
-<!-- TYPEKIT -->
+	//<!-- TYPEKIT -->
   (function(d) {
     var config = {
       kitId: 'nww0uto',
@@ -141,8 +141,6 @@
 					});
 			}
 		}
-
-
 
 
 		$('.button.btn-cart').off().on('click',function(e){
