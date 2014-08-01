@@ -123,19 +123,19 @@
 				return false;
 			}
 		};
-
-		$.each($('.spinner'),function(){
-			var input = $(this);
-			var spinner = input.spinner({
-				change: function(){
-						var _block = $(this).closest(".item");
-						var guest_count = input.val();
-						_block.find(".price").text(  currencyFormat( _block.find(".regular-price").data("price")*( guest_count+1) ) );
-						_block.find('[name$="[qty]"]').val(guest_count+1);
-					}
-				});
-			
-		});
+		$.fn.int_guestcounter = function() {
+			var _block =$(this);
+			var input = _block.find('.spinner');
+			if(input.length){
+				var spinner = input.spinner({
+					change: function(){
+							var guest_count = input.val();
+							_block.find(".price").text(  currencyFormat( _block.find(".regular-price").data("price")*( guest_count+1) ) );
+							_block.find('[name$="[qty]"]').val(guest_count+1);
+						}
+					});
+			}
+		}
 
 
 
@@ -144,19 +144,20 @@
 			e.preventDefault();
 			e.stopPropagation();
 			var but = $(this);
-			var tar = but.closest('.mass_item').find('[name="goingToEvent"]');
+			var item = but.closest('.mass_item');
+			var tar = item.find('[name="goingToEvent"]');
 			if( tar.is($(":checked")) ){
-				but.closest('.mass_item').destroy_guest_display();
+				item.destroy_guest_display();
 				tar.attr('checked',false);
 				but.html('<span><span>Attend</span></span>');
-				but.closest('.mass_item').removeClass('active_item');
-				
+				item.removeClass('active_item');
 			}else{
-				if( but.closest('.mass_item').find('.validation_overlay').length<=0 || but.closest('.mass_item').find('.validation_overlay').int_access_validation()){
+				if( item.find('.validation_overlay').length<=0 || item.find('.validation_overlay').int_access_validation()){
 					tar.attr('checked',true);
 					but.html('<span><span>Don\'t Attend</span></span>');
-					but.closest('.mass_item').addClass('active_item');
-					but.closest('.mass_item').int_guest_display();
+					item.addClass('active_item');
+					item.int_guest_display();
+					item.int_guestcounter();
 					int_addGuest();
 					$('.tooltip').tooltip();
 				}
