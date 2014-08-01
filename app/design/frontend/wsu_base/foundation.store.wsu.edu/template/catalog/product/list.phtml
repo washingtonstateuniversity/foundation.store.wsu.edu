@@ -215,7 +215,7 @@
 					<?php		
 						
 						$AllowGuest = $product->getAllowGuests();
-						
+						$GuestInfo = $product->getGuestInfo();
 
 						if($AllowGuest>0){
 							$GuestQty = $product->getGuestCost();
@@ -224,6 +224,10 @@
 							?>
 							
 							<ul class="guest_blocks" data-limit="<?=$GuestLimit?>">
+							
+							<?php if($GuestInfo>0): ?>
+							
+
 								<li><a href="#" class="add_guest  spine-button"><i class="fa fa-plus"></i> Add Guest</a><a href="#" class="copy_guest  spine-button"><i class="fa fa-clipboard" title="Copy guests from another event."></i></a></li>
 								<li class="guest_block template">
 									<a href="#" class="remove_guest spine-button"><span class="fa-stack fa-sm">
@@ -257,7 +261,10 @@
 									
 									<a href="#" class="add_guest  spine-button"><i class="fa fa-plus"></i> Add Guest </a>
 								</li>
+							<?php else: ?>
+								<li>How many guest? <input type="text" class="spinner"/></li>
 							
+							<?php endif; ?>
 							
 							</ul>
 							
