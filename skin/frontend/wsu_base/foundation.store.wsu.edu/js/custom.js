@@ -124,6 +124,22 @@
 			}
 		};
 
+		$.each($('.spinner'),function(){
+			var input = $(this);
+			var spinner = input.spinner({
+				change: function(){
+						var _block = $(this).closest(".item");
+						var guest_count = input.val();
+						_block.find(".price").text(  currencyFormat( _block.find(".regular-price").data("price")*( guest_count+1) ) );
+						_block.find('[name$="[qty]"]').val(guest_count+1);
+					}
+				});
+			
+		});
+
+
+
+
 		$('.button.btn-cart').off().on('click',function(e){
 			e.preventDefault();
 			e.stopPropagation();
