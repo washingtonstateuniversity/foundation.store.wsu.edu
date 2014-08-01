@@ -84,6 +84,7 @@
 				$product = Mage::getModel("catalog/product")->load($pID);
 
 				$FoodOptions = $product->getFoodOptions();
+				$RequestSeating=$product->getRequestSeating();
 				$HasAccessValidation = $product->getHasAccessValidation();
 				$AccessCode = $product->getAccessCode();
 				$Location = $product->getLocation();
@@ -198,7 +199,16 @@
 							<br/>
 						<?php endif; ?>
 						<span>Mobility Requests:</span><br>
-						<input type="text"  name="product[<?=$pID?>][options][mobility]" class="full"/>
+						<input type="text"  name="product[<?=$pID?>][options][mobility]" class="full"/><br/>
+						
+						<?php if($RequestSeating>0): ?>
+							<span>Seating Choice:</span><br/>
+							<input type="text"  name="product[<?=$pID?>][options][requested_seating]" class="full"/>
+							<br/>
+						<?php endif; ?>
+						
+						
+						
 						<br/>
 					</div>
 					<div class="column padded-left narrow">
