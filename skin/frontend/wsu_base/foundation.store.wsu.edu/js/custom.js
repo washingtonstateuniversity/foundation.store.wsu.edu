@@ -1,12 +1,5 @@
 
-	//<!-- TYPEKIT -->
-  (function(d) {
-    var config = {
-      kitId: 'nww0uto',
-      scriptTimeout: 3000
-    },
-    h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='//use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
-  })(document);
+
 
 (function($){
 	"use strict";
@@ -34,7 +27,7 @@
 				_block.find(".price").text(  $.currencyFormat( _block.find(".regular-price").data("price")*( guest_count+1) ) );
 				_block.find('[name$="[qty]"]').val(guest_count+1);
 				var limit = _block.find('.guest_blocks').data('limit');
-				if(limit=="unlimited" || limit<guest_count){
+				if( (limit=="unlimited" || limit<guest_count) ){
 					int_addGuest();
 				}else{
 					_block.find('.add_guest').hide();
@@ -199,4 +192,15 @@
 			});
 		});	
 	});
+	
+	
+	//<!-- TYPEKIT -->
+  (function(d) {
+    var config = {
+      kitId: 'nww0uto',
+      scriptTimeout: 3000
+    },
+    h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='//use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+  })(document);
+	
 })(jQuery);
