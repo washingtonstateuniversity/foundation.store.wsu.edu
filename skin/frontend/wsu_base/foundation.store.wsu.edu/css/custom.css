@@ -105,7 +105,7 @@ body{
   text-transform: uppercase;
 }
 
-.shipping-method-block{ display:none !important;}
+.shipping-method-block{ position:absolute; top:-9999em; left:-9999em;}
 * .opc-wrapper-opc .payment-block { margin-top:0px !important;}
 
 
