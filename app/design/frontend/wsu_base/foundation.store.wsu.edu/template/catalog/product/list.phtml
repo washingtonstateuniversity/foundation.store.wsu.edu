@@ -215,12 +215,18 @@
 						
 						$AllowGuest = $product->getAllowGuests();
 						$GuestInfo = $product->getGuestInfo();
+						$MenuAgePriceRange = $product->getMenuAgePriceRange();//opps
 
 						if($AllowGuest>0){
 							$GuestQty = $product->getGuestCost();
 							//$GuestLimit = $product->getGuestLimit();
 							$GuestLimit = $product->getAttributeText("guest_limit");
 							?>
+							
+							<?php if($MenuAgePriceRange>0): ?>
+							<input type='hidden' name='product[<?=$pID?>][options][35]' /><!--//under_5-->
+							<input type='hidden' name='product[<?=$pID?>][options][7]' /><!--//child_6_12-->
+							<?php endif; ?>
 							
 							<ul class="guest_blocks" data-limit="<?=$GuestLimit?>">
 							
@@ -241,6 +247,12 @@
 										<div class="column padded-left narrow">
 											<span>Last Name:</span><input type="text"  name="product[<?=$pID?>][options][guest][{%d%}][lastName]" class="full"/>
 										</div>
+										<?php if($MenuAgePriceRange>0): ?>
+											<input type="radio" name="person_type[]" data-ptype=""/>Adult 
+											<input type="radio" name="person_type[]" data-ptype="child_6_12"/>child ages 6-12 
+											<input type="radio" name="person_type[]" data-ptype="under_5"/>child 5 and under 
+										<?php endif; ?>
+										
 									</div>
 									<?php if($FoodOptions>0): ?>
 									<div class="row side-left padded-bottom short">
