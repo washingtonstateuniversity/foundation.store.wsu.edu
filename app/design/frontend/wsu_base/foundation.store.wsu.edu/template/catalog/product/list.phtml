@@ -247,13 +247,20 @@
 										<div class="column padded-left narrow">
 											<span>Last Name:</span><input type="text"  name="product[<?=$pID?>][options][guest][{%d%}][lastName]" class="full"/>
 										</div>
-										<?php if($MenuAgePriceRange>0): ?>
-											<input type="radio" name="person_type[]" data-ptype=""/>Adult 
-											<input type="radio" name="person_type[]" data-ptype="child_6_12"/>child ages 6-12 
-											<input type="radio" name="person_type[]" data-ptype="under_5"/>child 5 and under 
-										<?php endif; ?>
+
 										
 									</div>
+									
+									<?php if($MenuAgePriceRange>0): ?>
+										<div class="row single padded-bottom short">
+											<div class="column">
+												<input type="radio" name="person_type[]" data-ptype=""/>Adult 
+												<input type="radio" name="person_type[]" data-ptype="child_6_12"/>child ages 6-12 
+												<input type="radio" name="person_type[]" data-ptype="under_5"/>child 5 and under 
+											</div>
+										</div>
+									<?php endif; ?>
+									
 									<?php if($FoodOptions>0): ?>
 									<div class="row side-left padded-bottom short">
 										<div class="column">
