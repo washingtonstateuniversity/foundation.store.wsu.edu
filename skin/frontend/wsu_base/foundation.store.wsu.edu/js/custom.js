@@ -8,7 +8,7 @@
 			
 			e.preventDefault();
 			e.stopPropagation();
-			
+			var guest_count = _block.find('.guest_block:not(.template)').length;
 			var normal_price=_block.find(".regular-price").data("price")*( guest_count+1);
 			if(_block.find('[data-ptype="child_6_12"]:checked')){
 				var alter = _block.find('[data-ptype="child_6_12"]:checked').length;
