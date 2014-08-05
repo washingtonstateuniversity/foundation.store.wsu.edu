@@ -66,7 +66,7 @@
 		
 		
 		$(window).on("resize",function(){
-			$("#check_out_products").css({"width":$(".mass_item").width()+"px"});
+			$("#check_out_products").css({"width":($(".mass_item").width()-18)+"px"});
 		}).trigger("resize");
 
 
