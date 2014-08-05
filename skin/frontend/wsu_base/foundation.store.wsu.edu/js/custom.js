@@ -18,9 +18,10 @@
 				var alter = _block.find('[data-ptype="under_5"]:checked').length;
 				normal_price -= alter*25;
 			}
-			
-			_block.find('[name*="[35]"]').val(_block.find('[data-ptype="under_5"]:checked').length);
-			_block.find('[name*="[7]"]').val(_block.find('[data-ptype="child_6_12"]:checked').length);
+			var under_5_i = _block.find('[data-ptype="under_5"]:checked').length;
+			_block.find('[name*="[35]"]').val( under_5_i>0?under_5_i:"" );
+			var child_6_12_i = _block.find('[data-ptype="child_6_12"]:checked').length;
+			_block.find('[name*="[7]"]').val( child_6_12_i>0?child_6_12_i:"" );
 			_block.find(".price").text( $.currencyFormat( normal_price ) );
 		});
 	}
@@ -83,8 +84,10 @@
 				var alter = _block.find('[data-ptype="under_5"]:checked').length;
 				normal_price -= alter*25;
 			}
-			_block.find('[name*="[35]"]').val(_block.find('[data-ptype="under_5"]:checked').length);
-			_block.find('[name*="[7]"]').val(_block.find('[data-ptype="child_6_12"]:checked').length);
+			var under_5_i = _block.find('[data-ptype="under_5"]:checked').length;
+			_block.find('[name*="[35]"]').val( under_5_i>0?under_5_i:"" );
+			var child_6_12_i = _block.find('[data-ptype="child_6_12"]:checked').length;
+			_block.find('[name*="[7]"]').val( child_6_12_i>0?child_6_12_i:"" );
 			_block.find(".price").text( $.currencyFormat( normal_price ) );
 			
 			
