@@ -18,6 +18,9 @@
 				var alter = _block.find('[data-ptype="under_5"]:checked').length;
 				normal_price -= alter*25;
 			}
+			
+			_block.find('[name*="[under_5]"]').val(_block.find('[data-ptype="under_5"]:checked').length);
+			_block.find('[name*="[child_6_12]"]').val(_block.find('[data-ptype="child_6_12"]:checked').length);
 			_block.find(".price").text( $.currencyFormat( normal_price ) );
 		});
 	}
@@ -76,10 +79,12 @@
 				var alter = _block.find('[data-ptype="child_6_12"]:checked').length;
 				normal_price -= alter*10;
 			}
-			if(_block.find('[data-ptype="child_6_12"]:checked')){
-				var alter = _block.find('[data-ptype="child_6_12"]:checked').length;
+			if(_block.find('[data-ptype="under_5"]:checked')){
+				var alter = _block.find('[data-ptype="under_5"]:checked').length;
 				normal_price -= alter*25;
 			}
+			_block.find('[name*="[under_5]"]').val(_block.find('[data-ptype="under_5"]:checked').length);
+			_block.find('[name*="[child_6_12]"]').val(_block.find('[data-ptype="child_6_12"]:checked').length);
 			_block.find(".price").text( $.currencyFormat( normal_price ) );
 			
 			
