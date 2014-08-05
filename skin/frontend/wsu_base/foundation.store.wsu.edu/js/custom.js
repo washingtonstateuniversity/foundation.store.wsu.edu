@@ -142,10 +142,10 @@
 					}).blur(function () {
 						var value1 = input.val();
 						if (value1<0) {
-							input.val(value);
+							input.val(0);
 						}
 						if(isNaN(value1)) {
-							input.val(value);
+							input.val(0);
 						}
 					});
 			}
