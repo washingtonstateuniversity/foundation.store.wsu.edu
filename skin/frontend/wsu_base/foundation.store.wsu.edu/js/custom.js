@@ -181,7 +181,13 @@
 				}
 			}
 		});
-
+		 $(window).scroll(function(){
+			  if ($(this).scrollTop() > $(document).height()-135) {
+				  $('#check_out_products').addClass('fixed');
+			  } else {
+				  $('#check_out_products').removeClass('fixed');
+			  }
+		  });
 
 //note this will be moved out to the eventticket ext as a dependent of cart ajax handler
 		$('#check_out_products').on('click',function(e){
