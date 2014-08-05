@@ -129,7 +129,7 @@ $editUrl = $this->getConfigureUrl();
 					foreach ($finalResult as $_option){
 						$label = trim($this->escapeHtml($_option['label']));
 						$value = trim($_option['value']);
-						if ( $value!=="" && $label!=="" && strpos($label,'guest_')!==false 
+						if ( $label!=="" && strpos($label,'guest_')!==false 
 									&& strpos($label,'_{%d%}_')===false ){
 							$options[]=$_option;			
 						}
@@ -148,7 +148,7 @@ $editUrl = $this->getConfigureUrl();
                         <?php 
 						$label = trim($this->escapeHtml($_option['label']));
 						$value = trim($_option['value']);
-						if ( $value!=="" && $label!=="" && strpos($label,'guest_')!==false 
+						if ( $label!=="" && strpos($label,'guest_')!==false 
 									&& strpos($label,'_{%d%}_')===false ):
 									 ?>
 							<?php
