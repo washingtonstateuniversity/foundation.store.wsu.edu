@@ -161,23 +161,25 @@ $editUrl = $this->getConfigureUrl();
 									$i++;
 								}
 							 ?>	
-								<dt><?php
-									
-									if(strpos($label,'firstName')!==false){
-										echo "First Name:";
-									}elseif(strpos($label,'lastName')!==false){
-										echo "Last Name:";
-									}elseif(strpos($label,'dietary')!==false){
-										echo "Dietary Choice:";
-									}elseif(strpos($label,'meal')!==false){
-										echo "Meal Choice:";
-									}elseif(strpos($label,'mobility')!==false){
-										echo "Mobility Requirements:";
-									}elseif(strpos($label,'requested_seating')!==false){
-										echo "Seating Request:";
-									}
-								 ?></dt>
-								<dd><?=$_option['value']?></dd>
+								 <?php if ( $value!=="" ): ?>
+                                    <dt><?php
+                                        
+                                        if(strpos($label,'firstName')!==false){
+                                            echo "First Name:";
+                                        }elseif(strpos($label,'lastName')!==false){
+                                            echo "Last Name:";
+                                        }elseif(strpos($label,'dietary')!==false){
+                                            echo "Dietary Choice:";
+                                        }elseif(strpos($label,'meal')!==false){
+                                            echo "Meal Choice:";
+                                        }elseif(strpos($label,'mobility')!==false){
+                                            echo "Mobility Requirements:";
+                                        }elseif(strpos($label,'requested_seating')!==false){
+                                            echo "Seating Request:";
+                                        }
+                                     ?></dt>
+                                    <dd><?=$_option['value']?></dd>
+                                 <?php endif; ?>
                         <?php endif; ?>
                         <?php endforeach; ?>
                     </dl>
