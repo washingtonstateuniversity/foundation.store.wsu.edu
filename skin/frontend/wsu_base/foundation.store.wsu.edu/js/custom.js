@@ -66,8 +66,8 @@
 		
 		
 		$(window).on("resize",function(){
-			$("#check_out_products").css({"width":$("#mass_products").width()+"px"});
-		});
+			$("#check_out_products").css({"width":$(".mass_item").width()+"px"});
+		}).trigger("resize");
 
 
 		$.fn.int_guest_display = function() {
