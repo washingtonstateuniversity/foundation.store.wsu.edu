@@ -4,7 +4,7 @@
 (function($){
 
 	function int_alertGuest(_block){
-		_block.find('[data-ptype="child_6_12"],[data-ptype="child_6_12"]').off().on('click',function(e){
+		_block.find('[data-ptype="adult"],[data-ptype="child_6_12"],[data-ptype="child_6_12"]').off().on('click',function(e){
 			
 			e.preventDefault();
 			e.stopPropagation();
@@ -40,7 +40,7 @@
 			$(this).hide();
 			
 			int_alertGuest(_block);
-			_block.find('[data-ptype="child_6_12"],[data-ptype="child_6_12"]').trigger('click');
+			_block.find('[data-ptype="adult"]').trigger('click');// this is starting it since it's the first run.. dirty yes but works
 
 			_block.find('[name$="[qty]"]').val(guest_count+1);
 			var limit = _block.find('.guest_blocks').data('limit');
