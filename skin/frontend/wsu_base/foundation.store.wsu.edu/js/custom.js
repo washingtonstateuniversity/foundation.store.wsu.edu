@@ -157,7 +157,7 @@
 			} else {
 				$('#check_out_products').addClass('fixed');
 			}
-		});
+		}).trigger("scroll");
 		$(window).on("resize",function(){
 			$("#check_out_products").css({"width":($(".mass_item").width()-18)+"px"});
 		}).trigger("resize");
