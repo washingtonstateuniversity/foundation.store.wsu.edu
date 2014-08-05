@@ -108,5 +108,9 @@ body{
 .shipping-method-block{position:absolute !important; top:-9999em  !important; left:-9999em  !important;}
 * .opc-wrapper-opc .payment-block { margin-top:0px !important;}
 
+#check_out_products{position:fixed;bottom:0px;z-index:9; background-color:#00a5bd; color:#E5E5E5;}
+#mass_products{position:relative;}
+
+
 
 

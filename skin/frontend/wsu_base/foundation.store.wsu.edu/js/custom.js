@@ -64,6 +64,10 @@
 			$(this).data("price",$(this).text().replace('$',''));
 		});
 		
+		
+		$(window).on("resize",function(){
+			$("#check_out_products").css({"width":$("#mass_products").width()+"px"});
+		});
 
 
 		$.fn.int_guest_display = function() {
