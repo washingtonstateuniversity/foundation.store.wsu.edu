@@ -144,11 +144,11 @@ $editUrl = $this->getConfigureUrl();
 					
                     	<?php $i=1; ?>
                         <?php foreach ($options as $_option) : ?>
-                        <?php //$_formatedOptionValue = $this->getFormatedOptionValue($_option) ?>
-                        <?php 
-						$label = trim($this->escapeHtml($_option['label']));
-						$value = trim($_option['value']);
-						if ( $label!=="" && strpos($label,'guest_')!==false 
+							<?php //$_formatedOptionValue = $this->getFormatedOptionValue($_option) ?>
+                            <?php 
+                            $label = trim($this->escapeHtml($_option['label']));
+                            $value = trim($_option['value']);
+                            if ( $label!=="" && strpos($label,'guest_')!==false 
 									&& strpos($label,'_{%d%}_')===false ):
 									 ?>
 							<?php
@@ -180,7 +180,7 @@ $editUrl = $this->getConfigureUrl();
                                      ?></dt>
                                     <dd><?=$_option['value']?></dd>
                                  <?php endif; ?>
-                        <?php endif; ?>
+                        	<?php endif; ?>
                         <?php endforeach; ?>
                     </dl>
 					<?php endif;?>
