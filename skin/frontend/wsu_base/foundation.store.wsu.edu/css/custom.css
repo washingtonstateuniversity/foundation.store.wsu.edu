@@ -109,7 +109,7 @@ body{
 * .opc-wrapper-opc .payment-block { margin-top:0px !important;}
 
 #check_out_products {
-  background-color: #00a5bd;
+  background-color: #203639;
   bottom: 5px;
   color: #e5e5e5;
   font-size: 1.25em;
@@ -118,7 +118,7 @@ body{
   text-align: center;
   z-index: 9;
 }
-#check_out_products:hover{background-color: #203639;}
+#check_out_products:hover{background-color:#00a5bd;}
 #mass_products{position:relative;}
 
 
