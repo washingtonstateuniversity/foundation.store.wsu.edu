@@ -128,6 +128,7 @@
 			var input = _block.find('.spinner');
 			if(input.length){
 				var spinner = input.spinner({
+					min: 0,
 					change: function(){
 							var guest_count = parseInt(input.val());
 							_block.find(".price").text(  $.currencyFormat( _block.find(".regular-price").data("price")*( guest_count+1 ) ) );
@@ -137,6 +138,14 @@
 							var guest_count = parseInt(input.val());
 							_block.find(".price").text(  $.currencyFormat( _block.find(".regular-price").data("price")*( guest_count+1 ) ) );
 							_block.find('[name$="[qty]"]').val(guest_count+1);
+						}
+					}).blur(function () {
+						var value1 = input.val();
+						if (value1<0) {
+							input.val(value);
+						}
+						if(isNaN(value1)) {
+							input.val(value);
 						}
 					});
 			}
