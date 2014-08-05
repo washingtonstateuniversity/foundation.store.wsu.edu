@@ -171,13 +171,14 @@
 			var item = but.closest('.mass_item');
 			var tar = item.find('[name="goingToEvent"]');
 			if( tar.is($(":checked")) ){
-				if($('[name="goingToEvent"]:checked').length<=0 && $('#check_out_products').is(':visible')){
-					$('#check_out_products').fadeOut();
-				}
 				item.destroy_guest_display();
 				tar.attr('checked',false);
 				but.html('<span><span>Attend</span></span>');
 				item.removeClass('active_item');
+				if($('[name="goingToEvent"]:checked').length<=0 && $('#check_out_products').is(':visible')){
+					$('#check_out_products').fadeOut();
+				}
+
 			}else{
 				if( item.find('.validation_overlay').length<=0 || item.find('.validation_overlay').int_access_validation()){
 
