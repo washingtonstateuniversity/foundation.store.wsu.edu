@@ -4,7 +4,7 @@
 (function($){
 
 	function int_alertGuest(_block){
-		_block.find('[data-ptype="adult"],[data-ptype="child_6_12"],[data-ptype="child_6_12"]').off().on('click',function(e){
+		_block.find('[data-ptype="adult"],[data-ptype="child_6_12"],[data-ptype="child_6_12"]').on('click',function(e){
 			
 			e.preventDefault();
 			e.stopPropagation();
