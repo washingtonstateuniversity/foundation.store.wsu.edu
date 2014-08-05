@@ -150,7 +150,14 @@
 					});
 			}
 		}
-
+		$('#check_out_products').fadeOut();
+		$(window).off().on("scroll",function(){
+			if ($(this).scrollTop() > ($(this).height()-$('#addContainer').scrollTop()+225) ) {
+				$('#check_out_products').removeClass('fixed');
+			} else {
+				$('#check_out_products').addClass('fixed');
+			}
+		});
 
 		$('.button.btn-cart').off().on('click',function(e){
 			e.preventDefault();
@@ -181,13 +188,7 @@
 				}
 			}
 		});
-		 $(window).scroll(function(){
-			  if ($(this).scrollTop() > $(document).height()-135) {
-				  $('#check_out_products').addClass('fixed');
-			  } else {
-				  $('#check_out_products').removeClass('fixed');
-			  }
-		  });
+
 
 //note this will be moved out to the eventticket ext as a dependent of cart ajax handler
 		$('#check_out_products').on('click',function(e){
