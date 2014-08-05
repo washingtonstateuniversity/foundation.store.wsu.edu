@@ -4,18 +4,18 @@
 (function($){
 
 	function int_alertGuest(_block){
-		_block.find('[data-ptype="adult"],[data-ptype="child_6_12"],[data-ptype="child_6_12"]').on('click',function(e){
+		_block.find('[data-ptype="adult"],[data-ptype="child_6_12"],[data-ptype="under_5"]').off().on('click',function(e){
 			
-			e.preventDefault();
-			e.stopPropagation();
+			//e.preventDefault();
+			//e.stopPropagation();
 			var guest_count = _block.find('.guest_block:not(.template)').length;
 			var normal_price=_block.find(".regular-price").data("price")*( guest_count+1);
 			if(_block.find('[data-ptype="child_6_12"]:checked').length>0){
 				var alter = _block.find('[data-ptype="child_6_12"]:checked').length;
 				normal_price -= alter*10;
 			}
-			if(_block.find('[data-ptype="child_6_12"]:checked').length>0){
-				var alter = _block.find('[data-ptype="child_6_12"]:checked').length;
+			if(_block.find('[data-ptype="under_5"]:checked').length>0){
+				var alter = _block.find('[data-ptype="under_5"]:checked').length;
 				normal_price -= alter*25;
 			}
 			_block.find(".price").text( $.currencyFormat( normal_price ) );
