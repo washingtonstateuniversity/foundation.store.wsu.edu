@@ -44,7 +44,7 @@
 			$(this).hide();
 			
 			int_alertGuest(_block);
-			_block.find('[data-ptype="adult"]').trigger('click');// this is starting it since it's the first run.. dirty yes but works
+			$(this).closest(".guest_block").find('[data-ptype="adult"]').trigger('click');// this is starting it since it's the first run.. dirty yes but works
 
 			_block.find('[name$="[qty]"]').val(guest_count+1);
 			var limit = _block.find('.guest_blocks').data('limit');
