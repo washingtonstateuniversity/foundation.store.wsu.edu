@@ -33,7 +33,7 @@
 			
 			e.preventDefault();
 			e.stopPropagation();
-			var _guestblock = $(this).closest(".guest_block")
+			
 			var _block = $(this).closest(".item");
 			
 			_block.find(".template").clone().appendTo(_block.find('.guest_blocks')).removeClass("template");
@@ -43,6 +43,7 @@
 			_block.find('.guest_block').last().html( block_content.replace(/{%d%}/gim, guest_count) );
 			$(this).hide();
 			
+			var _guestblock = _block.find('.guest_block:not(.template)').last();
 			int_alertGuest(_block,_guestblock);
 			_guestblock.find('[data-ptype="adult"]').trigger('click');// this is starting it since it's the first run.. dirty yes but works
 
