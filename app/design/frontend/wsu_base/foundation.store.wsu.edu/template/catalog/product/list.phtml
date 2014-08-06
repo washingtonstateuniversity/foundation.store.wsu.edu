@@ -124,6 +124,9 @@
 				
 				$dateTimeHtml=$dateStr.$timeStr;
 				
+				
+				$cusOpts = $product->getOptions();
+				
 			?>
 	
 		<li class="mass_item item row margin-left <?php if( ++$_iterator == sizeof($_productCollection) ): ?> last<?php endif; ?>" data-product_id="<?=$pID?>">
@@ -224,8 +227,26 @@
 							?>
 							
 							<?php if($MenuAgePriceRange>0): ?>
-							<input type='hidden' name='product[<?=$pID?>][options][35]' data-ptype="child_6_12"/><!--//under_5-->
-							<input type='hidden' name='product[<?=$pID?>][options][7]' data-ptype="under_5"/><!--//child_6_12-->
+                            <?php
+
+							
+							$child_6_12_id=0;
+							$under_5_id=0;
+								foreach($cusOpts as $optionKey => $option) {
+									$field=$option->getData();
+									if($field['type']=="field"){
+										$sku=$option->getSku();
+										if($sku == "child_6_12"){
+											$child_6_12_id=$option->getId();
+										}
+										if($sku == "under_5"){
+											$under_5_id=$option->getId();
+										}
+									}
+								}                            
+                           ?>  
+							<input type='hidden' name='product[<?=$pID?>][options][<?=$child_6_12_id?>]' data-ptype="child_6_12"/><!--//under_5-->
+							<input type='hidden' name='product[<?=$pID?>][options][<?=$under_5_id?>]' data-ptype="under_5"/><!--//child_6_12-->
 							<?php endif; ?>
 							
 							<ul class="guest_blocks" data-limit="<?=$GuestLimit?>">
