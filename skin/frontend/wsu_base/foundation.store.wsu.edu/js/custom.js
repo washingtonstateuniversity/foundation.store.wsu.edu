@@ -3,8 +3,8 @@
 
 (function($){
 
-	function int_alertGuest(_block){
-		_block.find('[data-ptype="adult"],[data-ptype="child_6_12"],[data-ptype="under_5"]').off().on('click',function(e){
+	function int_alertGuest(_block,_guestblock){
+		_guestblock.find('[data-ptype="adult"],[data-ptype="child_6_12"],[data-ptype="under_5"]').off().on('click',function(e){
 			
 			//e.preventDefault();
 			//e.stopPropagation();
@@ -33,7 +33,7 @@
 			
 			e.preventDefault();
 			e.stopPropagation();
-			
+			var _guestblock = $(this).closest(".guest_block")
 			var _block = $(this).closest(".item");
 			
 			_block.find(".template").clone().appendTo(_block.find('.guest_blocks')).removeClass("template");
@@ -43,8 +43,8 @@
 			_block.find('.guest_block').last().html( block_content.replace(/{%d%}/gim, guest_count) );
 			$(this).hide();
 			
-			int_alertGuest(_block);
-			$(this).closest(".guest_block").find('[data-ptype="adult"]').trigger('click');// this is starting it since it's the first run.. dirty yes but works
+			int_alertGuest(_block,_guestblock);
+			_guestblock.find('[data-ptype="adult"]').trigger('click');// this is starting it since it's the first run.. dirty yes but works
 
 			_block.find('[name$="[qty]"]').val(guest_count+1);
 			var limit = _block.find('.guest_blocks').data('limit');
