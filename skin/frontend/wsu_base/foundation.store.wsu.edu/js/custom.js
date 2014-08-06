@@ -3,26 +3,29 @@
 
 (function($){
 
-	function int_alertGuest(_block,_guestblock){
-		_guestblock.find('[data-ptype="adult"],[data-ptype="child_6_12"],[data-ptype="under_5"]').off().on('click',function(e){
-			
-			//e.preventDefault();
-			//e.stopPropagation();
-			var guest_count = _block.find('.guest_block:not(.template)').length;
-			var normal_price=_block.find(".regular-price").data("price")*( guest_count+1);
-			if(_block.find('[data-ptype="child_6_12"]:checked').length>0){
-				var alter = _block.find('[data-ptype="child_6_12"]:checked').length;
-				normal_price -= alter*10;
-			}
-			if(_block.find('[data-ptype="under_5"]:checked').length>0){
-				var alter = _block.find('[data-ptype="under_5"]:checked').length;
-				normal_price -= alter*25;
-			}
-			var under_5_i = _block.find('[data-ptype="under_5"]:checked').length;
-			_block.find('[data-cusop="under_5"]').val( under_5_i>0?under_5_i:"" );
-			var child_6_12_i = _block.find('[data-ptype="child_6_12"]:checked').length;
-			_block.find('[data-cusop="child_6_12"]').val( child_6_12_i>0?child_6_12_i:"" );
-			_block.find(".price").text( $.currencyFormat( normal_price ) );
+	function int_alertGuest(_block){
+		$.each(_block.find('.guest_block:not(.template)'),function(){
+			var _guestblock = $(this);
+			_guestblock.find('[data-ptype="adult"],[data-ptype="child_6_12"],[data-ptype="under_5"]').off().on('click',function(e){
+				
+				//e.preventDefault();
+				//e.stopPropagation();
+				var guest_count = _block.find('.guest_block:not(.template)').length;
+				var normal_price=_block.find(".regular-price").data("price")*( guest_count+1);
+				if(_block.find('[data-ptype="child_6_12"]:checked').length>0){
+					var alter = _block.find('[data-ptype="child_6_12"]:checked').length;
+					normal_price -= alter*10;
+				}
+				if(_block.find('[data-ptype="under_5"]:checked').length>0){
+					var alter = _block.find('[data-ptype="under_5"]:checked').length;
+					normal_price -= alter*25;
+				}
+				var under_5_i = _block.find('[data-ptype="under_5"]:checked').length;
+				_block.find('[data-cusop="under_5"]').val( under_5_i>0?under_5_i:"" );
+				var child_6_12_i = _block.find('[data-ptype="child_6_12"]:checked').length;
+				_block.find('[data-cusop="child_6_12"]').val( child_6_12_i>0?child_6_12_i:"" );
+				_block.find(".price").text( $.currencyFormat( normal_price ) );
+			});
 		});
 	}
 
@@ -35,6 +38,8 @@
 			e.stopPropagation();
 			
 			var _block = $(this).closest(".item");
+			var _guestblock = _block.find('.guest_block:not(.template)').last();
+
 			
 			_block.find(".template").clone().appendTo(_block.find('.guest_blocks')).removeClass("template");
 			var guest_count = _block.find('.guest_block:not(.template)').length;
@@ -43,9 +48,9 @@
 			_block.find('.guest_block').last().html( block_content.replace(/{%d%}/gim, guest_count) );
 			$(this).hide();
 			
-			var _guestblock = _block.find('.guest_block:not(.template)').last();
-			int_alertGuest(_block,_guestblock);
-			_guestblock.find('[data-ptype="adult"]').trigger('click');// this is starting it since it's the first run.. dirty yes but works
+			
+			int_alertGuest(_block);
+			_block.find('[data-ptype="adult"]:checked').trigger('click');// this is starting it since it's the first run.. dirty yes but works
 
 			_block.find('[name$="[qty]"]').val(guest_count+1);
 			var limit = _block.find('.guest_blocks').data('limit');
@@ -70,7 +75,17 @@
 			$.each(_block.find('.guest_block:not(.template)'), function(i,v){
 				var adj_i =i+1;
 				$(this).find(".count").text( adj_i );
-				$(this).html( $(this).html().toString().replace(/\[guest\]\[\d+?\]/gmi, "guest["+adj_i+"]") );
+				//$(this).html( $(this).html().toString().replace(/\[guest\]\[\d+?\]/gmi, "guest["+adj_i+"]") );
+				$.each($(this).find('[name*="[guest]["]'), function(){
+					var name=$(this).attr('name');
+					name=name.replace(/\[guest\]\[\d+?\]/gmi, "guest["+adj_i+"]");
+					$(this).attr('name',name);
+				});
+				
+				
+				
+				
+				
 			});
 			var guest_count = _block.find('.guest_block:not(.template)').length;
 			
@@ -89,6 +104,7 @@
 			_block.find('[data-cusop="under_5"]').val( under_5_i>0?under_5_i:"" );
 			var child_6_12_i = _block.find('[data-ptype="child_6_12"]:checked').length;
 			_block.find('[data-cusop="child_6_12"]').val( child_6_12_i>0?child_6_12_i:"" );
+			
 			_block.find(".price").text( $.currencyFormat( normal_price ) );
 			
 			
