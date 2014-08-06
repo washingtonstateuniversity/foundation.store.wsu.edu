@@ -224,8 +224,8 @@
 							?>
 							
 							<?php if($MenuAgePriceRange>0): ?>
-							<input type='hidden' name='product[<?=$pID?>][options][35]' /><!--//under_5-->
-							<input type='hidden' name='product[<?=$pID?>][options][7]' /><!--//child_6_12-->
+							<input type='hidden' name='product[<?=$pID?>][options][35]' data-ptype="child_6_12"/><!--//under_5-->
+							<input type='hidden' name='product[<?=$pID?>][options][7]' data-ptype="under_5"/><!--//child_6_12-->
 							<?php endif; ?>
 							
 							<ul class="guest_blocks" data-limit="<?=$GuestLimit?>">
