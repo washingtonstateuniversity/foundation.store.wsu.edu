@@ -119,10 +119,28 @@
 						$timeStr .= ($relative_endtime!="") ? $relative_endtime : $eventEnd_time;
 					}
 					$timeStr= "<b>Time:</b> <i>$timeStr</i><br/>";
+					$dateTimeHtml=$dateStr.$timeStr;
 				}
+
+				if($eventStart_date!=$eventEnd_date){
+					$dateStr="<b>Date:</b> <i>$eventStart_date</i><br/>";
+					$timeStr= ($relative_starttime!="") ? $relative_starttime : $eventStart_time;
+					
+					$timeStr= "<b>Time:</b> <i>$timeStr</i><br/>";
+					$dateTimeHtml=$dateStr.$timeStr;
+					
+					$dateStr="<b>Date:</b> <i>$eventEnd_date</i><br/>";
+					$timeStr= ($relative_endtime!="") ? $relative_endtime : $eventEnd_time;
+					
+					$timeStr= "<b>Time:</b> <i>$timeStr</i><br/>";
+					
+					$dateTimeHtml=$dateTimeHtml.$dateStr.$timeStr;
+					
+				}
+
 				
 				
-				$dateTimeHtml=$dateStr.$timeStr;
+				
 				
 				
 				$cusOpts = $product->getOptions();
@@ -245,8 +263,8 @@
 									}
 								}                            
                            ?>  
-							<input type='hidden' name='product[<?=$pID?>][options][<?=$child_6_12_id?>]' data-ptype="child_6_12"/><!--//under_5-->
-							<input type='hidden' name='product[<?=$pID?>][options][<?=$under_5_id?>]' data-ptype="under_5"/><!--//child_6_12-->
+							<input type='hidden' name='product[<?=$pID?>][options][<?=$child_6_12_id?>]' data-cusop="child_6_12"/><!--//under_5-->
+							<input type='hidden' name='product[<?=$pID?>][options][<?=$under_5_id?>]' data-cusop="under_5"/><!--//child_6_12-->
 							<?php endif; ?>
 							
 							<ul class="guest_blocks" data-limit="<?=$GuestLimit?>">
