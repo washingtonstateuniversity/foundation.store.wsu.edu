@@ -277,7 +277,7 @@
 			$.popup_message("<h4><i class='fa fa-spinner fa-spin'></i> Processing</h4>",true);
 			$.post('/cartajax/cartajax/add/?cartAjaxUsed=1',formData,function(data){
 					var data_res = jQuery.parseJSON(data);
-					console.log( data_res );
+					//console.log( data_res );
 					if(data_res.status=="ERROR" || data_res.checkout==""){
 						$( "#mess" ).dialog( "destroy" );
 						$( "#mess" ).remove();
