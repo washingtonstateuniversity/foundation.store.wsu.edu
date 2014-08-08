@@ -105,8 +105,22 @@ body{
   text-transform: uppercase;
 }
 
-.shipping-method-block{ display:none !important;}
+.shipping-method-block{position:absolute !important; top:-9999em  !important; left:-9999em  !important;}
 * .opc-wrapper-opc .payment-block { margin-top:0px !important;}
+
+#check_out_products {
+  background-color: #3f6b72;
+  color: #e5e5e5;
+  font-size: 1.25em;
+  font-weight: bold;
+  text-align: center;
+}
+
+#check_out_products.fixed {z-index: 9;position: fixed;bottom: 5px;}
+
+#check_out_products:hover{background-color:#00a5bd;}
+#mass_products{position:relative;}
+
 
 
 

@@ -129,7 +129,7 @@ $editUrl = $this->getConfigureUrl();
 					foreach ($finalResult as $_option){
 						$label = trim($this->escapeHtml($_option['label']));
 						$value = trim($_option['value']);
-						if ( $value!=="" && $label!=="" && strpos($label,'guest_')!==false 
+						if ( $label!=="" && strpos($label,'guest_')!==false 
 									&& strpos($label,'_{%d%}_')===false ){
 							$options[]=$_option;			
 						}
@@ -144,11 +144,11 @@ $editUrl = $this->getConfigureUrl();
 					
                     	<?php $i=1; ?>
                         <?php foreach ($options as $_option) : ?>
-                        <?php //$_formatedOptionValue = $this->getFormatedOptionValue($_option) ?>
-                        <?php 
-						$label = trim($this->escapeHtml($_option['label']));
-						$value = trim($_option['value']);
-						if ( $value!=="" && $label!=="" && strpos($label,'guest_')!==false 
+							<?php //$_formatedOptionValue = $this->getFormatedOptionValue($_option) ?>
+                            <?php 
+                            $label = trim($this->escapeHtml($_option['label']));
+                            $value = trim($_option['value']);
+                            if ( $label!=="" && strpos($label,'guest_')!==false 
 									&& strpos($label,'_{%d%}_')===false ):
 									 ?>
 							<?php
@@ -161,24 +161,26 @@ $editUrl = $this->getConfigureUrl();
 									$i++;
 								}
 							 ?>	
-								<dt><?php
-									
-									if(strpos($label,'firstName')!==false){
-										echo "First Name:";
-									}elseif(strpos($label,'lastName')!==false){
-										echo "Last Name:";
-									}elseif(strpos($label,'dietary')!==false){
-										echo "Dietary Choice:";
-									}elseif(strpos($label,'meal')!==false){
-										echo "Meal Choice:";
-									}elseif(strpos($label,'mobility')!==false){
-										echo "Mobility Requirements:";
-									}elseif(strpos($label,'requested_seating')!==false){
-										echo "Seating Request:";
-									}
-								 ?></dt>
-								<dd><?=$_option['value']?></dd>
-                        <?php endif; ?>
+								 <?php if ( $value!=="" ): ?>
+                                    <dt><?php
+                                        
+                                        if(strpos($label,'firstName')!==false){
+                                            echo "First Name:";
+                                        }elseif(strpos($label,'lastName')!==false){
+                                            echo "Last Name:";
+                                        }elseif(strpos($label,'dietary')!==false){
+                                            echo "Dietary Choice:";
+                                        }elseif(strpos($label,'meal')!==false){
+                                            echo "Meal Choice:";
+                                        }elseif(strpos($label,'mobility')!==false){
+                                            echo "Mobility Requirements:";
+                                        }elseif(strpos($label,'requested_seating')!==false){
+                                            echo "Seating Request:";
+                                        }
+                                     ?></dt>
+                                    <dd><?=$_option['value']?></dd>
+                                 <?php endif; ?>
+                        	<?php endif; ?>
                         <?php endforeach; ?>
                     </dl>
 					<?php endif;?>

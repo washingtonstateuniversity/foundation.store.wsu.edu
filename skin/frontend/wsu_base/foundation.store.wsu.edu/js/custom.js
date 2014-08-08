@@ -3,6 +3,34 @@
 
 (function($){
 
+	function int_alertGuest(_block){
+		$.each(_block.find('.guest_block:not(.template)'),function(){
+			var _guestblock = $(this);
+			_guestblock.find('[data-ptype="adult"],[data-ptype="child_6_12"],[data-ptype="under_5"]').off().on('click',function(e){
+				
+				//e.preventDefault();
+				//e.stopPropagation();
+				var guest_count = _block.find('.guest_block:not(.template)').length;
+				var normal_price=_block.find(".regular-price").data("price")*( guest_count+1);
+				if(_block.find('[data-ptype="child_6_12"]:checked').length>0){
+					var alter = _block.find('[data-ptype="child_6_12"]:checked').length;
+					normal_price -= alter*10;
+				}
+				if(_block.find('[data-ptype="under_5"]:checked').length>0){
+					var alter = _block.find('[data-ptype="under_5"]:checked').length;
+					normal_price -= alter*25;
+				}
+				var under_5_i = _block.find('[data-ptype="under_5"]:checked').length;
+				_block.find('[data-cusop="under_5"]').val( under_5_i>0?under_5_i:"" );
+				var child_6_12_i = _block.find('[data-ptype="child_6_12"]:checked').length;
+				_block.find('[data-cusop="child_6_12"]').val( child_6_12_i>0?child_6_12_i:"" );
+				_block.find(".price").text( $.currencyFormat( normal_price ) );
+			});
+		});
+	}
+
+
+
 	function int_addGuest(){
 		$('.add_guest').off().on('click',function(e){
 			
@@ -10,6 +38,8 @@
 			e.stopPropagation();
 			
 			var _block = $(this).closest(".item");
+			var _guestblock = _block.find('.guest_block:not(.template)').last();
+
 			
 			_block.find(".template").clone().appendTo(_block.find('.guest_blocks')).removeClass("template");
 			var guest_count = _block.find('.guest_block:not(.template)').length;
@@ -17,7 +47,11 @@
 			//alert(block_content);
 			_block.find('.guest_block').last().html( block_content.replace(/{%d%}/gim, guest_count) );
 			$(this).hide();
-			_block.find(".price").text(  $.currencyFormat( _block.find(".regular-price").data("price")*( guest_count+1) ) );
+			
+			
+			int_alertGuest(_block);
+			_block.find('[data-ptype="adult"]:checked').trigger('click');// this is starting it since it's the first run.. dirty yes but works
+
 			_block.find('[name$="[qty]"]').val(guest_count+1);
 			var limit = _block.find('.guest_blocks').data('limit');
 			if( (limit=="unlimited" || limit<guest_count) ){
@@ -41,10 +75,39 @@
 			$.each(_block.find('.guest_block:not(.template)'), function(i,v){
 				var adj_i =i+1;
 				$(this).find(".count").text( adj_i );
-				$(this).html( $(this).html().toString().replace(/\[guest\]\[\d+?\]/gmi, "guest["+adj_i+"]") );
+				//$(this).html( $(this).html().toString().replace(/\[guest\]\[\d+?\]/gmi, "guest["+adj_i+"]") );
+				$.each($(this).find('[name*="[guest]["]'), function(){
+					var name=$(this).attr('name');
+					name=name.replace(/\[guest\]\[\d+?\]/gmi, "guest["+adj_i+"]");
+					$(this).attr('name',name);
+				});
+				
+				
+				
+				
+				
 			});
 			var guest_count = _block.find('.guest_block:not(.template)').length;
-			_block.find(".price").text( $.currencyFormat( _block.find(".regular-price").data("price")*( guest_count+1) ) );
+			
+			var normal_price=_block.find(".regular-price").data("price")*( guest_count+1);
+			
+			
+			if(_block.find('[data-ptype="child_6_12"]:checked')){
+				var alter = _block.find('[data-ptype="child_6_12"]:checked').length;
+				normal_price -= alter*10;
+			}
+			if(_block.find('[data-ptype="under_5"]:checked')){
+				var alter = _block.find('[data-ptype="under_5"]:checked').length;
+				normal_price -= alter*25;
+			}
+			var under_5_i = _block.find('[data-ptype="under_5"]:checked').length;
+			_block.find('[data-cusop="under_5"]').val( under_5_i>0?under_5_i:"" );
+			var child_6_12_i = _block.find('[data-ptype="child_6_12"]:checked').length;
+			_block.find('[data-cusop="child_6_12"]').val( child_6_12_i>0?child_6_12_i:"" );
+			
+			_block.find(".price").text( $.currencyFormat( normal_price ) );
+			
+			
 			_block.find('[name$="[qty]"]').val(guest_count+1);
 			/*if(guest_count<=0){
 				_block.find('.add_guest').show();
@@ -64,6 +127,8 @@
 			$(this).data("price",$(this).text().replace('$',''));
 		});
 		
+		
+
 
 
 		$.fn.int_guest_display = function() {
@@ -124,6 +189,7 @@
 			var input = _block.find('.spinner');
 			if(input.length){
 				var spinner = input.spinner({
+					min: 0,
 					change: function(){
 							var guest_count = parseInt(input.val());
 							_block.find(".price").text(  $.currencyFormat( _block.find(".regular-price").data("price")*( guest_count+1 ) ) );
@@ -134,9 +200,31 @@
 							_block.find(".price").text(  $.currencyFormat( _block.find(".regular-price").data("price")*( guest_count+1 ) ) );
 							_block.find('[name$="[qty]"]').val(guest_count+1);
 						}
+					}).blur(function () {
+						var value1 = input.val();
+						if (value1<0) {
+							input.val(0);
+						}
+						if(isNaN(value1)) {
+							input.val(0);
+						}
 					});
 			}
 		}
+		
+		
+		$('#check_out_products').fadeOut();
+		$(window).off().on("scroll",function(){
+			 if (jQuery(this).scrollTop()+jQuery(this).height() > (jQuery('footer').offset().top+25) ) {
+				$('#check_out_products').removeClass('fixed');
+			} else {
+				$('#check_out_products').addClass('fixed');
+			}
+		}).trigger("scroll");
+		$(window).on("resize",function(){
+			$("#check_out_products").css({"width":($(".mass_item").width()-18)+"px"});
+		}).trigger("resize");
+
 
 
 		$('.button.btn-cart').off().on('click',function(e){
@@ -150,8 +238,13 @@
 				tar.attr('checked',false);
 				but.html('<span><span>Attend</span></span>');
 				item.removeClass('active_item');
+				if($('[name="goingToEvent"]:checked').length<=0 && $('#check_out_products').is(':visible')){
+					$('#check_out_products').fadeOut();
+				}
+
 			}else{
 				if( item.find('.validation_overlay').length<=0 || item.find('.validation_overlay').int_access_validation()){
+
 					tar.attr('checked',true);
 					but.html('<span><span>Don\'t Attend</span></span>');
 					item.addClass('active_item');
@@ -159,6 +252,15 @@
 					item.int_guestcounter();
 					int_addGuest();
 					$('.tooltip').tooltip();
+					
+					if($('[name="goingToEvent"]:checked').length){
+						$('#check_out_products').fadeIn();
+						$(window).on("resize",function(){
+							$("#check_out_products").css({"width":($(".mass_item").width()-18)+"px"});
+						}).trigger("resize");
+					}
+					
+					
 				}
 			}
 		});
@@ -175,7 +277,7 @@
 			$.popup_message("<h4><i class='fa fa-spinner fa-spin'></i> Processing</h4>",true);
 			$.post('/cartajax/cartajax/add/?cartAjaxUsed=1',formData,function(data){
 					var data_res = jQuery.parseJSON(data);
-					console.log( data_res );
+					//console.log( data_res );
 					if(data_res.status=="ERROR" || data_res.checkout==""){
 						$( "#mess" ).dialog( "destroy" );
 						$( "#mess" ).remove();
