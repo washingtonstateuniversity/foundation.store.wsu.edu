@@ -6,15 +6,16 @@
  */
 ?>
 
-
-
 <form action="#" id="mass_products">
 <?php
+	if(Mage::helper('wsu_networksecurities')->adminInFrontend()){
+		echo "<h2>Admin in the house</h2>";
+	}
+
 	date_default_timezone_set('America/Los_Angeles');//quick test of a date issue
 	$_productCollection=$this->getLoadedProductCollection();
 	$_collectionSize = $_productCollection->count();
-	
-	
+
 	if(!function_exists('tooltip_block')){ // will be moved to the SU ext
 		function tooltip_block ($message){
 			$html = '<span class="fa-stack fa-lg tooltip"  style="font-size:.75em;">
@@ -25,9 +26,6 @@
 			return $html;
 		}
 	}
-	
-	
-	
 ?>
 
 <?php if(!$_collectionSize): ?><?php
@@ -81,6 +79,24 @@
 				$pID=$_product->getId();
 				$product = Mage::getModel('catalog/product');
 				$product = Mage::getModel("catalog/product")->load($pID);
+				
+				$RegistrationClosed = str_replace(' 00:00:00',' 23:59:00',$product->getRegistrationClosed());
+				$current_time = date("Y-m-d H:i:s");
+				$hasRegCloseDate = true;
+				$showItem=true;
+				if($RegistrationClosed =="" || strtotime($current_time) < strtotime($RegistrationClosed)){
+					if($RegistrationClosed==""){
+						$hasRegCloseDate = false;
+					}
+				}else{
+					$showItem=false;
+					if(Mage::helper('wsu_networksecurities')->adminInFrontend()){
+						$showItem=true;
+					}
+				}
+				
+				
+			if($showItem){
 
 				$FoodOptions = $product->getFoodOptions();
 				$RequestSeating=$product->getRequestSeating();
@@ -107,7 +123,12 @@
 				
 				$dateStr="";
 				$timeStr="";
-				$current_time = date("Y-m-d H:i:s");
+				
+				
+
+				
+				
+				
 				
 				if($eventStart_date==$eventEnd_date){
 					$dateStr="<b>Date:</b> <i>$eventStart_date</i><br/>";
@@ -373,6 +394,7 @@
 					</div>
 				</div>
 		</li>
+	<?php } ?>
 	<?php endforeach; ?>
 	</ul>
 	<span id="addContainer"><a href="#" id="check_out_products" class="spine-button"><i class="fa fa-shopping-cart "></i>Add Events to Cart</a></span>
